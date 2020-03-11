@@ -1,7 +1,7 @@
 import React from 'react';
+import Song from "./Song";
 
-
-class BIPage extends React.Component{
+class ResultTable extends React.Component{
 
     render(){
         return (
@@ -13,7 +13,7 @@ class BIPage extends React.Component{
                     <div><p>Actions</p></div>   
                 </div>
                 <div>
-
+                    <Song />
                 </div>             
             </div>
         )

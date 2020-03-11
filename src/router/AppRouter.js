@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import BIPage from "../components/BIPage";
 export const history = createBrowserHistory();
 import Navbar from "../components/Navbar";
-
+import EditSong from "../components/EditSong"
 
 
 const AppRouter = () => (
@@ -15,11 +15,14 @@ const AppRouter = () => (
             <Route exact path="/">
                 <Redirect to="/BackgroundInstrumentals"/>
             </Route>
-            <Route exact path="/BackgroundInstrumentals">
+            <Route  path="/BackgroundInstrumentals">
                 <BIPage />
             </Route>
-            <Route path="/IndieArtist">
+            <Route  path="/IndieArtist">
                 <BIPage />
+            </Route>
+            <Route  path="/EditSong">
+                <EditSong />
             </Route>
         </Switch>
 

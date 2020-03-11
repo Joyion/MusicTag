@@ -13,6 +13,7 @@ const NavBar = () => {
             <div>
                 <NavLink className="nav-link" activeClassName="active-links" to="/backgroundInstrumentals">Background Instrumentals</NavLink>
                 <NavLink className="nav-link" activeClassName="active-links" to="/IndieArtist">Indie Artist</NavLink>
+                <NavLink to="/EditSong">Edit Song</NavLink>
             </div>   
         </div>
     
