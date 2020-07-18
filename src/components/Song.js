@@ -1,7 +1,15 @@
 import React from 'react';
-
+import {connect} from "react-redux";
 
 class Song extends React.Component{
+    constructor(props){
+        super(props);
+        this.playingSong = this.playingSong.bind(this);
+    }
+
+    playingSong(){
+        this.props.playSong();
+    }
     
     render(){
         return (
@@ -26,4 +34,10 @@ class Song extends React.Component{
     }
 }
 
-export default Song;
+
+
+const mapDispatchToProps = dispatch => ({
+    playSong: (song) => {dispatch(playSong(song));}
+})
+
+export default connect(mapDispatchToProps)(Song);

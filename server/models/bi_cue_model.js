@@ -4,48 +4,48 @@ const Publisher = require("./publisher.model");
 
 const biCue = new mongoose.Schema(  
     {
+        release: {type: String},
         catalogName: {type: String, default: "Background Instrumental"},
         songTitle: {type: String},
         metadataComposer: {type: String, default: "N/A"},
         metadataPublisher: {type: String, default: "N/A"},
         composer: [
             {         
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Composer"         
-            }
-        ],
-        composerSplit: [
-            {
-                fullName: {type: String},
-                split: {type: Number}
+                 fName: {type: String},       
+                 mName: {type: String},       
+                 lName: {type: String},       
+                 suffix: {type: String},       
+                 split: {type: String},       
+                 cae: {type: String},       
+                 pro: {type: String}       
             }
         ],
         publisher: [
             {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "Publisher"
+                publisherName: {type: String},
+                publisherSplit: {type: String},
+                publisherIpi: {type: String},
+                publisherPro: {type: String}
                 
             }
         ],
-        publisherSplit: [
-            {
-                pubName: {type: String},
-                split: {type: Number}
-            }
-        ],
-        categoryStyle: {type: String, default: "N/A"},
+        genre: {type: String},
+        style: {type: String},
+        genreStyle: {type: String},
         instruments: {type: Array},
-        description: {type: Array},
+        descriptions: {type: Array},
         tempo: {type: String, default: "N/A"},
         rating: {type: Number, default: 0},
         bands: {type: Array},
         films: {type: Array},
         duration: {type: String, default: "N/A"},
-        top40: {type: String, default: "None"},
+        top: {type: String, default: "None"},
         status: {type: String, default: "Pending"},
         fileName: {type: String},
         createdDate: {type: Date, default: Date.now},
-        updateDate: {type: Date, default: null}
+        updateDate: {type: Date, default: null},
+        trackID: {type: String},
+        isrc: {type: String}
     
 })
 

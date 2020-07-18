@@ -4,7 +4,8 @@ import { createBrowserHistory } from 'history';
 import BIPage from "../components/BIPage";
 export const history = createBrowserHistory();
 import Navbar from "../components/Navbar";
-import EditSong from "../components/EditSong"
+import EditPage from "../components/EditPage";
+import ExportPage from "../components/ExportPage";
 
 
 const AppRouter = () => (
@@ -22,7 +23,10 @@ const AppRouter = () => (
                 <BIPage />
             </Route>
             <Route  path="/EditSong">
-                <EditSong />
+                <EditPage />
+            </Route>
+            <Route path="/Export">
+                <ExportPage />
             </Route>
         </Switch>
 

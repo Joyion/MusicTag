@@ -39,6 +39,7 @@ const Publisher = require("./models/publisher.model");
 
 //routes 
 const biCuesRoutes = require("./routes/api.bicues");
+const { resolveAny } = require("dns");
 app.use("/api/bicues", biCuesRoutes);
 
 
@@ -48,13 +49,97 @@ app.get('/test', (req, res) =>{
     res.send("This is a test for the server");
 });
 
+// to sync mp3 information to database 
+app.get('/api/filename', (req, res) =>{
+    let count = 0;
+    
+    // REMOVE 
+    const release = req.query.release || "R40";
+    console.log(release);
+    const file = "./public/mp3/" + release;
+    fs.readdir(file, (err, files) => {
+        if(err){
+            console.log("error reading files");
+        }
+        else{
+           let biSongs = [];
+           files.forEach((file, index) =>{
+               count = count + 1;
+               let d = new Date();
+                let y = d.getFullYear().toString();
+               let trackid = release + y + count;
+               let songName = file.replace("DLM - ", "");
+                songName = songName.replace(".mp3", "")
+               let song = {songTitle: songName, fileName: file, status: "Pending", trackID: trackid};
+                biSongs.push(song);
+           });
+           biCue.deleteMany(function(err){
+               if(err){
+                   console.log("error deleting data");
+               }
+               else{
+                biCue.create(biSongs, function(err, docs){
+               if(err){
+                   console.log("Unable to Save to Database: \n" + error);
+               }
+               else {
+                   console.log("Successfully written to database")
+                   const data = JSON.stringify(biSongs);
+                   res.json(data);
+               }
+           })
+               }
+           })       
+        }     
+    })
+})
 
+
+
+
+app.get('/api/excel', (req, res) => {
+    const wb = new xl.Workbook();
+    const ws = wb.addWorksheet("METADATA");
+    const style = wb.createStyle({
+        font: {
+            color: '#000000',
+            size: 12
+        }
+    })
+    ws.cell(1,1)
+        .string("SONG TITLE")
+        .style(style);
+
+    ws.cell(1, 2)
+        .string("ARTIST")
+        .style(style);
+
+    ws.cell(1, 3)
+        .string("MP3")
+        .style(style);  
+    
+    wb.write("MetaDataTest.xlsx");
+    res.redirect("/api/downloadExcel");
+})
+
+app.get("/api/downloadExcel", function (req, res){
+    res.download("MetaDataTest.xlsx", "metadata.xlsx", function(err){
+        if(err){
+            console.log("error");
+        }
+        else {
+            
+        }
+    })
+})
 
 
 // to sync mp3 information to database 
-app.get('/filename', (req, res) =>{
-   
-    fs.readdir("./public/mp3/", (err, files) => {
+app.get('/api/upload', (req, res) =>{
+    const release = req.query.release;
+    console.log(release);
+    const file = "./public/mp3/" + release;
+    fs.readdir(file, (err, files) => {
         if(err){
             console.log("error reading files");
         }
@@ -77,58 +162,17 @@ app.get('/filename', (req, res) =>{
                }
                else {
                    console.log("Successfully written to database")
-                   res.send(biSongs);
+                   const data = JSON.stringify(biSongs);
+                   res.json(data);
                }
            })
                }
-           })
-
-           
-           
-
-           
+           })       
         }     
     })
 })
 
 
-
-
-app.get('/excel', (req, res) => {
-    const wb = new xl.Workbook();
-    const ws = wb.addWorksheet("METADATA");
-    const style = wb.createStyle({
-        font: {
-            color: '#FF0800',
-            size: 12
-        }
-    })
-    ws.cell(1,1)
-        .string("SONG TITLE")
-        .style(style);
-
-    ws.cell(1, 2)
-        .string("ARTIST")
-        .style(style);
-
-    ws.cell(1, 3)
-        .string("MP3")
-        .style(style);  
-    
-    wb.write("MetaDataTest.xlsx");
-    res.redirect("/downloadExcel");
-})
-
-app.get("/downloadExcel", function (req, res){
-    res.download("MetaDataTest.xlsx", "metadata.xlsx", function(err){
-        if(err){
-            console.log("error");
-        }
-        else {
-            
-        }
-    })
-})
 
 //  app.get("*", (req, res) => {
 //           res.sendFile(path.join(publicPath, "index.html"));

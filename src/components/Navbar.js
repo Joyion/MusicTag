@@ -14,6 +14,7 @@ const NavBar = () => {
                 <NavLink className="nav-link" activeClassName="active-links" to="/backgroundInstrumentals">Background Instrumentals</NavLink>
                 <NavLink className="nav-link" activeClassName="active-links" to="/IndieArtist">Indie Artist</NavLink>
                 <NavLink to="/EditSong">Edit Song</NavLink>
+                <NavLink to="/Export">Export</NavLink>
             </div>   
         </div>
     
