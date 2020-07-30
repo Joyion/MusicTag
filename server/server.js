@@ -54,7 +54,7 @@ app.get('/api/filename', (req, res) =>{
     let count = 0;
     
     // REMOVE 
-    const release = req.query.release || "R40";
+    const release = req.query.release || "mp3";
     console.log(release);
     const file = "./public/mp3/" + release;
     fs.readdir(file, (err, files) => {
@@ -70,7 +70,7 @@ app.get('/api/filename', (req, res) =>{
                let trackid = release + y + count;
                let songName = file.replace("DLM - ", "");
                 songName = songName.replace(".mp3", "")
-               let song = {songTitle: songName, fileName: file, status: "Pending", trackID: trackid};
+               let song = {release: release, songTitle: songName, fileName: file, status: "Pending", trackId: trackid};
                 biSongs.push(song);
            });
            biCue.deleteMany(function(err){

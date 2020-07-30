@@ -4,7 +4,7 @@ const defaultState = {
         page: 1,
         totalPages: 1,
         status: "Pulled",
-        selectSong: ""
+        selectSong: {}
 }
 
 export default (state = defaultState, action) => {
@@ -20,7 +20,19 @@ export default (state = defaultState, action) => {
                     selectSong: action.selectSong,
             }
         case "UPDATE_CUE":
-            return state;
+            return {
+                ...state,
+                selectSong: action.cue
+            };
+        case "SET_SONG":
+            return {
+                ...state,
+                selectSong: action.cue
+            }
+        case "GET_SET_SONG":
+            return{
+                ...state
+            }
         case "PLAY_SONG":
             return {
                 ...state,

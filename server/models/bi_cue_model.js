@@ -9,8 +9,9 @@ const biCue = new mongoose.Schema(
         songTitle: {type: String},
         metadataComposer: {type: String, default: "N/A"},
         metadataPublisher: {type: String, default: "N/A"},
-        composer: [
-            {         
+        composers: [
+            {        
+                 fullName: {type: String}, 
                  fName: {type: String},       
                  mName: {type: String},       
                  lName: {type: String},       
@@ -20,7 +21,7 @@ const biCue = new mongoose.Schema(
                  pro: {type: String}       
             }
         ],
-        publisher: [
+        publishers: [
             {
                 publisherName: {type: String},
                 publisherSplit: {type: String},
@@ -44,7 +45,7 @@ const biCue = new mongoose.Schema(
         fileName: {type: String},
         createdDate: {type: Date, default: Date.now},
         updateDate: {type: Date, default: null},
-        trackID: {type: String},
+        trackId: {type: String},
         isrc: {type: String}
     
 })

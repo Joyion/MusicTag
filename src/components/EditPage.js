@@ -1,7 +1,6 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { thistle } from "color-name";
-import { timingSafeEqual } from "crypto";
+import {connect} from "react-redux";
+import {getSetSong} from "../actions/cues.action"
 
 class EditPage extends React.Component {
 
@@ -34,13 +33,7 @@ class EditPage extends React.Component {
             top: "",
             status: "",
             cue: {
-                songTitle: "",
-                composers: [],
-                publishers: [],
-                descriptions: [],
-                instruments: [],
-                bands: [],
-                films: [],
+               
             }
         }
 
@@ -48,6 +41,13 @@ class EditPage extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+    componentDidMount(){
+        this.props.dispatch(getSetSong());
+        console.log(this.props.selectSong);
+    }
+
+
     handleChange(e) {
         const name = e.target.name;
         this.setState({
@@ -73,7 +73,17 @@ class EditPage extends React.Component {
                 })
                 break;
             case "composerForm":
+                
+                const fullName = 
+                this.state.composerFirstName +
+                " " +
+                this.state.composerMiddleName + 
+                " "
+                this.state.composerLastName + 
+                " "
+                this.state.composerSuffix;
                 const newComposer = {
+                    fullName: fullName,
                     fName: this.state.composerFirstName,
                     mName: this.state.composerMiddleName,
                     lName: this.state.composerLastName,
@@ -240,7 +250,7 @@ class EditPage extends React.Component {
             <div >
 
                 <div>
-                    <p>{this.state.cue.catalogName}</p>
+                    <p>{!this.props.selectSong.catalogName && " "}</p>
                 </div>
 
                 <div>
@@ -490,5 +500,9 @@ class EditPage extends React.Component {
 
 }
 
+const mapStateToProps = state => ({
+    cue: state.cues.selectSong
+})
 
-export default EditPage;
+
+export default connect(mapStateToProps)(EditPage);

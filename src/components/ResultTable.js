@@ -96,9 +96,10 @@ class ResultTable extends React.Component{
                     <div><p>Actions</p></div>   
                 </div>
                 <div>
-                    <Song dispatch={this.props.dispatch}
-                        songTitle = {cue.songTitle}
-                    />
+                    {this.props.cues.cues.length > 0 ? this.props.cues.cues.map((c, i) => {
+                        return <Song key={i} cue={c} />
+                    }) : <p>No Results</p>}
+                    
                 </div>             
             </div>
         )
