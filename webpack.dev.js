@@ -45,9 +45,9 @@ module.exports = merge(common, {
     },
     devtool: 'cheap-module-eval-source-map',
     devServer: {
-        contentBase: path.resolve(__dirname, "public"),
+        contentBase: path.resolve(__dirname, "public", "dist"),
         historyApiFallback: true,
-        publicPath: "/dist/",
+        
         proxy: {
             // for when you have a separate API backend development server and you want to send API requests on the same domain
             '/api': "http://localhost:5000"
@@ -57,7 +57,7 @@ module.exports = merge(common, {
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            title: "DL MUSIC TAG APP",
+            title: "DL MUSIC APP",
             template: "src/index.html",
 
         })

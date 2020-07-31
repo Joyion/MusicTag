@@ -54,9 +54,11 @@ class CorrectEdit extends React.Component {
     render() {
         return (
             <div>
-                <p>DUMB EDIT PAGE</p>
+                <p>EDIT PAGE</p>
         <p>{this.props.cue && this.props.cue.catalogName}</p>
         <p>{this.props.cue && this.props.cue.songTitle}</p>
+        <p>{this.props.cue && this.props.cue.metadataComposer}</p>
+        <p>{this.props.cue && this.props.cue.metadataPublisher}</p>
             </div>
         )
     }

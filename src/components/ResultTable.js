@@ -33,6 +33,9 @@ class ResultTable extends React.Component{
         const nextPage = this.props.cues.page + 1;
         if(nextPage <= this.props.cues.totalPages && nextPage > 0){
             startGetCues(nextPage, this.state.status, this.props.dispatch);
+            this.setState({
+                selectPage: nextPage
+            })
         }
     }
     
@@ -40,6 +43,9 @@ class ResultTable extends React.Component{
         const backPage = this.props.cues.page - 1;
         if(backPage <= this.props.cues.totalPages && backPage > 0){
             startGetCues(backPage, this.state.status, this.props.dispatch);
+            this.setState({
+                selectPage: backPage
+            })
         }
     }
 
@@ -48,6 +54,7 @@ class ResultTable extends React.Component{
         const newPage = this.state.selectPage;
         if(newPage <= this.props.cues.totalPages && newPage > 0){
             startGetCues(newPage, this.state.status, this.props.dispatch);
+            
         }
     }
 
@@ -70,8 +77,10 @@ class ResultTable extends React.Component{
                 <p>Total Cues: {this.props.cues.totalCues}</p>
                     <p>Page {this.props.cues.page} of {this.props.cues.totalPages}</p>
                     <p>{this.props.cues.totalPages}</p>
-                    <button name="next" onClick={this.nextPage}>Next</button>
+                    
                     <button name="back" onClick={this.backPage}>Back</button>
+                    <button name="next" onClick={this.nextPage}>Next</button>
+                    
                     <form onSubmit={this.handlePgInput}>
                         <label>
                             Enter page number:
@@ -91,12 +100,12 @@ class ResultTable extends React.Component{
                         </label>
                     </form>
                 </div>
-                <div>
+                {/* <div>
                     <div><p>Song Title</p></div>
                     <div><p>Composer</p></div>
                     <div><p>Tempo</p></div>
                     <div><p>Actions</p></div>   
-                </div>
+                </div> */}
                 <div>
                     {this.props.cues.cues.length > 0 ? this.props.cues.cues.map((c, i) => {
                         return <Song key={i} cue={c} />
