@@ -1,10 +1,12 @@
 const defaultState = {
-        cues: ["tom"],
+        cues: [],
         totalCues: 0,
         page: 1,
         totalPages: 1,
-        status: "Pulled",
-        selectSong: {}
+        status: "Pending",
+        selectSong: {
+            catalogName: ""
+        }
 }
 
 export default (state = defaultState, action) => {

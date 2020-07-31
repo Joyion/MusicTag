@@ -8,12 +8,12 @@ class ResultTable extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            page: 1,
-            totalPages: 1,
+            page: this.props.cues.page,
+            totalPages: this.props.cues.totalPages,
             selectPage: 1,
             status: "Pending",
             selectStatus: "",
-            totalCues: 0,
+            totalCues: this.props.cues.totalCues,
         }
         this.nextPage = this.nextPage.bind(this);
         this.backPage = this.backPage.bind(this);
@@ -24,18 +24,20 @@ class ResultTable extends React.Component{
     
     componentDidMount(){
         console.log("START");
-        startGetCues(this.state.page, this.state.status, this.props.dispatch);
+        startGetCues(this.props.cues.page, this.props.cues.status, this.props.dispatch);
     }
 
     nextPage(){
-        const nextPage = this.state.page + 1;
+        console.log("Turning the page");
+        console.log(this.props.cues.page + 1);
+        const nextPage = this.props.cues.page + 1;
         if(nextPage <= this.props.cues.totalPages && nextPage > 0){
             startGetCues(nextPage, this.state.status, this.props.dispatch);
         }
     }
     
     backPage(){
-        const backPage = this.state.page - 1;
+        const backPage = this.props.cues.page - 1;
         if(backPage <= this.props.cues.totalPages && backPage > 0){
             startGetCues(backPage, this.state.status, this.props.dispatch);
         }
@@ -51,7 +53,7 @@ class ResultTable extends React.Component{
 
     handleStatus(e){
         e.preventDefault();
-        startGetCues(this.state.page, this.state.selectStatus, this.props.dispatch);
+        startGetCues(1, this.state.selectStatus, this.props.dispatch);
     }
 
     handleChange(e){
@@ -66,7 +68,7 @@ class ResultTable extends React.Component{
             <div>
                 <div>
                 <p>Total Cues: {this.props.cues.totalCues}</p>
-                    <p>Page {this.props.cues.page} of</p>
+                    <p>Page {this.props.cues.page} of {this.props.cues.totalPages}</p>
                     <p>{this.props.cues.totalPages}</p>
                     <button name="next" onClick={this.nextPage}>Next</button>
                     <button name="back" onClick={this.backPage}>Back</button>

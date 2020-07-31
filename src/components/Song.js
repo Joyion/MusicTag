@@ -14,8 +14,9 @@ class Song extends React.Component{
     }
 
     editSong(){
-        this.props.setSong(this.props.cue);
+        //startSetSong(this.props.cue._id, this.props.dispatch, this.props.history.push);
         this.props.history.push("/EditSong/" + this.props.cue._id);
+
     }
     
     render(){
@@ -47,11 +48,11 @@ class Song extends React.Component{
 }
 
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-    playSong: (song) => {dispatch(startSetSong(song))},
-    setSong: () => (startSetSong(ownProps.cue, dispatch))
+const mapStateToProps = (state, ownProps) => ({
+    cue: ownProps.cue
+
 })
 
-const myComponent = connect(null, mapDispatchToProps)(Song);
+const myComponent = connect(mapStateToProps)(Song);
 
 export default withRouter(myComponent);

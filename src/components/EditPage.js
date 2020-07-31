@@ -1,4 +1,5 @@
 import React from "react";
+import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {getSetSong} from "../actions/cues.action"
 
@@ -43,6 +44,8 @@ class EditPage extends React.Component {
     }
 
     componentDidMount(){
+        console.log("what params? " + this.props.match.params.id);
+
         this.props.dispatch(getSetSong());
         console.log(this.props.selectSong);
     }
@@ -270,7 +273,7 @@ class EditPage extends React.Component {
 
                 <div>
                     <p>Composers</p>
-                    {this.state.cue.composers && this.state.cue.composers.map((e) => {
+                    {this.props.cue.composers && this.props.cue.composers.map((e) => {
                         let fullName = e.fName + " " + e.mName + " " + e.lName + " " + e.suffix + "(" + e.pro + ") " + e.split + "% ";
                         return <button>{fullName}</button>
                     })}
@@ -505,4 +508,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps)(EditPage);
+export default withRouter(connect(mapStateToProps)(EditPage));

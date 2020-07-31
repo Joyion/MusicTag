@@ -7,9 +7,12 @@ const path = require("path");
 const mp3Path = path.join(__dirname, "..", "..", "public", "mp3");
 // read metadata from files
 const ffmetadata = require("ffmetadata");
+// read metadata from files
+const mm = require('music-metadata');
+const util = require('util');
 
 // router.get('/', (req, res) => {
-    
+
 //     //    filters = {};
 //     //    if(req.params.composer != "All"){
 //     //        filters.composer = req.params.composer;
@@ -41,11 +44,11 @@ const ffmetadata = require("ffmetadata");
 //     //    if(req.params.status != "All"){
 //     //        req.params.status = req.params.status;
 //     //    }
-    
+
 //        biCue.find().populate("composer").populate("publisher").exec(function(err, cues){
 //            if(err){
 //                console.log(error)
-            
+
 //            }
 //            else{
 //              let songs = [];
@@ -55,7 +58,7 @@ const ffmetadata = require("ffmetadata");
 //             //         songTitle: cue.songTitle
 //             //     }
 //             //     songs.push(song);
-    
+
 //             //   })
 //               songs = JSON.stringify(cues)
 //                res.status(200).json(songs);
@@ -103,11 +106,11 @@ const ffmetadata = require("ffmetadata");
 //                                 })
 //                             }
 //                         })
-                        
+
 //                     }
 //                 });
 //             }
-    
+
 //         })
 //     })
 
@@ -135,7 +138,7 @@ const ffmetadata = require("ffmetadata");
 //                 res.status(200).json(JSON.stringify({status: "success"}));
 //             }
 //         })
-    
+
 
 //     });
 
@@ -186,7 +189,7 @@ const ffmetadata = require("ffmetadata");
 //                                     res.status(200).json(JSON.stringify({status: "success"}));
 //                                 }
 //                             })
-                          
+
 //                         }
 //                     })
 //            }
@@ -204,13 +207,13 @@ const ffmetadata = require("ffmetadata");
 //                     res.status(200).json(JSON.stringify({status: "success"}));
 //                 }
 //             })     
-        
-                             
+
+
 //            }
 
 //         })
 
-    
+
 // });
 
 
@@ -251,9 +254,9 @@ const ffmetadata = require("ffmetadata");
 //                                 res.status(200).json(JSON.stringify({status: "success"}));
 //                             }
 //                         })
-                       
+
 //                     }
-                    
+
 //                 })
 //             }
 //             else {
@@ -270,8 +273,8 @@ const ffmetadata = require("ffmetadata");
 //                         res.status(200).json(JSON.stringify({status: "success"}));
 //                     }
 //                 })
-    
-                      
+
+
 //             }
 
 //         })
@@ -288,7 +291,7 @@ const ffmetadata = require("ffmetadata");
 //             res.status(400).json(JSON.stringify({status: "failure"}));
 //         }
 //         else{
-        
+
 //         biCue.findById(songId, function(err, cue){
 //         if(err){
 //             res.status(400).json(JSON.stringify({status: "failure"}));
@@ -311,7 +314,7 @@ const ffmetadata = require("ffmetadata");
 //         }
 //     })
 // })
-   
+
 // // delete publisher and publisher split from bicues
 
 // router.delete("/publisher/:songId/:pubId", (req,res) => {
@@ -348,8 +351,8 @@ const ffmetadata = require("ffmetadata");
 /// new stuff
 
 router.get("/getBiCues", (req, res) => {
-    let status= req.query.status;
-    let page = req.query;
+    let status = req.query.status;
+    let page = parseInt(req.query.page);
     let data = {
         cues: ["eeney", "meeney", "miney"],
         totalCues: 3400,
@@ -357,77 +360,83 @@ router.get("/getBiCues", (req, res) => {
         totalPages: 1250,
         status: status
     }
+    let pageLimit = 4
+    let skip = pageLimit * (page - 1);
+    data.page = page;
+    console.log("Status: " + data.status + " skip: " + skip);
 
     // biCue.find(function (err, kittens) {
     //     if (err) return console.error(err);
     //     console.log(kittens);
     //   })
 
-    biCue.countDocuments({status: "Pending"}, function(err, count){
-        if(err){
+    biCue.countDocuments({ status: data.status }, function (err, count) {
+        if (err) {
 
         }
-        else{
+        else {
             data.totalCues = count;
-            let division = data.totalCues % 50;
-            
-            if(division < 1) {
+            let division = data.totalCues / pageLimit;
+
+            if (division < 1) {
                 data.totalPages = 1;
             }
-            else{
+            else {
                 data.totalPages = Math.ceil(division);
             }
 
-            biCue.find({}, function(err, cues){
-                if(err){
-                    res.status(400).json({error: "ERROR"});
+            biCue.find({ status: data.status }, function (err, cues) {
+                if (err) {
+                    res.status(400).json({ error: "ERROR" });
                 }
-                else{
-                    data.cues = cues;
-                    console.log(data);
+                else {
+                    //     data.cues = cues;
+                    //     console.log(data);
+                    // res.status(200).json(JSON.stringify(data));
+                }
+
+            }).skip(skip).limit(pageLimit).exec(function (err, docs) {
+                data.cues = docs;
+                console.log(data);
                 res.status(200).json(JSON.stringify(data));
-                }
-                
+
             })
         }
     });
 
-    
+
 })
 
-router.post("/getMetadata", function (req, res){
+router.post("/getMetadata", function (req, res) {
     console.log("getting metadata");
     console.log(req.body.id);
     const id = req.body.id;
-    biCue.findById(id, function(err, cue){
-        if(err){
-            res.status(400).json({error: "ERROR IN GetMetadata route"});
+    biCue.findById(id, function (err, cue) {
+        if (err) {
+            res.status(400).json({ error: "ERROR IN GetMetadata route" });
         }
         else {
             const filename = mp3Path + "/" + cue.release + "/" + cue.fileName;
-            console.log(filename);
-            ffmetadata.read(filename , function(err, data) {
-                if(err){
-                    res.status(400).json({error: "ERROR IN GetMetadata route"});
-                }
-                else{
-                    cue.metadataComposer = data.artist;
-                    cue.metadataPublisher = data.copyright;
-                    biCue.findByIdAndUpdate(id, cue, function(err, cue){
-                        if(err){
-                            res.status(400).json({error: "ERROR IN GetMetadata route"});
-                        }
-                        else {
-                            console.log(cue);
-                            res.status(200).json(JSON.stringify(cue));
-                        }
+            console.log(filename.toString());
+            mm.parseFile(filename)
+                .then(metadata => {
+                    console.log(util.inspect(metadata, { showHidden: false, depth: null }));
+
+                    cue.metadataComposer = metadata.common.artists.join("/");
+                    cue.metadataPublisher = metadata.common.copyright;
+                    cue.save(function(err, cue){
+                        console.log("You are getting metadata for that cue")
+                        res.status(200).json(JSON.stringify(cue));
                     })
-                }
-            })
-            
+                })
+                .catch(err => {
+                    console.error(err.message);
+                });
+
+
         }
     })
 })
 
 
-    module.exports = router;
+module.exports = router;

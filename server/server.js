@@ -174,7 +174,15 @@ app.get('/api/upload', (req, res) => {
                     console.log(release);
                     console.log("Adding new release...")
                     if (docs.releases.includes(release)) {
-                        res.json({ error: "ERROR: This Release Name already exists. Please use different Release name." });
+                        let message = "ERROR!! " + release + " already successfully uploaded. Please change rename Release Folder name";
+                        console.log("Successfully written to database")
+                        let myjson = {
+                            error: "true",
+                            message: message
+                        }
+
+                        const data = JSON.stringify(myjson);
+                        res.json(data);
                     }
                     else {
                         docs.releases.push(release);
@@ -233,8 +241,15 @@ app.get('/api/upload', (req, res) => {
                         console.log("Unable to Save to Database: \n" + error);
                     }
                     else {
+                        let message = release + " was successfully uploaded";
                         console.log("Successfully written to database")
-                        const data = JSON.stringify(biSongs);
+                        let myjson = {
+                            biCues: biSongs,
+                            error: "false",
+                            message: message
+                        }
+
+                        const data = JSON.stringify(myjson);
                         res.json(data);
                     }
                 });
@@ -246,9 +261,10 @@ app.get('/api/upload', (req, res) => {
         })
 })
 
-//  app.get("*", (req, res) => {
-//           res.sendFile(path.join(publicPath, "index.html"));
-// })
+ app.get("*", (req, res) => {
+     
+          res.sendFile(path.join(publicPath, "index.html"));
+})
 
 app.listen(port, "localhost", function () {
     console.log("Server Started");

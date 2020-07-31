@@ -9,23 +9,51 @@ class ExportPage extends React.Component{
         
         this.state = {
             biSongs: [],
-            release: ""
+            release: "",
+            displayMessage: false,
+            message: "",
+            error: false
         }
        this.getFiles = this.getFiles.bind(this);
        this.exportData = this.exportData.bind(this);
        this.handleRelease = this.handleRelease.bind(this);
     }
 
+    componentDidMount(){
+        this.setState({
+
+        })
+    }
+
     getFiles(){
         axios.get('/api/upload', {params: {release: this.state.release}})
         .then((response) => {
             console.log(response.data);
+
             let data = JSON.parse(response.data);
-            console.log(data[0].fileName);
-            this.setState({
-                biSongs: JSON.parse(response.data),
-                release: ""
-            })
+
+            if(data.error == "false"){
+                let data = JSON.parse(response.data);
+                this.setState({
+                    biSongs: data.biCues,
+                    release: "",
+                    displayMessage: true,
+                    message: data.message,
+                    error: false
+                 })
+            }
+            else if(data.error = "true"){
+                this.setState({
+                    ...this.state,
+                    biSongs: [],
+                    release: "",
+                    message: data.message,
+                    displayMessage: false,
+                    error: true
+
+                })
+            }
+            
         })
         .catch((error) =>{
             console.log(error);
@@ -51,6 +79,8 @@ class ExportPage extends React.Component{
     render(){
         return (
             <div>
+                <p>{this.state.error && this.state.message}</p>
+                <p>{this.state.displayMessage && this.state.message }</p>
                 <p>Folder Name</p>
                 <input type="text" value={this.state.release} onChange={this.handleRelease}/>
                 <button onClick={this.getFiles}>Load Mp3 Files</button>

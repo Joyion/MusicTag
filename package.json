@@ -5,11 +5,11 @@
   "main": "node.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
     "testServer": "nodemon server/server.js",
     "start": "node server/server.js",
     "devserver": "webpack-dev-server --config webpack.dev.js",
-    "concur": "concurrently \"npm run devserver\" \"node server/server.js\""
+    "concur": "concurrently \"npm run devserver\" \"nodemon server/server.js\""
   },
   "author": "Joyion Timmons",
   "license": "ISC",
@@ -35,6 +35,7 @@
     "lodash": "^4.17.19",
     "mini-css-extract-plugin": "^0.9.0",
     "mongoose": "^5.9.24",
+    "music-metadata": "^7.0.0",
     "node-sass": "^4.14.1",
     "normalize-css": "^2.3.1",
     "react": "^16.13.1",
