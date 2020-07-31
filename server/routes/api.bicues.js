@@ -396,25 +396,26 @@ router.get("/getBiCues", (req, res) => {
 })
 
 router.post("/getMetadata", function (req, res){
+    console.log("getting metadata");
     console.log(req.body.id);
     const id = req.body.id;
     biCue.findById(id, function(err, cue){
         if(err){
-            res.status(400).json({error: "ERROR"});
+            res.status(400).json({error: "ERROR IN GetMetadata route"});
         }
         else {
             const filename = mp3Path + "/" + cue.release + "/" + cue.fileName;
             console.log(filename);
             ffmetadata.read(filename , function(err, data) {
                 if(err){
-                    res.status(400).json({error: "ERROR"});
+                    res.status(400).json({error: "ERROR IN GetMetadata route"});
                 }
                 else{
                     cue.metadataComposer = data.artist;
                     cue.metadataPublisher = data.copyright;
                     biCue.findByIdAndUpdate(id, cue, function(err, cue){
                         if(err){
-                            res.status(400).json({error: "ERROR"});
+                            res.status(400).json({error: "ERROR IN GetMetadata route"});
                         }
                         else {
                             console.log(cue);

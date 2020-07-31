@@ -17,7 +17,7 @@ class ExportPage extends React.Component{
     }
 
     getFiles(){
-        axios.get('/api/filename', {params: {release: this.state.release}})
+        axios.get('/api/upload', {params: {release: this.state.release}})
         .then((response) => {
             console.log(response.data);
             let data = JSON.parse(response.data);

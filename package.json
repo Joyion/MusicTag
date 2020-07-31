@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.dev.js",
+    "testServer": "nodemon server/server.js",
     "start": "node server/server.js",
-    "devserver": "webpack-dev-server --open --config webpack.dev.js",
+    "devserver": "webpack-dev-server --config webpack.dev.js",
     "concur": "concurrently \"npm run devserver\" \"node server/server.js\""
   },
   "author": "Joyion Timmons",
