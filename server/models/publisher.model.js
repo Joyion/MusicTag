@@ -3,9 +3,10 @@ const mongoose = require("mongoose");
 
 const publisher = new mongoose.Schema(  
     {
-       pro: {type: String},
-       ipi: {type: String},
-       name: {type: String}, 
+        publisherName: {type: String},
+        publisherSplit: {type: String},
+        publisherIpi: {type: String},
+        publisherPro: {type: String}
     
 })
 

@@ -34,13 +34,16 @@ export const updateCue = (cue) => ({
   cue
 })
 
-export const startUpdateCue = (cue, dispatch) => {
+export const startUpdateCue = (cue, name, value, isThisNew, newComposer, dispatch) => {
   console.log("Starting update");
-  axios.post('/api/bicues/updateCue', {
-    params: {
-      id: cue._id,
-      trackId: cue.trackId
-    }
+  axios.put('/api/bicues/updateCue', {
+    
+      id: cue,
+      name,
+      value,
+      isThisNew,
+      newComposer
+    
   })
     .then(function (response) {
       const data = JSON.parse(response.data);
@@ -60,9 +63,7 @@ export const setSong = (cue) => ({
 export const startSetSong = (cue, dispatch) => {
   console.log("Starting update " + cue);
   axios.post('/api/bicues/getMetadata', {
-
      id: cue
-
 
 })
 .then((response) => {
@@ -98,4 +99,24 @@ export const startSetSong = (cue, dispatch) => {
 
 export const getSetSong = () => ({
   type: "GET_SET_SONG"
+})
+
+
+export const startGetComposers = (dispatch) => {
+  axios.get('/api/bicues/allComposers'
+  )
+    .then(function (response) {
+      const data = JSON.parse(response.data);
+      console.log("Returned From all composers \n" + data);
+      dispatch(getAllComposers(data))
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+
+}
+
+export const getAllComposers = (composers) => ({
+  type: "GET_ALL_COMPOSERS",
+  composers
 })

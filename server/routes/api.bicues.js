@@ -407,6 +407,9 @@ router.get("/getBiCues", (req, res) => {
 
 })
 
+
+// THIS GETS THE SELECTED SONG AND RETURNS THE SELECTED SONG WITH THE METADATA ADDED
+
 router.post("/getMetadata", function (req, res) {
     console.log("getting metadata");
     console.log(req.body.id);
@@ -416,11 +419,13 @@ router.post("/getMetadata", function (req, res) {
             res.status(400).json({ error: "ERROR IN GetMetadata route" });
         }
         else {
-            const filename = mp3Path + "/" + cue.release + "/" + cue.fileName;
+            if(cue){
+
+                const filename = mp3Path + "/" + cue.release + "/" + cue.fileName;
             console.log(filename.toString());
             mm.parseFile(filename)
                 .then(metadata => {
-                    console.log(util.inspect(metadata, { showHidden: false, depth: null }));
+                  //  console.log(util.inspect(metadata, { showHidden: false, depth: null }));
 
                     cue.metadataComposer = metadata.common.artists.join("/");
                     cue.metadataPublisher = metadata.common.copyright;
@@ -432,10 +437,61 @@ router.post("/getMetadata", function (req, res) {
                 .catch(err => {
                     console.error(err.message);
                 });
+            }
+            else{
+                res.status(400).json({ error: "ERROR IN GetMetadata route" });
+            }
 
 
         }
     })
+})
+
+
+router.put("/updateCue", function (req, res){
+    const id = req.body.id;
+    const update = {[req.body.name]: req.body.value};
+    const composer = req.body.newComposer;
+   // res.status(200).json(JSON.stringify(update));
+    biCue.findByIdAndUpdate(id, {...update},{new: true}, (err, cue) => {
+        if(err){
+            const error = {error: true, message: "UPDATE FAILED"}
+            res.status(400).json(JSON.stringify(error))
+        }
+        else {
+            if(req.body.isThisNew == true){
+                console.log("IM IN THE THING" + req.body.isThisNew);
+                const newComposer = new composers({...composer})
+                newComposer.save((err, c) => {
+                    res.status(200).json(JSON.stringify(cue));
+                })
+
+
+            }
+            else {
+                res.status(200).json(JSON.stringify(cue));
+            }
+            
+            
+        }
+
+
+    })
+
+})
+
+router.get("/allComposers", function (req, res ){
+
+    composers.find({}, (err, comps)=> {
+        if(err){
+            const error = {error: true, message: "UPDATE FAILED"}
+            res.status(400).json(JSON.stringify(error))
+        }
+        else {
+            res.status(200).json(JSON.stringify(comps));
+        }
+    })
+
 })
 
 

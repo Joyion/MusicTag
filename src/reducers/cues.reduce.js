@@ -6,7 +6,8 @@ const defaultState = {
         status: "Pending",
         selectSong: {
             catalogName: ""
-        }
+        },
+        composers: []
 }
 
 export default (state = defaultState, action) => {
@@ -26,6 +27,11 @@ export default (state = defaultState, action) => {
                 ...state,
                 selectSong: action.cue
             };
+        case "GET_ALL_COMPOSERS":
+            return {
+                ...state,
+                composers: action.composers
+            }
         case "SET_SONG":
             return {
                 ...state,
