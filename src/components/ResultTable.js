@@ -12,7 +12,7 @@ class ResultTable extends React.Component{
             totalPages: this.props.cues.totalPages,
             selectPage: 1,
             status: "Pending",
-            selectStatus: "",
+            selectStatus: "Pending",
             totalCues: this.props.cues.totalCues,
         }
         this.nextPage = this.nextPage.bind(this);
@@ -60,11 +60,19 @@ class ResultTable extends React.Component{
 
     handleStatus(e){
         e.preventDefault();
-        startGetCues(1, this.state.selectStatus, this.props.dispatch);
+        if(this.state.selectStatus != "Status"){
+           startGetCues(1, this.state.selectStatus, this.props.dispatch); 
+           this.setState({
+               status: this.state.selectStatus,
+               selectStatus: this.state.selectStatus
+           })
+        }
+        
     }
 
     handleChange(e){
         let change = e.target.name;
+        console.log(change + " " + e.target.value);
         this.setState({
             [change]: e.target.value
         })
@@ -88,15 +96,17 @@ class ResultTable extends React.Component{
                             <input type="submit" value="submit"/>
                         </label>
                     </form>
+                    <h2>Status: {this.state.status}</h2>
                     <form onSubmit={this.handleStatus}>
                         <label>
                             Status:
                             <select name="selectStatus" value={this.state.selectStatus} onChange={this.handleChange}>
+                                 {/* <option value="Status"> Status</option> */}
+                                 <option value="Pending">Pending</option>
                                 <option value="Active">Active</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Pulled">Pulled</option>
+                                 <option value="Pulled">Pulled</option>
                             </select>
-                            <input type="submit" value="submit"/>
+                            <input type="submit" value="Update Status"/>
                         </label>
                     </form>
                 </div>

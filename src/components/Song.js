@@ -23,20 +23,28 @@ class Song extends React.Component {
         return (
             <div>
                 <div>
-                    <p>{this.props.cue.songTitle}</p>
-                    <div>{this.props.cue.description && this.props.cue.description.map((d, i) => {
-                        const desc = d + " "
-                        return <p key={i}>{desc}</p>
-                    })}</div>
-                </div>
-                <div>
-                    <div> {
+                    <div>
+                       <p>{this.props.cue.songTitle}</p> 
+                    </div>
                     
-                    this.props.cue.composers ? this.props.cue.composers.map((c,i) => {return <p key={i}>{c.fullName}</p>}) : " "
-
-                    }
+                    <div>
+                        {this.props.cue.descriptions && this.props.cue.descriptions.map((d, i) => {
+                            const desc = d + " "
+                            return <p key={i}>{desc}</p>
+                        })}
                     </div>
                 </div>
+                <div>
+                    <div> 
+                        {this.props.cue.composers ? this.props.cue.composers.map((c, i) => { return <p key={i}>{c.fullName}</p> }) : " "}
+                    </div>
+                </div>
+                <div>
+                    <div> 
+                        {this.props.cue.publishers ? this.props.cue.publishers.map((p, i) => { return <p key={i}>{`${p.publisherName}  (${p.publisherPro}) ${p.publisherSplit}% `}</p> }) : " "}
+                    </div>
+                </div>
+
                 <div>
                     <p>{this.props.cue.tempo && this.props.cue.tempo}</p>
                 </div>

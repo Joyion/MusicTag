@@ -9,7 +9,7 @@
     "testServer": "nodemon server/server.js",
     "start": "node server/server.js",
     "devserver": "webpack-dev-server --config webpack.dev.js",
-    "concur": "concurrently \"npm run devserver\" \"nodemon server/server.js\""
+    "concur": "concurrently \"npm run devserver\" \"node server/server.js\""
   },
   "author": "Joyion Timmons",
   "license": "ISC",

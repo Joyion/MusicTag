@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from "react-redux"
 import { startSetSong, startUpdateCue, startGetComposers } from "../actions/cues.action";
-import axios from "axios";
-
+import genreArray from "./genreStyle";
+import instrumentArray from "./instruments";
+import descriptionArray from "./descriptions";
+import pros from "./pros"
 class CorrectEdit extends React.Component {
 
     constructor(props) {
@@ -24,8 +26,11 @@ class CorrectEdit extends React.Component {
                 publisherPro: "SOCAN",
             }
         ]
+
+
+
         this.state = {
-            proArray: ["ASCAP", "BMI", "SOCAN"],
+            proArray: pros,
             catalogName: "",
             songTitle: "",
             fName: "",
@@ -40,6 +45,16 @@ class CorrectEdit extends React.Component {
             publisher: -1,
             publisherArray: publisherArray,
             publisherSplit: 0,
+            genreArray: genreArray,
+            genre: -1,
+            instrumentArray: instrumentArray,
+            descriptionArray: descriptionArray,
+            newDescription: "",
+            tempo: "",
+            rating: 0,
+            band: "",
+            film: "",
+            status: ""
         }
 
 
@@ -50,7 +65,19 @@ class CorrectEdit extends React.Component {
         this.addComposer = this.addComposer.bind(this);
         this.handleInput = this.handleInput.bind(this);
         this.updatePublisher = this.updatePublisher.bind(this);
+        this.removePublisher = this.removePublisher.bind(this);
         this.addPublisher = this.addComposer.bind(this);
+        this.handleInstrument = this.handleInstrument.bind(this);
+        this.removeInstrument = this.removeInstrument.bind(this);
+        this.handleDescription = this.handleDescription.bind(this);
+        this.removeDescription = this.removeDescription.bind(this);
+        this.handleNewDescription = this.handleNewDescription.bind(this);
+        this.handleRating = this.handleRating.bind(this);
+        this.handleTempo = this.handleTempo.bind(this);
+        this.handleFilm = this.handleFilm.bind(this);
+        this.handleBand = this.handleBand.bind(this);
+        this.handleStatus = this.handleStatus.bind(this);
+        
     }
 
     componentDidMount() {
@@ -58,36 +85,41 @@ class CorrectEdit extends React.Component {
         let id = this.props.match.params.id;
         startSetSong(id, this.props.dispatch);
         startGetComposers(this.props.dispatch)
+
     }
 
     updatePublisher(e) {
         e.preventDefault();
         console.log(this.state.publisher);
         console.log(this.state.publisherSplit);
+        const id = this.props.match.params.id;
         if (this.state.publisher != -1) {
             const p = this.state.publisherArray[this.state.publisher];
             if (this.state.publisherSplit == 0) {
                 console.log("No split");
             } else {
                 console.log(p.publisherName);
+
+                let publisherArray = this.props.cue.publishers.map((p) => { return p });
+                publisherArray.push({ ...p, publisherSplit: this.state.publisherSplit });
+                startUpdateCue(id, "publishers", publisherArray, false, null, this.props.dispatch);
             }
         }
-        else{
+        else {
             console.log("No Publisher");
         }
-
-
-
-
     }
 
-    addPublisher(e) {
-        e.preventDefault();
+    removePublisher(e) {
+        const id = this.props.match.params.id;
+        const publisherId = e.target.name;
+        let publisherArray = this.props.cue.publishers.filter((p) => { return p._id != publisherId });
+        startUpdateCue(id, "publishers", publisherArray, false, null, this.props.dispatch);
     }
 
     updateComposer(e) {
         e.preventDefault();
-        if (this.state.fName.length > 0) {
+        if (this.state.fName.length > 0 && this.state.cSplit > 0) {
             // console.log(this.state);
 
             let isthisNew = true;
@@ -151,7 +183,7 @@ class CorrectEdit extends React.Component {
 
         e.preventDefault();
 
-        if (this.state.addComposer != -1) {
+        if (this.state.addComposer != -1 && this.state.newSplit > 0) {
             let c = this.props.composers[this.state.addComposer];
             const id = this.props.match.params.id;
             const newComposer = {
@@ -173,19 +205,135 @@ class CorrectEdit extends React.Component {
             })
         }
         console.log("Nothing to Add")
-        
+
     }
 
+    handleInstrument(e) {
+        //console.log(e.target.name);
+        const id = this.props.match.params.id;
+        const i = e.target.name;
+        const newInstruments = this.props.cue.instruments.map((i) => { return i });
+        newInstruments.push(i);
+        startUpdateCue(id, "instruments", newInstruments, false, null, this.props.dispatch);
+    }
+
+    removeInstrument(e) {
+        //
+        const id = this.props.match.params.id;
+        const newInst = e.target.name;
+        const newInstruments = this.props.cue.instruments.filter((i) => { return i != newInst });
+        startUpdateCue(id, "instruments", newInstruments, false, null, this.props.dispatch);
+    }
+
+
+    handleDescription(e) {
+        
+        const id = this.props.match.params.id;
+        const d = e.target.name;
+        console.log(d);
+        const newDescription = this.props.cue.descriptions.map((de) => { return de });
+        newDescription.push(d);
+        startUpdateCue(id, "descriptions", newDescription, false, null, this.props.dispatch);
+    }
+
+    handleNewDescription(e) {
+        e.preventDefault();
+        const id = this.props.match.params.id;
+        const d = this.state.newDescription;
+        if (d) {
+            console.log(d);
+            const newDescription = this.props.cue.descriptions.map((de) => { return de });
+            newDescription.push(d);
+            startUpdateCue(id, "descriptions", newDescription, false, null, this.props.dispatch);
+            this.setState({
+                newDescription: ""
+            })
+        }
+
+    }
+
+    removeDescription(e) {
+        const id = this.props.match.params.id;
+        const d = e.target.name;
+        const newDescription = this.props.cue.descriptions.filter((de) => { return de != d });
+        startUpdateCue(id, "descriptions", newDescription, false, null, this.props.dispatch);
+
+    }
+
+    handleRating(e) {
+        e.preventDefault();
+        const id = this.props.match.params.id;
+        const r = this.state.rating;
+        if (r >= 0) {
+            console.log(r);
+            startUpdateCue(id, "rating", r, false, null, this.props.dispatch);
+            this.setState({
+                rating: 0
+            })
+        }
+    }
+
+    handleStatus(e) {
+        e.preventDefault();
+        const id = this.props.match.params.id;
+        const s = this.state.status;
+        if (s != "status") {
+            console.log(s);
+            startUpdateCue(id, "status", s, false, null, this.props.dispatch);
+            this.setState({
+                status: "Status"
+            })
+        }
+    }
+
+    handleTempo(e) {
+        e.preventDefault();
+        const id = this.props.match.params.id;
+        const t = this.state.tempo;
+        if (t != "tempo") {
+            console.log(t);
+            startUpdateCue(id, "tempo", t, false, null, this.props.dispatch);
+            this.setState({
+                tempo: ""
+            })
+        }
+    }
+
+    handleFilm(e) {
+        e.preventDefault();
+        const id = this.props.match.params.id;
+        const f = this.state.film;
+        if (f) {
+            console.log(f);
+            startUpdateCue(id, "films", f, false, null, this.props.dispatch);
+            this.setState({
+                film: ""
+            })
+
+        }
+    }
+
+    handleBand(e) {
+        e.preventDefault();
+        const id = this.props.match.params.id;
+        const b = this.state.band.trim();
+        startUpdateCue(id, "bands", b, false, null, this.props.dispatch);
+        if (b) {
+            console.log(b);
+            this.setState({
+                band: ""
+            })
+        }
+    }
 
 
     handleInput(e) {
         const name = e.target.name;
         const value = e.target.value;
-       // console.log(name + " " + value);
+      //  console.log(name + " " + value);
         this.setState({
             [name]: value
         })
-
 
     }
 
@@ -196,10 +344,16 @@ class CorrectEdit extends React.Component {
         return (
             <div>
                 <p>EDIT PAGE</p>
+                <h2>Catalog</h2>
                 <p>{this.props.cue && this.props.cue.catalogName}</p>
+                <h2>Song Title </h2>
                 <p>{this.props.cue && this.props.cue.songTitle}</p>
+                <h3>Composer Metadata</h3>
                 <p>{this.props.cue && this.props.cue.metadataComposer}</p>
+                <h3>Publisher Metadata</h3>
                 <p>{this.props.cue && this.props.cue.metadataPublisher}</p>
+
+                <h2>Composers</h2>
 
                 {/* this shows all the current composers on the cue's record */}
                 {this.props.cue && this.props.cue.composers ? this.props.cue.composers.length > 0 ?
@@ -274,16 +428,23 @@ class CorrectEdit extends React.Component {
                     </label>
                 </form>
 
-                
+                <h2>Publishers</h2>
+
+                {this.props.cue && this.props.cue.publishers ? this.props.cue.publishers.length > 0 ? this.props.cue.publishers.map((p, i) => {
+                    return <button onClick={this.removePublisher} name={p._id} key={i}>{`${p.publisherName} (${p.publisherPro}) ${p.publisherSplit}`}</button>
+                }) : <p>No Publisher Data</p>
+                    : <p>No Publisher Data</p>}
+
+
                 <h3>Add Publisher</h3>
                 {/* Add Publishing information */}
                 <form onSubmit={this.updatePublisher}>
                     <label>
                         Publishers:
                         <select name="publisher" value={this.state.publisher} onChange={this.handleInput}>
-                            
+
                             <option value={-1}>Publishers</option>
-                            
+
                             {this.state.publisherArray && this.state.publisherArray.map((p, i) => {
 
                                 return <option key={i} value={i}>{`${p.publisherName} (${p.publisherPro}) IPI: ${p.publisherIpi}`}</option>
@@ -297,6 +458,117 @@ class CorrectEdit extends React.Component {
                         <input type="submit" value="Add Publisher" />
                     </label>
                 </form>
+
+                <h2>Genre</h2>
+                <p>{this.props.cue && this.props.cue.genreStyle ? this.props.cue.genreStyle : "N/A"}</p>
+                <h3>New Genre</h3>
+                <form name="genre">
+                    <select name="genre" value={this.state.genre} onChange={this.handleInput}>
+                        <option value={-1}>Genre</option>
+                        {this.state.genreArray && this.state.genreArray.map((g, i) => {
+                            return <option key={i} value={i}>{g}</option>
+                        })}
+                    </select>
+                    <input type="submit" value="Update Genre" />
+                </form>
+
+
+                <h2>Instruments</h2>
+                {this.props.cue && this.props.cue.instruments ? this.props.cue.instruments.length > 0 ? this.props.cue.instruments.map((i, index) => {
+                    return <button name={i} onClick={this.removeInstrument} key={index}>{i}</button>
+
+                }) : <p>No Instruments Added</p> : <p>No Instruments Added</p>}
+
+                <h3>Add New Instruments</h3>
+                <div>
+                    {this.state.instrumentArray && this.state.instrumentArray.map((i, index) => {
+                        return <button onClick={this.handleInstrument} name={i} key={index}>{i}</button>
+                    })}
+                </div>
+
+
+                <h2>Descriptions</h2>
+                <div>
+                    {this.props.cue && this.props.cue.descriptions ? this.props.cue.descriptions.length > 0 ? this.props.cue.descriptions.map((d, index) => {
+                        return <button name={d} onClick={this.removeDescription} key={index}>{d}</button>
+
+                    }) : <p>No Description Added</p> : <p>No Description Added</p>}
+                </div>
+                <h3>Add Description</h3>
+                <div>
+                    {this.state.descriptionArray && this.state.descriptionArray.map((d, index) => {
+                        return <button onClick={this.handleDescription} name={d} key={index}>{d}</button>
+                    })}
+                </div>
+                <form onSubmit={this.handleNewDescription}>
+                    <label>
+                        Add New Description:
+                       <input value={this.state.newDescription}
+                            onChange={this.handleInput}
+                            name="newDescription"
+                            type="text" />
+                        <input type="submit" value="Add Description" />
+                    </label>
+                </form>
+
+                <h2>Rating</h2>
+                <form onSubmit={this.handleRating}>
+                    <label>
+                        New Rating:
+                    <input value={this.state.rating} name="rating" type="number" onChange={this.handleInput} />
+                        <input  type="submit" value="Update Rating" />
+                    </label>
+                </form>
+
+                <h2>Sounds Like Films</h2>
+                <form onSubmit={this.handleFilm}>
+                    <label>
+                        Film
+                        <input value={this.state.film} name="film" type="text" onChange={this.handleInput} />
+                        <input  type="submit" value="Add film" />
+                    </label>
+                </form>
+
+
+                <h2>Sounds Like Bands</h2>
+                <form onSubmit={this.handleBand}>
+                    <label>
+                        Band:
+                    <input value={this.state.band} name="band" type="text" onChange={this.handleInput} />
+                        <input type="submit" value="Add band" />
+                    </label>
+                </form>
+
+                <h2>Status</h2>
+                <form onSubmit={this.handleStatus}>
+                    <label>
+                        <select value={this.state.status} name="status" onChange={this.handleInput}>
+                            <option value="Status">Status</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Active">Active</option>
+                            <option value="Pulled">Pulled</option>
+                        </select>
+                        <input type="submit" value="Update Status" />
+                    </label>
+                </form>
+
+                <h2>Tempo</h2>
+                <form onSubmit={this.handleTempo}>
+                    <label>
+                        Change Tempo:
+                        <select value={this.state.tempo} name="tempo" onChange={this.handleInput}>
+                            <option value="tempo">Tempo</option>
+                            <option value="Fast">Fast</option>
+                            <option value="Slow">Slow</option>
+                            <option value="Mixed">Mixed</option>
+                            <option value="N/A">N/A</option>
+                        </select>
+                        <input type="submit" value="Update Tempo" />
+                    </label>
+                </form>
+
+
+
 
 
 

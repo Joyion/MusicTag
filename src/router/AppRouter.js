@@ -5,9 +5,7 @@ import BIPage from "../components/BIPage";
 export const history = createBrowserHistory();
 import Navbar from "../components/Navbar";
 import CorrectEdit from "../components/correctEdit"
-import EditPage from "../components/EditPage";
 import ExportPage from "../components/ExportPage";
-import Edit from "../components/Edit";
 
 const AppRouter = () => (
 

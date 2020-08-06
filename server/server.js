@@ -42,8 +42,10 @@ const releaseIsrc = require("./models/releaseIsrc.model");
 
 //routes 
 const biCuesRoutes = require("./routes/api.bicues");
-const { resolveAny } = require("dns");
+// const { resolveAny } = require("dns");
 app.use("/api/bicues", biCuesRoutes);
+const exportRoutes = require("./routes/api.export")
+app.use("/api/export", exportRoutes);
 
 
 
@@ -154,13 +156,13 @@ app.get('/api/upload', (req, res) => {
         else {
 
             releaseIsrc.findOne(function (err, docs) {
-                console.log("Are there any Docs in releaseIsrc? " + docs);
+                console.log("Are there any releases in releaseIsrc? " + docs);
                 if (!docs) {
                     console.log("Initializing ReleaseIsrc Model")
                     let newDoc = new releaseIsrc({
                         releases: [release],
                         currentYear: year,
-                        totalTracksThisYear: 8 + files.length
+                        totalTracksThisYear: files.length
                     })
 
                     newDoc.save(function (err, doc) {
@@ -171,8 +173,7 @@ app.get('/api/upload', (req, res) => {
 
                 }
                 else {
-                    console.log(release);
-                    console.log("Adding new release...")
+                    console.log("Adding new release..." + release)
                     if (docs.releases.includes(release)) {
                         let message = "ERROR!! " + release + " already successfully uploaded. Please change rename Release Folder name";
                         console.log("Successfully written to database")
@@ -205,13 +206,13 @@ app.get('/api/upload', (req, res) => {
             })
 
             // release cannont be over 99,000 tracks.
-
+            // startupdate is the function that is called in the  callback above.
             const startUpdate = (r, y, t) => {
                 let biSongs = [];
                 files.forEach((file, index) => {
                     let songName = file.replace("DLM - ", "");
                     songName = songName.replace(".mp3", "")
-                    // nt stand for new track. 
+                    // nt stand for new track. following if else statement turns total track this year into a string with zeros
                     let nt = t + (index + 1);
                     let trackId = nt;
                     if (nt < 10) {

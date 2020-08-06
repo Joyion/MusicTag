@@ -363,7 +363,7 @@ router.get("/getBiCues", (req, res) => {
     let pageLimit = 4
     let skip = pageLimit * (page - 1);
     data.page = page;
-    console.log("Status: " + data.status + " skip: " + skip);
+    console.log("Status: " + data.status + " page limit: " + pageLimit + " skip: " + skip + " page: " + page);
 
     // biCue.find(function (err, kittens) {
     //     if (err) return console.error(err);
@@ -397,7 +397,7 @@ router.get("/getBiCues", (req, res) => {
 
             }).skip(skip).limit(pageLimit).exec(function (err, docs) {
                 data.cues = docs;
-                console.log(data);
+                //console.log(data);
                 res.status(200).json(JSON.stringify(data));
 
             })
@@ -411,8 +411,8 @@ router.get("/getBiCues", (req, res) => {
 // THIS GETS THE SELECTED SONG AND RETURNS THE SELECTED SONG WITH THE METADATA ADDED
 
 router.post("/getMetadata", function (req, res) {
-    console.log("getting metadata");
-    console.log(req.body.id);
+    console.log("getting metadata for... " + req.body.id + "\n");
+   // console.log(req.body.id);
     const id = req.body.id;
     biCue.findById(id, function (err, cue) {
         if (err) {
@@ -448,6 +448,8 @@ router.post("/getMetadata", function (req, res) {
 })
 
 
+
+/// UPDATES THE INFORMATION ON THE CUE AND ALSO CHECKS TO ADD NEW COMPOSER TO COMPOSER LIST IF IT'S NEW 
 router.put("/updateCue", function (req, res){
     const id = req.body.id;
     const update = {[req.body.name]: req.body.value};
@@ -460,7 +462,7 @@ router.put("/updateCue", function (req, res){
         }
         else {
             if(req.body.isThisNew == true){
-                console.log("IM IN THE THING" + req.body.isThisNew);
+                console.log("Is this a new Composer? " + req.body.isThisNew);
                 const newComposer = new composers({...composer})
                 newComposer.save((err, c) => {
                     res.status(200).json(JSON.stringify(cue));

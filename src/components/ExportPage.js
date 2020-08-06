@@ -63,7 +63,7 @@ class ExportPage extends React.Component{
 
     exportData(){
         console.log("export data")
-        axios.get('/api/excel').then(function(response){
+        axios.get('/api/export/bi').then(function(response){
             
         });
     }
@@ -85,7 +85,7 @@ class ExportPage extends React.Component{
                 <input type="text" value={this.state.release} onChange={this.handleRelease}/>
                 <button onClick={this.getFiles}>Load Mp3 Files</button>
                 {/* <button onClick={this.exportData}>Export Metadata</button> */}
-                <a href="http://localhost:5000/api/excel">Donwload File</a>
+                <a href="/api/export/bi">Donwload File</a>
                 {this.state.biSongs && this.state.biSongs.map((s) =>{
                     return <p key={s.fileName}>{s.fileName}</p>
                 })}            
