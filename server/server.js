@@ -208,10 +208,27 @@ app.get('/api/upload', (req, res) => {
             // release cannont be over 99,000 tracks.
             // startupdate is the function that is called in the  callback above.
             const startUpdate = (r, y, t) => {
+                let mainVersions = [];
+                 files.forEach((f, i) => { 
+                   if(f.includes(" v1 ")){
+                    let songSplit = f.split(" v1 ");
+                    mainVersions.push({songSplit: songSplit[0], fullFile: f});
+                    console.log(songSplit[0]);
+                    console.log(f);
+                   } 
+                })
                 let biSongs = [];
                 files.forEach((file, index) => {
                     let songName = file.replace("DLM - ", "");
                     songName = songName.replace(".mp3", "")
+                    let mv = "N/A";
+                    mainVersions.forEach((m, index) => {
+                        if(file.includes(m.songSplit) && file != m.fullFile){
+                            mv = m.fullFile;
+                            console.log(mv);
+                        }
+
+                    })
                     // nt stand for new track. following if else statement turns total track this year into a string with zeros
                     let nt = t + (index + 1);
                     let trackId = nt;
@@ -233,7 +250,7 @@ app.get('/api/upload', (req, res) => {
                     let yearAbr = makeStringofYear.slice(-2);
                     let isrc = "US-RRD-" + yearAbr + "-" + trackId;
                     trackId = release + "-"+ nt.toString();
-                    let song = { songTitle: songName, fileName: file, release: r, isrc: isrc, trackId: trackId}
+                    let song = { songTitle: songName, fileName: file, release: r, isrc: isrc, trackId: trackId, mainVersion: mv}
                     biSongs.push(song);
                 });
 

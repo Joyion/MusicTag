@@ -46,7 +46,8 @@ const biCue = new mongoose.Schema(
         createdDate: {type: Date, default: Date.now},
         updateDate: {type: Date, default: null},
         trackId: {type: String},
-        isrc: {type: String}
+        isrc: {type: String},
+        mainVersion: {type: String, default: "N/A"} 
     
 })
 

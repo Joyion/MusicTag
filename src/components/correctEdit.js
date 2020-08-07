@@ -48,13 +48,15 @@ class CorrectEdit extends React.Component {
             genreArray: genreArray,
             genre: -1,
             instrumentArray: instrumentArray,
+            newInstrument: "",
             descriptionArray: descriptionArray,
             newDescription: "",
             tempo: "",
             rating: 0,
             band: "",
             film: "",
-            status: ""
+            status: "",
+            mainVersion: "",
         }
 
 
@@ -67,6 +69,7 @@ class CorrectEdit extends React.Component {
         this.updatePublisher = this.updatePublisher.bind(this);
         this.removePublisher = this.removePublisher.bind(this);
         this.addPublisher = this.addComposer.bind(this);
+        this.handleGenre = this.handleGenre.bind(this);
         this.handleInstrument = this.handleInstrument.bind(this);
         this.removeInstrument = this.removeInstrument.bind(this);
         this.handleDescription = this.handleDescription.bind(this);
@@ -77,7 +80,11 @@ class CorrectEdit extends React.Component {
         this.handleFilm = this.handleFilm.bind(this);
         this.handleBand = this.handleBand.bind(this);
         this.handleStatus = this.handleStatus.bind(this);
-        
+        this.handleVersion = this.handleVersion.bind(this);
+        this.removeFilm = this.removeFilm.bind(this);
+        this.removeBand = this.removeBand.bind(this);
+        this.handleNewInstrument = this.handleNewInstrument.bind(this);
+
     }
 
     componentDidMount() {
@@ -119,7 +126,7 @@ class CorrectEdit extends React.Component {
 
     updateComposer(e) {
         e.preventDefault();
-        if (this.state.fName.length > 0 && this.state.cSplit > 0) {
+        if (this.state.fName.trim() && this.state.cSplit > 0) {
             // console.log(this.state);
 
             let isthisNew = true;
@@ -208,13 +215,32 @@ class CorrectEdit extends React.Component {
 
     }
 
+    handleGenre(e){
+        e.preventDefault();
+        const id = this.props.match.params.id;
+        if(this.state.genre > -1){
+        let gs = this.state.genreArray[this.state.genre];
+        startUpdateCue(id, "genreStyle", gs, false, null, this.props.dispatch);
+        }
+        else{
+            console.log("Choose a genre");
+        }
+        
+    }
+
     handleInstrument(e) {
         //console.log(e.target.name);
         const id = this.props.match.params.id;
         const i = e.target.name;
-        const newInstruments = this.props.cue.instruments.map((i) => { return i });
-        newInstruments.push(i);
-        startUpdateCue(id, "instruments", newInstruments, false, null, this.props.dispatch);
+        let newInstruments = this.props.cue.instruments.map((i) => { return i });
+        if(newInstruments.includes(i)){
+            console.log("Instrument already added");
+        }
+        else{
+         newInstruments.push(i);
+        startUpdateCue(id, "instruments", newInstruments, false, null, this.props.dispatch);   
+        }
+        
     }
 
     removeInstrument(e) {
@@ -225,29 +251,70 @@ class CorrectEdit extends React.Component {
         startUpdateCue(id, "instruments", newInstruments, false, null, this.props.dispatch);
     }
 
+    handleNewInstrument(e){
+        e.preventDefault();
+        if(this.state.newInstrument.trim()){
+            const id = this.props.match.params.id;
+            const i = this.state.newInstrument.trim();
+            const newInstruments = this.props.cue.instruments.map((newIn) => {return newIn})
+            if(newInstruments.includes(i)){
+                console.log("Instrument already added");
+            }
+            else{
+            newInstruments.push(i);
+            startUpdateCue(id, "instruments", newInstruments, false, null, this.props.dispatch);    
+            this.setState({
+                newInstrument: ""
+            })
+            }
+            
+        }
+        else{
+            console.log("no instrument to enter");
+        }
+
+    }
+
 
     handleDescription(e) {
-        
+
         const id = this.props.match.params.id;
         const d = e.target.name;
         console.log(d);
-        const newDescription = this.props.cue.descriptions.map((de) => { return de });
-        newDescription.push(d);
-        startUpdateCue(id, "descriptions", newDescription, false, null, this.props.dispatch);
+        let newDescription = this.props.cue.descriptions.map((de) => { return de });
+        if (newDescription.includes(d)) {
+            console.log("Already Entered");
+        }
+        else {
+            newDescription.push(d);
+            startUpdateCue(id, "descriptions", newDescription, false, null, this.props.dispatch);
+        }
+
     }
 
     handleNewDescription(e) {
         e.preventDefault();
         const id = this.props.match.params.id;
-        const d = this.state.newDescription;
+        const d = this.state.newDescription.trim();
         if (d) {
             console.log(d);
-            const newDescription = this.props.cue.descriptions.map((de) => { return de });
-            newDescription.push(d);
-            startUpdateCue(id, "descriptions", newDescription, false, null, this.props.dispatch);
-            this.setState({
-                newDescription: ""
-            })
+            let newDescription = this.props.cue.descriptions.map((de) => { return de });
+            if (newDescription.includes(d)) {
+                console.log("Already Entered");
+                this.setState({
+                    newDescription: ""
+                })
+            }
+            else {
+                newDescription.push(d.trim());
+                startUpdateCue(id, "descriptions", newDescription, false, null, this.props.dispatch);
+                this.setState({
+                    newDescription: ""
+                })
+            }
+        }
+        else {
+            console.log("No description entered");
         }
 
     }
@@ -302,35 +369,95 @@ class CorrectEdit extends React.Component {
     handleFilm(e) {
         e.preventDefault();
         const id = this.props.match.params.id;
-        const f = this.state.film;
-        if (f) {
+        if (this.state.film.trim()) {
+            const f = this.state.film.trim();
             console.log(f);
-            startUpdateCue(id, "films", f, false, null, this.props.dispatch);
-            this.setState({
-                film: ""
-            })
+            let newFilms = this.props.cue.films.map((f) => { return f })
+            if (newFilms.includes(f)) {
+                console.log("film already entered");
+                this.setState({
+                    film: ""
+                })
+
+            }
+            else {
+                newFilms.push(f);
+                startUpdateCue(id, "films", newFilms, false, null, this.props.dispatch);
+                this.setState({
+                    film: ""
+                })
+            }
 
         }
+        else {
+            console.log("No Film entered");
+        }
+    }
+
+    removeFilm(e) {
+        const id = this.props.match.params.id;
+        const film = e.target.name;
+        const newFilms = this.props.cue.films.filter((f) => { return f != film });
+        startUpdateCue(id, "films", newFilms, false, null, this.props.dispatch);
     }
 
     handleBand(e) {
         e.preventDefault();
         const id = this.props.match.params.id;
-        const b = this.state.band.trim();
-        startUpdateCue(id, "bands", b, false, null, this.props.dispatch);
-        if (b) {
-            console.log(b);
+        if (this.state.band.trim()) {
+            const b = this.state.band.trim();
+            let newBands = this.props.cue.bands.map((b) => { return b })
+            if (newBands.includes(b)) {
+                console.log("band already entered")
+                this.setState({
+                    band: ""
+                })
+            }
+            else {
+                newBands.push(b);
+                startUpdateCue(id, "bands", newBands, false, null, this.props.dispatch);
+                console.log(b);
+                this.setState({
+                    band: ""
+                })
+            }
+
+        }
+        else {
+            console.log("NO BAND ENTERED");
+        }
+    }
+
+    removeBand(e) {
+        const id = this.props.match.params.id;
+        const band = e.target.name;
+        const newBands = this.props.cue.bands.filter((b) => { return b != band });
+        startUpdateCue(id, "bands", newBands, false, null, this.props.dispatch);
+
+    }
+
+    handleVersion(e) {
+        e.preventDefault();
+        const id = this.props.match.params.id;
+        if (this.state.mainVersion.trim()) {
+            const v = this.state.mainVersion.trim();
+            console.log(v)
+            startUpdateCue(id, 'mainVersion', v, false, null, this.props.dispatch);
             this.setState({
-                band: ""
+                mainVersion: ""
             })
         }
+        else {
+            console.log("No Version Entered");
+        }
+
     }
 
 
     handleInput(e) {
         const name = e.target.name;
         const value = e.target.value;
-      //  console.log(name + " " + value);
+        //  console.log(name + " " + value);
         this.setState({
             [name]: value
         })
@@ -462,7 +589,7 @@ class CorrectEdit extends React.Component {
                 <h2>Genre</h2>
                 <p>{this.props.cue && this.props.cue.genreStyle ? this.props.cue.genreStyle : "N/A"}</p>
                 <h3>New Genre</h3>
-                <form name="genre">
+                <form name="genre" onSubmit={this.handleGenre}>
                     <select name="genre" value={this.state.genre} onChange={this.handleInput}>
                         <option value={-1}>Genre</option>
                         {this.state.genreArray && this.state.genreArray.map((g, i) => {
@@ -479,12 +606,19 @@ class CorrectEdit extends React.Component {
 
                 }) : <p>No Instruments Added</p> : <p>No Instruments Added</p>}
 
-                <h3>Add New Instruments</h3>
+                <h3>Add Instruments</h3>
                 <div>
                     {this.state.instrumentArray && this.state.instrumentArray.map((i, index) => {
                         return <button onClick={this.handleInstrument} name={i} key={index}>{i}</button>
                     })}
                 </div>
+                <h3>Add New Instrument</h3>
+                <form onSubmit={this.handleNewInstrument}>
+                    <label>
+                    <input type="text" onChange={this.handleInput} value={this.state.newInstrument} name="newInstrument"/>
+                    <input type="submit" value="Add New Instrument"/>
+                    </label>
+                </form>
 
 
                 <h2>Descriptions</h2>
@@ -500,9 +634,9 @@ class CorrectEdit extends React.Component {
                         return <button onClick={this.handleDescription} name={d} key={index}>{d}</button>
                     })}
                 </div>
+                <h3>Add New Description</h3>
                 <form onSubmit={this.handleNewDescription}>
                     <label>
-                        Add New Description:
                        <input value={this.state.newDescription}
                             onChange={this.handleInput}
                             name="newDescription"
@@ -512,25 +646,39 @@ class CorrectEdit extends React.Component {
                 </form>
 
                 <h2>Rating</h2>
+                <p>{this.props.cue && this.props.cue.rating}</p>
                 <form onSubmit={this.handleRating}>
                     <label>
                         New Rating:
                     <input value={this.state.rating} name="rating" type="number" onChange={this.handleInput} />
-                        <input  type="submit" value="Update Rating" />
+                        <input type="submit" value="Update Rating" />
                     </label>
                 </form>
 
                 <h2>Sounds Like Films</h2>
+                <div>
+                    {this.props.cue && this.props.cue.films ? this.props.cue.films.length > 0 ? this.props.cue.films.map((f, index) => {
+                        return <button name={f} onClick={this.removeFilm} key={index}>{f}</button>
+
+                    }) : <p>No Films Added</p> : <p>No Films Added</p>}
+                </div>
+
                 <form onSubmit={this.handleFilm}>
                     <label>
                         Film
                         <input value={this.state.film} name="film" type="text" onChange={this.handleInput} />
-                        <input  type="submit" value="Add film" />
+                        <input type="submit" value="Add film" />
                     </label>
                 </form>
 
 
                 <h2>Sounds Like Bands</h2>
+                <div>
+                    {this.props.cue && this.props.cue.bands ? this.props.cue.bands.length > 0 ? this.props.cue.bands.map((b, index) => {
+                        return <button name={b} onClick={this.removeBand} key={index}>{b}</button>
+
+                    }) : <p>No Bands Added</p> : <p>No Bands Added</p>}
+                </div>
                 <form onSubmit={this.handleBand}>
                     <label>
                         Band:
@@ -539,7 +687,37 @@ class CorrectEdit extends React.Component {
                     </label>
                 </form>
 
+
+
+                <h2>Tempo</h2>
+                <p>{this.props.cue && this.props.cue.tempo}</p>
+                <form onSubmit={this.handleTempo}>
+                    <label>
+                        Change Tempo:
+                        <select value={this.state.tempo} name="tempo" onChange={this.handleInput}>
+                            <option value="tempo">Tempo</option>
+                            <option value="Fast">Fast</option>
+                            <option value="Slow">Slow</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Changing Tempos">Changing Tempo</option>
+                            <option value="Non-Rhythmic"> Non-Rhythmic</option>
+                            <option value="N/A">N/A</option>
+                        </select>
+                        <input type="submit" value="Update Tempo" />
+                    </label>
+                </form>
+
+
+                <h2>Main Version Filename</h2>
+                <p>{this.props.cue && this.props.cue.mainVersion}</p>
+                <form onSubmit={this.handleVersion}>
+                    <input name="mainVersion" onChange={this.handleInput} type="text" value={this.mainVersion} />
+                    <input type="submit" value="Update Main Version" />
+                </form>
+
+
                 <h2>Status</h2>
+                <p>{this.props.cue && this.props.cue.status}</p>
                 <form onSubmit={this.handleStatus}>
                     <label>
                         <select value={this.state.status} name="status" onChange={this.handleInput}>
@@ -549,21 +727,6 @@ class CorrectEdit extends React.Component {
                             <option value="Pulled">Pulled</option>
                         </select>
                         <input type="submit" value="Update Status" />
-                    </label>
-                </form>
-
-                <h2>Tempo</h2>
-                <form onSubmit={this.handleTempo}>
-                    <label>
-                        Change Tempo:
-                        <select value={this.state.tempo} name="tempo" onChange={this.handleInput}>
-                            <option value="tempo">Tempo</option>
-                            <option value="Fast">Fast</option>
-                            <option value="Slow">Slow</option>
-                            <option value="Mixed">Mixed</option>
-                            <option value="N/A">N/A</option>
-                        </select>
-                        <input type="submit" value="Update Tempo" />
                     </label>
                 </form>
 
