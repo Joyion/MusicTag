@@ -3,10 +3,12 @@ import Song from "./Song";
 import {connect} from "react-redux";
 import {startGetCues} from "../actions/cues.action";
 
+
 class ResultTable extends React.Component{
 
     constructor(props){
         super(props);
+        
         this.state = {
             page: this.props.cues.page,
             totalPages: this.props.cues.totalPages,
@@ -14,12 +16,15 @@ class ResultTable extends React.Component{
             status: "Pending",
             selectStatus: "Pending",
             totalCues: this.props.cues.totalCues,
+            audioFile: "",
         }
         this.nextPage = this.nextPage.bind(this);
         this.backPage = this.backPage.bind(this);
         this.handlePgInput = this.handlePgInput.bind(this);
         this.handleStatus = this.handleStatus.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.setAudioFile = this.setAudioFile.bind(this);
+        
     }
     
     componentDidMount(){
@@ -70,6 +75,13 @@ class ResultTable extends React.Component{
         
     }
 
+    setAudioFile(file){
+        this.setState({
+            audioFile: "/mp3/" + file
+        })
+       
+    }
+
     handleChange(e){
         let change = e.target.name;
         console.log(change + " " + e.target.value);
@@ -77,8 +89,10 @@ class ResultTable extends React.Component{
             [change]: e.target.value
         })
     }
+    
 
     render(){
+
         return (
             <div>
                 <div>
@@ -110,6 +124,11 @@ class ResultTable extends React.Component{
                         </label>
                     </form>
                 </div>
+                <div>
+                    <audio controls autoPlay src={this.state.audioFile} type="audio/mp3" >
+                    </audio>
+
+                </div>
                 {/* <div>
                     <div><p>Song Title</p></div>
                     <div><p>Composer</p></div>
@@ -118,10 +137,10 @@ class ResultTable extends React.Component{
                 </div> */}
                 <div>
                     {this.props.cues.cues.length > 0 ? this.props.cues.cues.map((c, i) => {
-                        return <Song key={i} cue={c} />
-                    }) : <p>No Results</p>}
-                    
+                        return <Song key={i} cue={c} setAudioFile={this.setAudioFile} />
+                    }) : <p>No Results</p>}    
                 </div>             
+                <p>{process.env.PUBLIC_URL}</p>
             </div>
         )
     }

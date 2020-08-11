@@ -9,7 +9,7 @@
     "testServer": "nodemon server/server.js",
     "start": "node server/server.js",
     "devserver": "webpack-dev-server --config webpack.dev.js",
-    "concur": "concurrently \"npm run devserver\" \"node server/server.js\""
+    "concur": "concurrently \"npm run devserver\" \"nodemon server/server.js\""
   },
   "author": "Joyion Timmons",
   "license": "ISC",
@@ -29,7 +29,7 @@
     "excel4node": "^1.7.2",
     "express": "^4.17.1",
     "ffmetadata": "^1.6.0",
-    "file-loader": "^5.0.2",
+    "file-loader": "^5.1.0",
     "history": "^4.10.1",
     "html-webpack-plugin": "^3.2.0",
     "lodash": "^4.17.19",

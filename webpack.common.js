@@ -1,4 +1,5 @@
 const path = require("path");
+const SRC = path.resolve(__dirname, 'public');
 
 module.exports = {
     entry: {

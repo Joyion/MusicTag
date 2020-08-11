@@ -9,8 +9,11 @@ class Song extends React.Component {
         this.editSong = this.editSong.bind(this);
     }
 
-    playingSong() {
-        this.props.playSong();
+    playingSong(e) {
+        e.preventDefault();
+        console.log(`${this.props.cue.release}/${this.props.cue.fileName}`)
+        let fileName = `${this.props.cue.release}/${this.props.cue.fileName}`;
+        this.props.setAudioFile(fileName);
     }
 
     editSong() {
@@ -49,8 +52,9 @@ class Song extends React.Component {
                     <p>{this.props.cue.tempo && this.props.cue.tempo}</p>
                 </div>
                 <div>
-                    <button>PLAY</button>
+                    <button onClick={this.playingSong}>PLAY</button>
                     <button onClick={this.editSong}>EDIT</button>
+            
                 </div>
 
             </div>

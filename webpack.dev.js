@@ -5,7 +5,7 @@ const common = require("./webpack.common");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const SRC = path.resolve(__dirname, 'mp3');
+const SRC = path.resolve(__dirname, 'public');
 
 // process.env.NODE_ENV = process.env.NODE_ENV || "development";
 // if(process.env.NODE_ENV === 'development')
@@ -40,6 +40,7 @@ module.exports = merge(common, {
                 test: /\.mp3$/,
                 include: SRC,
                 loader: 'file-loader',
+                
               }
         ]
     },
@@ -55,7 +56,7 @@ module.exports = merge(common, {
         }
     },
     plugins: [
-        new CleanWebpackPlugin(),
+       // new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: "DL MUSIC APP",
             template: "src/index.html",

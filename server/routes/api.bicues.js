@@ -452,17 +452,19 @@ router.post("/getMetadata", function (req, res) {
 /// UPDATES THE INFORMATION ON THE CUE AND ALSO CHECKS TO ADD NEW COMPOSER TO COMPOSER LIST IF IT'S NEW 
 router.put("/updateCue", function (req, res){
     const id = req.body.id;
-    const update = {}
+    let update = {}
+    let composer = null;
+    console.log(req.body);
     if(req.body.name == "genreStyle"){
       let gs = req.body.value.split("/");
       let g = gs[0].trim();
       let s = gs[1].trim();
-     const update = {[req.body.name]: req.body.value, genre: g, style: s};
-     const composer = req.body.newComposer;  
+    update = {[req.body.name]: req.body.value, genre: g, style: s};
+     composer = req.body.newComposer;  
     }
     else{
-     const update = {[req.body.name]: req.body.value};
-     const composer = req.body.newComposer;   
+     update = {[req.body.name]: req.body.value};
+    composer = req.body.newComposer;   
     }
     
    // res.status(200).json(JSON.stringify(update));

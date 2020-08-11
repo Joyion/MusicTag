@@ -29,7 +29,7 @@ module.exports = merge(common, {
     },
     devtool: 'inline-source-map',
     plugins: [
-        new CleanWebpackPlugin(),
+       // new CleanWebpackPlugin({}),
         new HtmlWebpackPlugin({
             title: "DL MUSIC TAG APP",
             template: "src/index.html",
