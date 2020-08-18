@@ -124,7 +124,7 @@
      "World Music / Indi - Arab Nations",
      "World Music / Latin",
      "World Music / Native American",
-     "World Pop / African ",
+     "World Pop / African",
      "World Pop / Eastern",
      "World Pop / Island",
      "World Pop / Latin",

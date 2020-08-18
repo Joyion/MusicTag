@@ -30,8 +30,8 @@ const biCue = new mongoose.Schema(
                 
             }
         ],
-        genre: {type: String},
-        style: {type: String},
+        genre: {type: String, default: "N/A"},
+        style: {type: String, default: "N/A"},
         genreStyle: {type: String, default: "N/A"},
         instruments: {type: Array},
         descriptions: {type: Array},
@@ -42,12 +42,14 @@ const biCue = new mongoose.Schema(
         duration: {type: String, default: "N/A"},
         top: {type: String, default: "N/A"},
         status: {type: String, default: "Pending"},
-        fileName: {type: String},
+        fileName: {type: String, default: "N/A"},
+        releaseDate: {type: String},
         createdDate: {type: Date, default: Date.now},
         updateDate: {type: Date, default: null},
         trackId: {type: String},
+        trackNum: {type: String},
         isrc: {type: String},
-        mainVersion: {type: String, default: "N/A"} 
+        mainVersion: {type: String, default: ""} 
     
 })
 
