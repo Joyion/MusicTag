@@ -33,6 +33,7 @@ const sourceAudioHeaders =
         "Description",
         "Mood",
         "Style",
+        "Style Of",
         "Lyrics",
         "Has Vocal",
         "Explicit",
@@ -86,6 +87,8 @@ router.get('/bi', (req, res) => {
                 count++;
                 ws.cell(row, count).string(`Writer ${num} Last Name`).style(style);
                 count++;
+                ws.cell(row, count).string(`Writer ${num} Company`).style(style);
+                count++;
                 ws.cell(row, count).string(`Writer ${num} Pro Affiliation`).style(style);
                 count++;
                 ws.cell(row, count).string(`Writer ${num} CAE/IPI`).style(style);
@@ -136,7 +139,9 @@ router.get('/bi', (req, res) => {
                 ws.cell(row, count).string(albumName).style(style);
                 count++;
                 // Album Code
-                ws.cell(row, count).string("Album Code").style(style);
+                let trackGenreId = 100 + parseInt(cue.genreId);
+                let ac = "DLM-BI-" + trackGenreId + "-" + cue.release;
+                ws.cell(row, count).string(ac).style(style);
                 count++;
                 //Album Description
                 ws.cell(row, count).string(cue.genreStyle).style(style);
@@ -145,7 +150,7 @@ router.get('/bi', (req, res) => {
                 ws.cell(row, count).string(cue.genreStyle).style(style);
                 count++;
                 // Track Number
-                ws.cell(row, count).string(cue.trackId).style(style);
+                ws.cell(row, count).string(cue.track).style(style);
                 count++;
                 // Artist
                 let artists = cue.composers.map((a) => { return a.fullName })
@@ -171,7 +176,7 @@ router.get('/bi', (req, res) => {
                 ws.cell(row, count).string("").style(style);
                 count++;
                 // Release Date
-                ws.cell(row, count).string("").style(style);
+                ws.cell(row, count).string(cue.releaseDate).style(style);
                 count++;
                 // Description
                 ws.cell(row, count).string(cue.descriptions.toString(", ")).style(style);
@@ -309,6 +314,14 @@ router.get('/bi', (req, res) => {
 
                     }
                 }
+                // instruments
+                ws.cell(row, count).string(cue.instruments.toString(", ")).style(style);
+                count++;
+                ws.cell(row, count).string("").style(style);
+                count++;
+                ws.cell(row, count).string(cue.release).style(style);
+                count++;
+
                 row++
             })
 

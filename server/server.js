@@ -258,9 +258,10 @@ app.get('/api/upload', (req, res) => {
                         trackId = release + "-" + nt.toString();
                         let trackNum = release.replace("R", "") + nt.toString();
                         let d = moment().format("MM-DD-YYYY")
+                        let track = makeStringofYear + trackNum;
                         let song = {
                             songTitle: songName, fileName: file, release: r, isrc: isrc,
-                            trackId: trackId, mainVersion: mv, trackNum: trackNum, releaseDate: d
+                            trackId: trackId, mainVersion: mv, trackNum: trackNum, releaseDate: d, track: track
                         }
                         biSongs.push(song);
                     });

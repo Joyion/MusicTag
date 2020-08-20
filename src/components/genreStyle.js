@@ -131,6 +131,9 @@
      "World Pop / Reggaeton"
 ]
 
-genreArray.sort();
+let genreObjArray = genreArray.map((g, index) => {return {genre: g, genreId: index + 1}})
 
-export default genreArray;
+
+console.log(genreObjArray[1].genre);
+
+export default genreObjArray;

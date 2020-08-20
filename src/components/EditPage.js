@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux"
 import { startSetSong, startUpdateCue, startGetComposers } from "../actions/cues.action";
-import genreArray from "./genreStyle";
+import genreObjArray from "./genreStyle";
 import instrumentArray from "./instruments";
 import descriptionArray from "./descriptions";
 import pros from "./pros"
@@ -27,7 +27,7 @@ class CorrectEdit extends React.Component {
             }
         ]
 
-
+        let sortGenres = genreObjArray.map((g) => {return g.genre});
 
         this.state = {
             proArray: pros,
@@ -45,7 +45,7 @@ class CorrectEdit extends React.Component {
             publisher: -1,
             publisherArray: publisherArray,
             publisherSplit: 0,
-            genreArray: genreArray,
+            genreArray: sortGenres,
             genre: -1,
             instrumentArray: instrumentArray,
             newInstrument: "",
@@ -220,7 +220,11 @@ class CorrectEdit extends React.Component {
         const id = this.props.match.params.id;
         if(this.state.genre > -1){
         let gs = this.state.genreArray[this.state.genre];
-        startUpdateCue(id, "genreStyle", gs, false, null, this.props.dispatch);
+      //  console.log(gs);
+     //   console.log(genreObjArray)
+        let value = genreObjArray.filter((v) => {return gs == v.genre})
+     //   console.log("This is the genre " + value[0].genre);
+        startUpdateCue(id, "genreStyle", value[0], false, null, this.props.dispatch);
         }
         else{
             console.log("Choose a genre");
@@ -475,6 +479,13 @@ class CorrectEdit extends React.Component {
                 <p>{this.props.cue && this.props.cue.catalogName}</p>
                 <h2>Song Title </h2>
                 <p>{this.props.cue && this.props.cue.songTitle}</p>
+
+                {this.props.cue ? 
+                <div>
+                    <audio controls src={"/mp3/" + this.props.cue.release + "/" + this.props.cue.fileName} type="audio/mp3" >
+                    </audio>
+
+                </div> : <p>Unable to play media</p>}
                 <h3>Composer Metadata</h3>
                 <p>{this.props.cue && this.props.cue.metadataComposer}</p>
                 <h3>Publisher Metadata</h3>

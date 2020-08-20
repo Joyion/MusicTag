@@ -24,26 +24,32 @@ class Song extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="song">
                 <div>
                     <div>
-                       <p>{this.props.cue.songTitle}</p> 
+                        <p>{this.props.cue.songTitle}</p>
                     </div>
-                    
+
                     <div>
-                        {this.props.cue.descriptions && this.props.cue.descriptions.map((d, i) => {
-                            const desc = d + " "
-                            return <p key={i}>{desc}</p>
-                        })}
+                        <p>
+                            {this.props.cue.descriptions && this.props.cue.descriptions.map((d, i) => {
+                                if (i < 5) {
+                                    return d + " "
+                                }
+
+
+                            })}
+                        </p>
                     </div>
                 </div>
+
                 <div>
-                    <div> 
+                    <div>
                         {this.props.cue.composers ? this.props.cue.composers.map((c, i) => { return <p key={i}>{c.fullName}</p> }) : " "}
                     </div>
                 </div>
                 <div>
-                    <div> 
+                    <div>
                         {this.props.cue.publishers ? this.props.cue.publishers.map((p, i) => { return <p key={i}>{`${p.publisherName}  (${p.publisherPro}) ${p.publisherSplit}% `}</p> }) : " "}
                     </div>
                 </div>
@@ -51,10 +57,11 @@ class Song extends React.Component {
                 <div>
                     <p>{this.props.cue.tempo && this.props.cue.tempo}</p>
                 </div>
+
                 <div>
                     <button onClick={this.playingSong}>PLAY</button>
                     <button onClick={this.editSong}>EDIT</button>
-            
+
                 </div>
 
             </div>
