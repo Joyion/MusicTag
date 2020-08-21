@@ -1,0 +1,85 @@
+.edit__container {
+    display:flex;
+    width: 100%;
+    padding: 15x;
+  background-color: rgb(245, 245, 245);
+  color: black;
+  justify-content: center;
+  
+
+}
+
+.edit__container > div {
+    width: 40%;
+    padding: 0 20px;
+    margin: 0 20px;
+  
+    
+
+    input[type=submit]{
+        background-color: rgb(252, 22, 22);
+        font-size: 24px;
+        color: white;
+        border: none;
+    }
+
+    button{
+        background-color: transparent;
+        border: 2px rgb(4, 23, 77) solid;
+        color: rgb(0, 0, 0);
+        padding: 5px;
+        font-size: 18px;
+        margin: 5px;
+    }
+
+    
+}
+
+.edit__title {
+   padding: 2rem 6rem; 
+   width: 100%;
+   display: flex;
+   justify-content: space-between;
+   audio {
+       width: 100%;
+   }
+    h1{
+        margin: 0 10px;
+    }
+}
+
+.edit__composer-form {
+    label {
+        display: flex;
+        justify-content: space-between;
+    
+    }
+
+ 
+    
+
+    label > input[type=text], input[type=number] {
+            margin:5px 5px;
+            width: 50%;
+       
+    }
+}
+
+.edit__basic-form {
+    display: flex;
+    justify-content: space-between;
+    div {
+        margin-right: 0 4px;
+        display: inline;
+    }
+}
+
+.edit__small-form {
+    input {
+        margin: 0 2px;
+    }
+    label > select {
+        width: 50%;
+    }
+
+}

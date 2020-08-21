@@ -83,9 +83,12 @@ class ExportPage extends React.Component{
                 <p>{this.state.displayMessage && this.state.message }</p>
                 <p>Folder Name</p>
                 <input type="text" value={this.state.release} onChange={this.handleRelease}/>
-                <button onClick={this.getFiles}>Load Mp3 Files</button>
+                <button onClick={this.getFiles}>Load Wav Files</button>
                 {/* <button onClick={this.exportData}>Export Metadata</button> */}
-                <a href="/api/export/bi">Donwload File</a>
+                
+                    <a href="/api/export/bi">Donwload Source Audio Metadata</a>
+            
+                
                 {this.state.biSongs && this.state.biSongs.map((s) =>{
                     return <p key={s.fileName}>{s.fileName}</p>
                 })}            

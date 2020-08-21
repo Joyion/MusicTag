@@ -1,0 +1,26 @@
+.navbar__container{
+    display: flex;
+    background-color: black;
+    color: white;
+    padding: 0 20px;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.navbar__links {
+    display: flex;
+    width: 30%;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+}
+
+
+.active-links {
+    color: red;
+}

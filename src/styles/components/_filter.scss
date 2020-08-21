@@ -1,0 +1,33 @@
+.filter__container {
+    background-color: rgb(245, 245, 245);
+    text-align: center;
+    border-bottom: 3px solid black;
+
+    input[type=submit]{
+        font-size: 18px;
+        margin: 5px;
+    }
+
+    button {
+        font-size: 18px;
+        margin: 5px;
+
+    }
+    form > label > select, input[type = number] {
+        width: 125px;
+        font-size: 18px;
+        margin: 3px;
+    }
+
+    audio {
+        width: 100%;
+    }
+    
+}
+
+.filter__flexcontainer{
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    padding: 25px;
+}

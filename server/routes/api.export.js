@@ -219,7 +219,7 @@ router.get('/bi', (req, res) => {
                         ws.cell(row, count).string(cp.publisherIpi).style(style);
                         count++;
                         // publisher ownership share
-                        ws.cell(row, count).string(cp.publisherSplit).style(style);
+                        ws.cell(row, count).string(`${cp.publisherSplit}%`).style(style);
                         count++;
                         // publisher role
                         ws.cell(row, count).string("Original Publisher").style(style);
@@ -276,7 +276,7 @@ router.get('/bi', (req, res) => {
                         ws.cell(row, count).string(cc.cae).style(style);
                         count++;
                         //Writer Ownership share
-                        ws.cell(row, count).string(cc.split).style(style);
+                        ws.cell(row, count).string(`${cc.split}%`).style(style);
                         count++;
                         // Writer Publisher
                         ws.cell(row, count).string("").style(style);

@@ -11,23 +11,23 @@ class CorrectEdit extends React.Component {
         super(props);
         const publisherArray = [
             {
-                publisherName: "Derek Luff",
-                publisherIpi: "1",
+                publisherName: "Derek Luff Music, Inc.",
+                publisherIpi: "337689810",
                 publisherPro: "ASCAP",
             },
             {
-                publisherName: "Luff Music",
-                publisherIpi: "2",
+                publisherName: "Dewmarc Music",
+                publisherIpi: "355468339",
                 publisherPro: "BMI",
             },
             {
-                publisherName: "DLM",
-                publisherIpi: "3",
-                publisherPro: "SOCAN",
+                publisherName: "Ridek Music",
+                publisherIpi: "568242236",
+                publisherPro: "SESAC",
             }
         ]
 
-        let sortGenres = genreObjArray.map((g) => {return g.genre});
+        let sortGenres = genreObjArray.map((g) => { return g.genre });
 
         this.state = {
             proArray: pros,
@@ -215,21 +215,21 @@ class CorrectEdit extends React.Component {
 
     }
 
-    handleGenre(e){
+    handleGenre(e) {
         e.preventDefault();
         const id = this.props.match.params.id;
-        if(this.state.genre > -1){
-        let gs = this.state.genreArray[this.state.genre];
-      //  console.log(gs);
-     //   console.log(genreObjArray)
-        let value = genreObjArray.filter((v) => {return gs == v.genre})
-     //   console.log("This is the genre " + value[0].genre);
-        startUpdateCue(id, "genreStyle", value[0], false, null, this.props.dispatch);
+        if (this.state.genre > -1) {
+            let gs = this.state.genreArray[this.state.genre];
+            //  console.log(gs);
+            //   console.log(genreObjArray)
+            let value = genreObjArray.filter((v) => { return gs == v.genre })
+            //   console.log("This is the genre " + value[0].genre);
+            startUpdateCue(id, "genreStyle", value[0], false, null, this.props.dispatch);
         }
-        else{
+        else {
             console.log("Choose a genre");
         }
-        
+
     }
 
     handleInstrument(e) {
@@ -237,14 +237,14 @@ class CorrectEdit extends React.Component {
         const id = this.props.match.params.id;
         const i = e.target.name;
         let newInstruments = this.props.cue.instruments.map((i) => { return i });
-        if(newInstruments.includes(i)){
+        if (newInstruments.includes(i)) {
             console.log("Instrument already added");
         }
-        else{
-         newInstruments.push(i);
-        startUpdateCue(id, "instruments", newInstruments, false, null, this.props.dispatch);   
+        else {
+            newInstruments.push(i);
+            startUpdateCue(id, "instruments", newInstruments, false, null, this.props.dispatch);
         }
-        
+
     }
 
     removeInstrument(e) {
@@ -255,25 +255,25 @@ class CorrectEdit extends React.Component {
         startUpdateCue(id, "instruments", newInstruments, false, null, this.props.dispatch);
     }
 
-    handleNewInstrument(e){
+    handleNewInstrument(e) {
         e.preventDefault();
-        if(this.state.newInstrument.trim()){
+        if (this.state.newInstrument.trim()) {
             const id = this.props.match.params.id;
             const i = this.state.newInstrument.trim();
-            const newInstruments = this.props.cue.instruments.map((newIn) => {return newIn})
-            if(newInstruments.includes(i)){
+            const newInstruments = this.props.cue.instruments.map((newIn) => { return newIn })
+            if (newInstruments.includes(i)) {
                 console.log("Instrument already added");
             }
-            else{
-            newInstruments.push(i);
-            startUpdateCue(id, "instruments", newInstruments, false, null, this.props.dispatch);    
-            this.setState({
-                newInstrument: ""
-            })
+            else {
+                newInstruments.push(i);
+                startUpdateCue(id, "instruments", newInstruments, false, null, this.props.dispatch);
+                this.setState({
+                    newInstrument: ""
+                })
             }
-            
+
         }
-        else{
+        else {
             console.log("no instrument to enter");
         }
 
@@ -474,272 +474,379 @@ class CorrectEdit extends React.Component {
     render() {
         return (
             <div>
-                <p>EDIT PAGE</p>
-                <h2>Catalog</h2>
-                <p>{this.props.cue && this.props.cue.catalogName}</p>
-                <h2>Song Title </h2>
-                <p>{this.props.cue && this.props.cue.songTitle}</p>
-
-                {this.props.cue ? 
                 <div>
-                    <audio controls src={"/mp3/" + this.props.cue.release + "/" + this.props.cue.fileName} type="audio/mp3" >
-                    </audio>
+                    <div className="edit__title">
+                        <h1>Song Title:</h1>
+                        <p>{this.props.cue && this.props.cue.songTitle}</p>
+                        <h1>Catalog:</h1>
+                        <p>{this.props.cue && this.props.cue.catalogName}</p>
+                    </div>
 
-                </div> : <p>Unable to play media</p>}
-                <h3>Composer Metadata</h3>
-                <p>{this.props.cue && this.props.cue.metadataComposer}</p>
-                <h3>Publisher Metadata</h3>
-                <p>{this.props.cue && this.props.cue.metadataPublisher}</p>
 
-                <h2>Composers</h2>
+                    {this.props.cue ?
+                        <div className="edit__title">
+                            <audio controls src={"/wav/" + this.props.cue.release + "/" + this.props.cue.fileName} type="audio/wav" >
+                            </audio>
 
-                {/* this shows all the current composers on the cue's record */}
-                {this.props.cue && this.props.cue.composers ? this.props.cue.composers.length > 0 ?
-                    this.props.cue.composers.map((c, i) => {
-                        return <button onClick={this.removeComposer} name={c._id} key={i}>  {`${c.fullName} (${c.pro}) ${c.split}%`}</button>
-                    })
-                    : <p>No Composer data found. Please enter all Composer info</p>
-                    : <p>No Composer data found. Please enter all Composer info</p>
-                }
-                <h3>Add Composer</h3>
-                <form onSubmit={this.addComposer}>
-                    <label>
-                        <select name="addComposer" onChange={this.handleInput} value={this.state.addComposer}>
-                            <option value={-1}>Composers</option>
-                            {this.props.composers && this.props.composers.map((c, i) => {
-                                const info = {
-                                    fullName: c.fullName,
-                                    fName: c.fName,
-                                    mName: c.mName,
-                                    lName: c.lName,
-                                    suffix: c.suffix,
-                                    cae: c.cae,
-                                    pro: c.pro,
-                                }
+                        </div> : <p>Unable to play media</p>}
+                </div>
 
-                                return <option key={i} value={i}>{`${c.fullName} (${c.pro}) CAE: ${c.cae}`}</option>
-                            })}
 
-                        </select>
-                    </label>
-                    <label>
-                        Split:
+
+
+                <div class="edit__container">
+                    <div>
+                        <h2>Composer Metadata</h2>
+                        <p>{this.props.cue && this.props.cue.metadataComposer}</p>
+
+
+                        <h2>Composers</h2>
+
+                        {/* this shows all the current composers on the cue's record */}
+                        {this.props.cue && this.props.cue.composers ? this.props.cue.composers.length > 0 ?
+                            this.props.cue.composers.map((c, i) => {
+                                return <button onClick={this.removeComposer} name={c._id} key={i}>  {`${c.fullName} (${c.pro}) ${c.split}%`}</button>
+                            })
+                            : <p>No Composer data found. Please enter all Composer info</p>
+                            : <p>No Composer data found. Please enter all Composer info</p>
+                        }
+                    </div>
+
+                    <div>
+                        <h3>Add Composer</h3>
+                        <form className="edit__basic-form" onSubmit={this.addComposer}>
+                            <div>
+                            <label>
+                                <select name="addComposer" onChange={this.handleInput} value={this.state.addComposer}>
+                                    <option value={-1}>Composers</option>
+                                    {this.props.composers && this.props.composers.map((c, i) => {
+                                        const info = {
+                                            fullName: c.fullName,
+                                            fName: c.fName,
+                                            mName: c.mName,
+                                            lName: c.lName,
+                                            suffix: c.suffix,
+                                            cae: c.cae,
+                                            pro: c.pro,
+                                        }
+
+                                        return <option key={i} value={i}>{`${c.fullName} (${c.pro}) CAE: ${c.cae}`}</option>
+                                    })}
+                                </select>
+                            </label>
+                            </div>
+                           <div>
+                                <label>
+                                Split:
                  <input onChange={this.handleInput} name="newSplit" type="number" value={this.state.newSplit} />
-                    </label>
-                    <input type="submit" value="Add Composer" />
-                </form>
+                            </label>
+                           </div>
+                            <br />
+                            <input type="submit" value="Add Composer" />
+                        </form>
 
-                <h3>New Composer</h3>
-                <form onSubmit={this.updateComposer}>
-                    <label>
-                        First Name:
-                    <input name="fName" value={this.state.fName} type="text" onChange={this.handleInput} />
-                    </label>
-                    <label>
-                        Middle Name:
-                    <input name="mName" value={this.state.mName} type="text" onChange={this.handleInput} />
-                    </label>
-                    <label>
-                        Last Name:
-                    <input name="lName" value={this.state.lName} type="text" onChange={this.handleInput} />
-                    </label>
-                    <label>
-                        Suffix:
-                    <input name="suffix" value={this.state.suffix} type="text" onChange={this.handleInput} />
-                    </label>
-                    <label>
-                        Split:
-                    <input name="cSplit" value={this.state.cSplit} type="number" onChange={this.handleInput} />
-                    </label>
-                    <label>
-                        CAE:
-                    <input name="cae" value={this.state.cae} type="text" onChange={this.handleInput} />
-                    </label>
-                    <label>
-                        PRO:
-                   <select name="pro" value={this.state.pro} onChange={this.handleInput}>
-                            {this.state.proArray.map((p, i) => {
-                                return <option key={i} value={p}>{p}</option>
-                            })}
-                        </select>
-                        <input type="submit" value="Add New Composer" />
-                    </label>
-                </form>
-
-                <h2>Publishers</h2>
-
-                {this.props.cue && this.props.cue.publishers ? this.props.cue.publishers.length > 0 ? this.props.cue.publishers.map((p, i) => {
-                    return <button onClick={this.removePublisher} name={p._id} key={i}>{`${p.publisherName} (${p.publisherPro}) ${p.publisherSplit}`}</button>
-                }) : <p>No Publisher Data</p>
-                    : <p>No Publisher Data</p>}
+                        <h3>New Composer</h3>
+                        <form  className="edit__composer-form" onSubmit={this.updateComposer}>
 
 
-                <h3>Add Publisher</h3>
-                {/* Add Publishing information */}
-                <form onSubmit={this.updatePublisher}>
-                    <label>
-                        Publishers:
+                            <label>
+                                <p>First Name:</p>
+                                <input name="fName" value={this.state.fName} type="text" onChange={this.handleInput} />
+                            </label>
+                            <label>
+                                <p>Middle Name:</p>
+                                <input name="mName" value={this.state.mName} type="text" onChange={this.handleInput} />
+                            </label>
+                            <label>
+                                <p>Last Name:</p>
+                                <input name="lName" value={this.state.lName} type="text" onChange={this.handleInput} />
+                            </label>
+                            <label>
+                                <p>Suffix:</p>
+                                <input name="suffix" value={this.state.suffix} type="text" onChange={this.handleInput} />
+                            </label>
+                            <label>
+                                <p>Split:</p>
+                                <input name="cSplit" value={this.state.cSplit} type="number" onChange={this.handleInput} />
+                            </label>
+                            <label>
+                                <p>CAE</p>
+                                <input name="cae" value={this.state.cae} type="text" onChange={this.handleInput} />
+                            </label>
+                            <label>
+                                <p>Pro</p>
+                                <select name="pro" value={this.state.pro} onChange={this.handleInput}>
+                                    {this.state.proArray.map((p, i) => {
+                                        return <option key={i} value={p}>{p}</option>
+                                    })}
+                                </select>
+                            </label>
+                            <input type="submit" value="Add New Composer" />
+                        </form>
+
+                    </div>
+                </div>
+
+                <div class="edit__container">
+                    <div>
+                        <h2>Publisher Metadata</h2>
+                        <p>{this.props.cue && this.props.cue.metadataPublisher}</p>
+                        <h2>Publishers</h2>
+
+                        {this.props.cue && this.props.cue.publishers ? this.props.cue.publishers.length > 0 ? this.props.cue.publishers.map((p, i) => {
+                            return <button onClick={this.removePublisher} name={p._id} key={i}>{`${p.publisherName} (${p.publisherPro}) ${p.publisherSplit}%`}</button>
+                        }) : <p>No Publisher Data</p>
+                            : <p>No Publisher Data</p>}
+                    </div>
+
+                    <div>
+                        <h3>Add Publisher</h3>
+                        {/* Add Publishing information */}
+                        <form class="edit__small-form" onSubmit={this.updatePublisher}>
+                            <label>
                         <select name="publisher" value={this.state.publisher} onChange={this.handleInput}>
 
-                            <option value={-1}>Publishers</option>
+                                    <option value={-1}>Publishers</option>
 
-                            {this.state.publisherArray && this.state.publisherArray.map((p, i) => {
+                                    {this.state.publisherArray && this.state.publisherArray.map((p, i) => {
 
-                                return <option key={i} value={i}>{`${p.publisherName} (${p.publisherPro}) IPI: ${p.publisherIpi}`}</option>
+                                        return <option key={i} value={i}>{`${p.publisherName} (${p.publisherPro}) IPI: ${p.publisherIpi}`}</option>
+                                    })}
+
+                                </select>
+                            </label>
+                            <label>
+                                Split:
+                            <input type="number" value={this.state.publisherSplit} name="publisherSplit" onChange={this.handleInput} />
+                                
+                            </label>
+                            <input type="submit" value="Add Publisher" />
+                        </form>
+
+                    </div>
+                </div>
+
+                <div class="edit__container">
+                    <div>
+                        <h2>Genre</h2>
+                        <p>{this.props.cue && this.props.cue.genreStyle ? this.props.cue.genreStyle : "N/A"}</p>
+                    </div>
+
+                    <div>
+                        <h3>New Genre</h3>
+                        <form name="genre" onSubmit={this.handleGenre}>
+                            <select name="genre" value={this.state.genre} onChange={this.handleInput}>
+                                <option value={-1}>Genre</option>
+                                {this.state.genreArray && this.state.genreArray.map((g, i) => {
+                                    return <option key={i} value={i}>{g}</option>
+                                })}
+                            </select>
+                            <input type="submit" value="Update Genre" />
+                        </form>
+                    </div>
+                </div>
+
+
+                <div class="edit__container">
+                    <div>
+                        <h2>Instruments</h2>
+                        {this.props.cue && this.props.cue.instruments ? this.props.cue.instruments.length > 0 ? this.props.cue.instruments.map((i, index) => {
+                            return <button name={i} onClick={this.removeInstrument} key={index}>{i}</button>
+
+                        }) : <p>No Instruments Added</p> : <p>No Instruments Added</p>}
+                    </div>
+
+                    <div>
+                        <h3>Add Instruments</h3>
+                        <div>
+                            {this.state.instrumentArray && this.state.instrumentArray.map((i, index) => {
+                                return <button onClick={this.handleInstrument} name={i} key={index}>{i}</button>
                             })}
-
-                        </select>
-                    </label>
-                    <label>
-                        Split:
-                        <input type="number" value={this.state.publisherSplit} name="publisherSplit" onChange={this.handleInput} />
-                        <input type="submit" value="Add Publisher" />
-                    </label>
-                </form>
-
-                <h2>Genre</h2>
-                <p>{this.props.cue && this.props.cue.genreStyle ? this.props.cue.genreStyle : "N/A"}</p>
-                <h3>New Genre</h3>
-                <form name="genre" onSubmit={this.handleGenre}>
-                    <select name="genre" value={this.state.genre} onChange={this.handleInput}>
-                        <option value={-1}>Genre</option>
-                        {this.state.genreArray && this.state.genreArray.map((g, i) => {
-                            return <option key={i} value={i}>{g}</option>
-                        })}
-                    </select>
-                    <input type="submit" value="Update Genre" />
-                </form>
-
-
-                <h2>Instruments</h2>
-                {this.props.cue && this.props.cue.instruments ? this.props.cue.instruments.length > 0 ? this.props.cue.instruments.map((i, index) => {
-                    return <button name={i} onClick={this.removeInstrument} key={index}>{i}</button>
-
-                }) : <p>No Instruments Added</p> : <p>No Instruments Added</p>}
-
-                <h3>Add Instruments</h3>
-                <div>
-                    {this.state.instrumentArray && this.state.instrumentArray.map((i, index) => {
-                        return <button onClick={this.handleInstrument} name={i} key={index}>{i}</button>
-                    })}
+                        </div>
+                        <h3>Add New Instrument</h3>
+                        <form onSubmit={this.handleNewInstrument}>
+                            <label>
+                                <input type="text" onChange={this.handleInput} value={this.state.newInstrument} name="newInstrument" />
+                                <input type="submit" value="Add New Instrument" />
+                            </label>
+                        </form>
+                    </div>
                 </div>
-                <h3>Add New Instrument</h3>
-                <form onSubmit={this.handleNewInstrument}>
-                    <label>
-                    <input type="text" onChange={this.handleInput} value={this.state.newInstrument} name="newInstrument"/>
-                    <input type="submit" value="Add New Instrument"/>
-                    </label>
-                </form>
 
 
-                <h2>Descriptions</h2>
-                <div>
-                    {this.props.cue && this.props.cue.descriptions ? this.props.cue.descriptions.length > 0 ? this.props.cue.descriptions.map((d, index) => {
-                        return <button name={d} onClick={this.removeDescription} key={index}>{d}</button>
+                <div class="edit__container">
+                    <div>
+                        <h2>Descriptions</h2>
+                        <div>
+                            {this.props.cue && this.props.cue.descriptions ? this.props.cue.descriptions.length > 0 ? this.props.cue.descriptions.map((d, index) => {
+                                return <button name={d} onClick={this.removeDescription} key={index}>{d}</button>
 
-                    }) : <p>No Description Added</p> : <p>No Description Added</p>}
+                            }) : <p>No Description Added</p> : <p>No Description Added</p>}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3>Add Description</h3>
+                        <div>
+                            {this.state.descriptionArray && this.state.descriptionArray.map((d, index) => {
+                                return <button onClick={this.handleDescription} name={d} key={index}>{d}</button>
+                            })}
+                        </div>
+                        <h3>Add New Description</h3>
+                        <form onSubmit={this.handleNewDescription}>
+                            <label>
+                                <input value={this.state.newDescription}
+                                    onChange={this.handleInput}
+                                    name="newDescription"
+                                    type="text" />
+                                <input type="submit" value="Add Description" />
+                            </label>
+                        </form>
+                    </div>
                 </div>
-                <h3>Add Description</h3>
-                <div>
-                    {this.state.descriptionArray && this.state.descriptionArray.map((d, index) => {
-                        return <button onClick={this.handleDescription} name={d} key={index}>{d}</button>
-                    })}
-                </div>
-                <h3>Add New Description</h3>
-                <form onSubmit={this.handleNewDescription}>
-                    <label>
-                       <input value={this.state.newDescription}
-                            onChange={this.handleInput}
-                            name="newDescription"
-                            type="text" />
-                        <input type="submit" value="Add Description" />
-                    </label>
-                </form>
 
-                <h2>Rating</h2>
-                <p>{this.props.cue && this.props.cue.rating}</p>
-                <form onSubmit={this.handleRating}>
-                    <label>
-                        New Rating:
+
+                <div class="edit__container">
+                    <div>
+                        <h2>Rating</h2>
+                        <p>{this.props.cue && this.props.cue.rating}</p>
+                    </div>
+
+                    <div>
+                        <form onSubmit={this.handleRating}>
+                            <label>
+                                New Rating:
                     <input value={this.state.rating} name="rating" type="number" onChange={this.handleInput} />
-                        <input type="submit" value="Update Rating" />
-                    </label>
-                </form>
-
-                <h2>Sounds Like Films</h2>
-                <div>
-                    {this.props.cue && this.props.cue.films ? this.props.cue.films.length > 0 ? this.props.cue.films.map((f, index) => {
-                        return <button name={f} onClick={this.removeFilm} key={index}>{f}</button>
-
-                    }) : <p>No Films Added</p> : <p>No Films Added</p>}
+                                <input type="submit" value="Update Rating" />
+                            </label>
+                        </form>
+                    </div>
                 </div>
 
-                <form onSubmit={this.handleFilm}>
-                    <label>
-                        Film
+
+                <div class="edit__container">
+                    <div>
+                        <h2>Sounds Like Films</h2>
+                        <div>
+                            {this.props.cue && this.props.cue.films ? this.props.cue.films.length > 0 ? this.props.cue.films.map((f, index) => {
+                                return <button name={f} onClick={this.removeFilm} key={index}>{f}</button>
+
+                            }) : <p>No Films Added</p> : <p>No Films Added</p>}
+                        </div>
+                    </div>
+
+                    <div>
+                        <form onSubmit={this.handleFilm}>
+                            <label>
+                                Film
                         <input value={this.state.film} name="film" type="text" onChange={this.handleInput} />
-                        <input type="submit" value="Add film" />
-                    </label>
-                </form>
+                                <input type="submit" value="Add film" />
+                            </label>
+                        </form>
+                    </div>
 
-
-                <h2>Sounds Like Bands</h2>
-                <div>
-                    {this.props.cue && this.props.cue.bands ? this.props.cue.bands.length > 0 ? this.props.cue.bands.map((b, index) => {
-                        return <button name={b} onClick={this.removeBand} key={index}>{b}</button>
-
-                    }) : <p>No Bands Added</p> : <p>No Bands Added</p>}
                 </div>
-                <form onSubmit={this.handleBand}>
-                    <label>
-                        Band:
+
+
+                <div class="edit__container">
+                    <div>
+                        <h2>Sounds Like Bands</h2>
+                        <div>
+                            {this.props.cue && this.props.cue.bands ? this.props.cue.bands.length > 0 ? this.props.cue.bands.map((b, index) => {
+                                return <button name={b} onClick={this.removeBand} key={index}>{b}</button>
+
+                            }) : <p>No Bands Added</p> : <p>No Bands Added</p>}
+                        </div>
+                    </div>
+
+                    <div>
+                        <form onSubmit={this.handleBand}>
+                            <label>
+                                Band:
                     <input value={this.state.band} name="band" type="text" onChange={this.handleInput} />
-                        <input type="submit" value="Add band" />
-                    </label>
-                </form>
+                                <input type="submit" value="Add band" />
+                            </label>
+                        </form>
+                    </div>
+                </div>
 
 
+                <div class="edit__container">
+                    <div>
+                        <h2>Tempo</h2>
+                        <p>{this.props.cue && this.props.cue.tempo}</p>
+                    </div>
 
-                <h2>Tempo</h2>
-                <p>{this.props.cue && this.props.cue.tempo}</p>
-                <form onSubmit={this.handleTempo}>
-                    <label>
-                        Change Tempo:
+                    <div>
+                        <form onSubmit={this.handleTempo}>
+                            <label>
+                                Change Tempo:
                         <select value={this.state.tempo} name="tempo" onChange={this.handleInput}>
-                            <option value="tempo">Tempo</option>
-                            <option value="Fast">Fast</option>
-                            <option value="Slow">Slow</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Changing Tempos">Changing Tempo</option>
-                            <option value="Non-Rhythmic"> Non-Rhythmic</option>
-                            <option value="N/A">N/A</option>
-                        </select>
-                        <input type="submit" value="Update Tempo" />
-                    </label>
-                </form>
+                                    <option value="tempo">Tempo</option>
+                                    <option value="Fast">Fast</option>
+                                    <option value="Slow">Slow</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Changing Tempos">Changing Tempo</option>
+                                    <option value="Non-Rhythmic"> Non-Rhythmic</option>
+                                    <option value="N/A">N/A</option>
+                                </select>
+                                <input type="submit" value="Update Tempo" />
+                            </label>
+                        </form>
+                    </div>
+                </div>
 
 
-                <h2>Main Version Filename</h2>
-                <p>{this.props.cue && this.props.cue.mainVersion}</p>
-                <form onSubmit={this.handleVersion}>
-                    <input name="mainVersion" onChange={this.handleInput} type="text" value={this.mainVersion} />
-                    <input type="submit" value="Update Main Version" />
-                </form>
+                <div class="edit__container">
+                    <div>
+                        <h2>Main Version Filename</h2>
+                        <p>{this.props.cue && this.props.cue.mainVersion}</p>
+                    </div>
+                    <div>
+                        <form onSubmit={this.handleVersion}>
+                            <input name="mainVersion" onChange={this.handleInput} type="text" value={this.mainVersion} />
+                            <input type="submit" value="Update Main Version" />
+                        </form>
+                    </div>
+                </div>
 
 
-                <h2>Status</h2>
-                <p>{this.props.cue && this.props.cue.status}</p>
-                <form onSubmit={this.handleStatus}>
-                    <label>
-                        <select value={this.state.status} name="status" onChange={this.handleInput}>
-                            <option value="Status">Status</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Active">Active</option>
-                            <option value="Pulled">Pulled</option>
-                        </select>
-                        <input type="submit" value="Update Status" />
-                    </label>
-                </form>
+                <div class="edit__container">
+                    <div>
+                        <h2>Status</h2>
+                        <p>{this.props.cue && this.props.cue.status}</p>
+                    </div>
+
+                    <div>
+                        <form onSubmit={this.handleStatus}>
+                            <label>
+                                <select value={this.state.status} name="status" onChange={this.handleInput}>
+                                    <option value="Status">Status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Pulled">Pulled</option>
+                                </select>
+                                <input type="submit" value="Update Status" />
+                            </label>
+                        </form>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

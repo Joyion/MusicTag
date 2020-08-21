@@ -77,7 +77,7 @@ class ResultTable extends React.Component {
 
     setAudioFile(file) {
         this.setState({
-            audioFile: "/mp3/" + file
+            audioFile: "/wav/" + file
         })
 
     }
@@ -95,41 +95,48 @@ class ResultTable extends React.Component {
 
         return (
             <div>
-                <div>
-                    <h1>Background Instrumentals</h1>
-                    <p>Total Cues: {this.props.cues.totalCues}</p>
-                    <p>Page {this.props.cues.page} of {this.props.cues.totalPages}</p>
 
+                <div className="filter__container">
+                    <div className="filter__flexcontainer">
+                        <div>
+                            <h1>Background Instrumentals</h1>
+                            <h2>Total Cues: {this.props.cues.totalCues}</h2>
+                            <h2>Status: {this.state.status}</h2>
+                            <form onSubmit={this.handleStatus}>
+                                <label>
+                                    <select name="selectStatus" value={this.state.selectStatus} onChange={this.handleChange}>
+                                        {/* <option value="Status"> Status</option> */}
+                                        <option value="Pending">Pending</option>
+                                        <option value="Active">Active</option>
+                                        <option value="Pulled">Pulled</option>
+                                    </select>
+                                    <input type="submit" value="Update Status" />
+                                </label>
+                            </form>
+                        </div>
 
-                    <button name="back" onClick={this.backPage}>Back</button>
-                    <button name="next" onClick={this.nextPage}>Next</button>
-                    <p>Total Pages: {this.props.cues.totalPages}</p>
-                    <form onSubmit={this.handlePgInput}>
-                        <label>
-                            Enter page number:
+                        <div>
+                            <p>Page {this.props.cues.page} of {this.props.cues.totalPages}</p>
+                            <button name="back" onClick={this.backPage}>Back</button>
+                            <button name="next" onClick={this.nextPage}>Next</button>
+                            <form onSubmit={this.handlePgInput}>
+                                <label>
+                                    Enter page number:
                             <input onChange={this.handleChange} name="selectPage" type="number" value={this.state.selectPage} />
-                            <input type="submit" value="submit" />
-                        </label>
-                    </form>
-                    <h2>Status: {this.state.status}</h2>
-                    <form onSubmit={this.handleStatus}>
-                        <label>
-                            Status:
-                            <select name="selectStatus" value={this.state.selectStatus} onChange={this.handleChange}>
-                                {/* <option value="Status"> Status</option> */}
-                                <option value="Pending">Pending</option>
-                                <option value="Active">Active</option>
-                                <option value="Pulled">Pulled</option>
-                            </select>
-                            <input type="submit" value="Update Status" />
-                        </label>
-                    </form>
-                </div>
-                <div>
-                    <audio controls autoPlay src={this.state.audioFile} type="audio/mp3" >
-                    </audio>
+                                    <input type="submit" value="submit" />
+                                </label>
+                            </form>
+                        </div>
+                    </div>
+                    <div>
+                        <audio controls autoPlay src={this.state.audioFile} type="audio/wav" >
+                        </audio>
+
+                    </div>
 
                 </div>
+
+
                 {/* <div>
                     <div><p>Song Title</p></div>
                     <div><p>Composer</p></div>

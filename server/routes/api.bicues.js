@@ -4,7 +4,8 @@ const biCue = require("../models/bi_cue_model");
 const composers = require('../models/composer.model');
 const Publisher = require("../models/publisher.model");
 const path = require("path");
-const mp3Path = path.join(__dirname, "..", "..", "public", "mp3");
+const mp3path = path.join(__dirname, "..", "..", "public", "dist", "mp3");
+const wavPath = path.join(__dirname, "..", "..", "public", "dist", "wav")
 // read metadata from files
 const ffmetadata = require("ffmetadata");
 // read metadata from files
@@ -23,7 +24,7 @@ router.get("/getBiCues", (req, res) => {
         totalPages: 1250,
         status: status
     }
-    let pageLimit = 4
+    let pageLimit = 25;
     let skip = pageLimit * (page - 1);
     data.page = page;
     console.log("Status: " + data.status + " page limit: " + pageLimit + " skip: " + skip + " page: " + page);
@@ -80,11 +81,12 @@ router.post("/getMetadata", function (req, res) {
         else {
             if(cue){
 
-                const filename = mp3Path + "/" + cue.release + "/" + cue.fileName;
+                // const filename = mp3Path + "/" + cue.release + "/" + cue.fileName;
+                const filename = wavPath + "/" + cue.release + "/" + cue.fileName;
             console.log(filename.toString());
             mm.parseFile(filename)
                 .then(metadata => {
-                  //  console.log(util.inspect(metadata, { showHidden: false, depth: null }));
+                   console.log(util.inspect(metadata, { showHidden: false, depth: null }));
 
                     cue.metadataComposer = metadata.common.artists.join("/");
                     cue.metadataPublisher = metadata.common.copyright;
