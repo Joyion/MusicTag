@@ -29,9 +29,10 @@ export const startGetCues = (page, filter, dispatch) => {
 
 }
 
-export const updateCue = (cue) => ({
+export const updateCue = (cue, comps) => ({
   type: "UPDATE_CUE",
-  cue
+  cue,
+  comps
 })
 
 export const startUpdateCue = (cue, name, value, isThisNew, newComposer, dispatch) => {
@@ -48,7 +49,7 @@ export const startUpdateCue = (cue, name, value, isThisNew, newComposer, dispatc
     .then(function (response) {
       const data = JSON.parse(response.data);
       console.log(data);
-      dispatch(updateCue(data));
+      dispatch(updateCue(data.cue, data.comps));
     })
     .catch(function (error) {
       console.log(error);

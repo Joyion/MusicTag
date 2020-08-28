@@ -143,13 +143,36 @@ router.put("/updateCue", function (req, res){
                 console.log("Is this a new Composer? " + req.body.isThisNew);
                 const newComposer = new composers({...composer})
                 newComposer.save((err, c) => {
-                    res.status(200).json(JSON.stringify(cue));
+
+                    composers.find({}, (err, comps)=> {
+                        if(err){
+                            const error = {error: true, message: "UPDATE FAILED"}
+                            res.status(400).json(JSON.stringify(error))
+                        }
+                        else {
+                            let data = {cue: cue, comps: comps}
+                            res.status(200).json(JSON.stringify(data));
+                        }
+                    })
+
+
+                    
                 })
 
 
             }
             else {
-                res.status(200).json(JSON.stringify(cue));
+                composers.find({}, (err, comps)=> {
+                    if(err){
+                        const error = {error: true, message: "UPDATE FAILED"}
+                        res.status(400).json(JSON.stringify(error))
+                    }
+                    else {
+                        let data = {cue: cue, comps: comps}
+                        res.status(200).json(JSON.stringify(data));
+                    }
+                })
+
             }
             
             

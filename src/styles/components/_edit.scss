@@ -13,7 +13,7 @@
     width: 40%;
     padding: 0 20px;
     margin: 0 20px;
-  
+    
     
 
     input[type=submit]{
@@ -53,10 +53,7 @@
         display: flex;
         justify-content: space-between;
     
-    }
-
- 
-    
+    } 
 
     label > input[type=text], input[type=number] {
             margin:5px 5px;
@@ -75,11 +72,27 @@
 }
 
 .edit__small-form {
-    input {
-        margin: 0 2px;
+    label > input {
+        margin-right: 10px;
     }
-    label > select {
-        width: 50%;
+    select {
+        margin-right: 10px;
+
     }
+
+    margin-bottom: 20px;
+   
+}
+
+.edit__pub-form {
+
+    select {
+        margin-bottom: 10px;
+        width: 22rem;
+    }
+   input {
+       margin-bottom: 10px;
+   }
+
 
 }

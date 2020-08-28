@@ -25,7 +25,8 @@ export default (state = defaultState, action) => {
         case "UPDATE_CUE":
             return {
                 ...state,
-                selectSong: action.cue
+                selectSong: action.cue,
+                composers: action.comps
             };
         case "GET_ALL_COMPOSERS":
             return {

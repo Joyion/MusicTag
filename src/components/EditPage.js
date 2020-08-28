@@ -5,6 +5,7 @@ import genreObjArray from "./genreStyle";
 import instrumentArray from "./instruments";
 import descriptionArray from "./descriptions";
 import pros from "./pros"
+import { throttle } from 'lodash';
 class CorrectEdit extends React.Component {
 
     constructor(props) {
@@ -57,6 +58,8 @@ class CorrectEdit extends React.Component {
             film: "",
             status: "",
             mainVersion: "",
+            styleGreen: {backgroundColor: "green"},
+            styleRed: {backgroundColor: "red"},
         }
 
 
@@ -126,14 +129,14 @@ class CorrectEdit extends React.Component {
 
     updateComposer(e) {
         e.preventDefault();
-        if (this.state.fName.trim() && this.state.cSplit > 0) {
+        if (this.state.fName.trim() && this.state.cSplit > 0 && this.state.cae.trim()) {
             // console.log(this.state);
 
             let isthisNew = true;
             const id = this.props.match.params.id;
             const fullName = `${this.state.fName.trim()} ${this.state.mName.trim()} ${this.state.lName.trim()} ${this.state.suffix.trim()}`;
             const newComposer = {
-                fullName: fullName,
+                fullName: fullName.trim(),
                 fName: this.state.fName.trim(),
                 mName: this.state.mName.trim(),
                 lName: this.state.lName.trim(),
@@ -145,24 +148,31 @@ class CorrectEdit extends React.Component {
 
             if (this.props.composers.length > 0) {
                 console.log("in composer lenght");
-                let composerBank = [];
-                composerBank = this.props.composers.filter((c) => {
-                    return c.fullName.toUpperCase() == newComposer.fullName.toUpperCase()
-                        && c.cae.toUpperCase() == newComposer.cae.toUpperCase() &&
-                        c.pro.toUpperCase() == newComposer.pro.toUpperCase()
+                let composerBank = this.props.composers.map((c) => {
+                    console.log(c.cae + " " + newComposer.cae);
+                    console.log(c.pro + " " + newComposer.pro);
+                    console.log(c.cae == newComposer.cae);
+                    if(c.cae == newComposer.cae && c.pro == newComposer.pro){
+                        isthisNew = false;
+                    }
+                    
                 })
-                if (composerBank.length > 0) {
-                    isthisNew = false;
-                }
+                console.log( "Composer Length " + composerBank.length);
+              
             }
+            
 
             console.log(isthisNew);
 
             //    console.log(newComposer);
 
+            if(isthisNew){
             let composers = this.props.cue.composers.map((e) => { return e });
             composers.push(newComposer);
             startUpdateCue(id, "composers", composers, isthisNew, newComposer, this.props.dispatch);
+            }
+
+           
             this.setState({
                 fName: "",
                 mName: "",
@@ -173,8 +183,7 @@ class CorrectEdit extends React.Component {
                 pro: "ASCAP",
             })
         }
-        console.log("Everything is empty");
-
+        console.log("New Composer must have a First Name, CAE and Split");
     }
 
     removeComposer(e) {
@@ -488,13 +497,13 @@ class CorrectEdit extends React.Component {
                             <audio controls src={"/wav/" + this.props.cue.release + "/" + this.props.cue.fileName} type="audio/wav" >
                             </audio>
 
-                        </div> : <p>Unable to play media</p>}
+                        </div> : <div className="edit__title"><p>Unable to play media</p></div>}
                 </div>
 
 
 
 
-                <div class="edit__container">
+                <div className="edit__container">
                     <div>
                         <h2>Composer Metadata</h2>
                         <p>{this.props.cue && this.props.cue.metadataComposer}</p>
@@ -514,39 +523,49 @@ class CorrectEdit extends React.Component {
 
                     <div>
                         <h3>Add Composer</h3>
-                        <form className="edit__basic-form" onSubmit={this.addComposer}>
+                        <form onSubmit={this.addComposer}>
                             <div>
-                            <label>
-                                <select name="addComposer" onChange={this.handleInput} value={this.state.addComposer}>
-                                    <option value={-1}>Composers</option>
-                                    {this.props.composers && this.props.composers.map((c, i) => {
-                                        const info = {
-                                            fullName: c.fullName,
-                                            fName: c.fName,
-                                            mName: c.mName,
-                                            lName: c.lName,
-                                            suffix: c.suffix,
-                                            cae: c.cae,
-                                            pro: c.pro,
-                                        }
-
-                                        return <option key={i} value={i}>{`${c.fullName} (${c.pro}) CAE: ${c.cae}`}</option>
-                                    })}
-                                </select>
-                            </label>
-                            </div>
-                           <div>
                                 <label>
-                                Split:
-                 <input onChange={this.handleInput} name="newSplit" type="number" value={this.state.newSplit} />
-                            </label>
-                           </div>
+                                    <select name="addComposer" onChange={this.handleInput} value={this.state.addComposer}>
+                                        <option value={-1}>Composers</option>
+                                        {this.props.composers && this.props.composers.map((c, i) => {
+                                            const info = {
+                                                fullName: c.fullName,
+                                                fName: c.fName,
+                                                mName: c.mName,
+                                                lName: c.lName,
+                                                suffix: c.suffix,
+                                                cae: c.cae,
+                                                pro: c.pro,
+                                            }
+
+                                            return <option key={i} value={i}>{`${c.fullName} (${c.pro}) CAE: ${c.cae}`}</option>
+                                        })}
+                                    </select>
+                                </label>
+                            </div>
                             <br />
-                            <input type="submit" value="Add Composer" />
+                            <div>
+                                <label>
+                                    Split:
+                 <input onChange={this.handleInput} name="newSplit" type="number" value={this.state.newSplit} />
+                                </label>
+                            </div>
+                            <br />
+
+                            {this.props.cue && this.props.cue.composers ? this.props.cue.composers.length > 0 ? 
+                            <input style={this.state.styleGreen} type="submit" value="Add Composer" /> : 
+                            <input style={this.state.styleRed} type="submit" value="Add Composer" /> :
+                            <input style={this.state.styleRed} type="submit" value="Add Composer" /> 
+                            }
+
+
+
+                            
                         </form>
 
                         <h3>New Composer</h3>
-                        <form  className="edit__composer-form" onSubmit={this.updateComposer}>
+                        <form className="edit__composer-form" onSubmit={this.updateComposer}>
 
 
                             <label>
@@ -581,13 +600,19 @@ class CorrectEdit extends React.Component {
                                     })}
                                 </select>
                             </label>
-                            <input type="submit" value="Add New Composer" />
+
+                            {this.props.cue && this.props.cue.composers ? this.props.cue.composers.length > 0 ? 
+                            <input style={this.state.styleGreen} type="submit" value="Add New Composer" />:
+                            <input style={this.state.styleRed} type="submit" value="Add New Composer" />:
+                            <input style={this.state.styleRed} type="submit" value="Add New Composer" />
+                            }
+                            
                         </form>
 
                     </div>
                 </div>
 
-                <div class="edit__container">
+                <div className="edit__container">
                     <div>
                         <h2>Publisher Metadata</h2>
                         <p>{this.props.cue && this.props.cue.metadataPublisher}</p>
@@ -602,9 +627,9 @@ class CorrectEdit extends React.Component {
                     <div>
                         <h3>Add Publisher</h3>
                         {/* Add Publishing information */}
-                        <form class="edit__small-form" onSubmit={this.updatePublisher}>
+                        <form className="edit__pub-form" onSubmit={this.updatePublisher}>
                             <label>
-                        <select name="publisher" value={this.state.publisher} onChange={this.handleInput}>
+                                <select name="publisher" value={this.state.publisher} onChange={this.handleInput}>
 
                                     <option value={-1}>Publishers</option>
 
@@ -615,18 +640,26 @@ class CorrectEdit extends React.Component {
 
                                 </select>
                             </label>
+                            <br />
                             <label>
                                 Split:
                             <input type="number" value={this.state.publisherSplit} name="publisherSplit" onChange={this.handleInput} />
-                                
+
                             </label>
-                            <input type="submit" value="Add Publisher" />
+                            <br />
+                            {this.props.cue && this.props.cue.publishers ? this.props.cue.publishers.length > 0 ? 
+                            <input style={this.state.styleGreen} type="submit" value="Add Publisher" /> :
+                            <input style={this.state.styleRed} type="submit" value="Add Publisher" /> :
+                            <input style={this.state.styleRed} type="submit" value="Add Publisher" />
+                        }
+
+                            
                         </form>
 
                     </div>
                 </div>
 
-                <div class="edit__container">
+                <div className="edit__container">
                     <div>
                         <h2>Genre</h2>
                         <p>{this.props.cue && this.props.cue.genreStyle ? this.props.cue.genreStyle : "N/A"}</p>
@@ -634,20 +667,26 @@ class CorrectEdit extends React.Component {
 
                     <div>
                         <h3>New Genre</h3>
-                        <form name="genre" onSubmit={this.handleGenre}>
+                        <form className="edit__small-form" name="genre" onSubmit={this.handleGenre}>
                             <select name="genre" value={this.state.genre} onChange={this.handleInput}>
                                 <option value={-1}>Genre</option>
                                 {this.state.genreArray && this.state.genreArray.map((g, i) => {
                                     return <option key={i} value={i}>{g}</option>
                                 })}
                             </select>
-                            <input type="submit" value="Update Genre" />
+
+                            {this.props.cue && this.props.cue.genreStyle ? this.props.cue.genreStyle != "N/A" ?
+                             <input style={this.state.styleGreen} type="submit" value="Update Genre" />
+                            : <input style={this.state.styleRed} type="submit" value="Update Genre" />:
+                            <input style={this.state.styleRed} type="submit" value="Update Genre" />
+                            }
+                            
                         </form>
                     </div>
                 </div>
 
 
-                <div class="edit__container">
+                <div className="edit__container">
                     <div>
                         <h2>Instruments</h2>
                         {this.props.cue && this.props.cue.instruments ? this.props.cue.instruments.length > 0 ? this.props.cue.instruments.map((i, index) => {
@@ -664,17 +703,22 @@ class CorrectEdit extends React.Component {
                             })}
                         </div>
                         <h3>Add New Instrument</h3>
-                        <form onSubmit={this.handleNewInstrument}>
+                        <form className="edit__small-form" onSubmit={this.handleNewInstrument}>
                             <label>
                                 <input type="text" onChange={this.handleInput} value={this.state.newInstrument} name="newInstrument" />
-                                <input type="submit" value="Add New Instrument" />
+                                {this.props.cue && this.props.cue.instruments ? this.props.cue.instruments.length > 0 ? 
+                                <input style={this.state.styleGreen} type="submit" value="Add New Instrument" />:
+                                <input style={this.state.styleRed} type="submit" value="Add New Instrument" /> :
+                                <input style={this.state.styleRed} type="submit" value="Add New Instrument" /> 
+                                }
+                                
                             </label>
                         </form>
                     </div>
                 </div>
 
 
-                <div class="edit__container">
+                <div className="edit__container">
                     <div>
                         <h2>Descriptions</h2>
                         <div>
@@ -693,38 +737,48 @@ class CorrectEdit extends React.Component {
                             })}
                         </div>
                         <h3>Add New Description</h3>
-                        <form onSubmit={this.handleNewDescription}>
+                        <form className="edit__small-form" onSubmit={this.handleNewDescription}>
                             <label>
                                 <input value={this.state.newDescription}
                                     onChange={this.handleInput}
                                     name="newDescription"
                                     type="text" />
-                                <input type="submit" value="Add Description" />
+                                {this.props.cue && this.props.cue.descriptions ? this.props.cue.descriptions.length > 0 ?
+                                <input style={this.state.styleGreen} type="submit" value="Add Description" />:
+                                <input style={this.state.styleRed} type="submit" value="Add Description" /> :
+                                <input style={this.state.styleRed} type="submit" value="Add Description" /> 
+                                
+                                }
+                                
                             </label>
                         </form>
                     </div>
                 </div>
 
 
-                <div class="edit__container">
+                <div className="edit__container">
                     <div>
                         <h2>Rating</h2>
                         <p>{this.props.cue && this.props.cue.rating}</p>
                     </div>
 
                     <div>
-                        <form onSubmit={this.handleRating}>
+                        <form className="edit__small-form" onSubmit={this.handleRating}>
                             <label>
                                 New Rating:
                     <input value={this.state.rating} name="rating" type="number" onChange={this.handleInput} />
-                                <input type="submit" value="Update Rating" />
+                    {this.props.cue && this.props.cue.rating ? this.props.cue.rating > 0 ? 
+                     <input style={this.state.styleGreen} type="submit" value="Update Rating" /> : 
+                     <input style={this.state.styleRed} type="submit" value="Update Rating" /> :
+                     <input style={this.state.styleRed} type="submit" value="Update Rating" /> }
+                                
                             </label>
                         </form>
                     </div>
                 </div>
 
 
-                <div class="edit__container">
+                <div className="edit__container">
                     <div>
                         <h2>Sounds Like Films</h2>
                         <div>
@@ -736,11 +790,17 @@ class CorrectEdit extends React.Component {
                     </div>
 
                     <div>
-                        <form onSubmit={this.handleFilm}>
+                        <form className="edit__small-form" onSubmit={this.handleFilm}>
                             <label>
                                 Film
                         <input value={this.state.film} name="film" type="text" onChange={this.handleInput} />
-                                <input type="submit" value="Add film" />
+                        {this.props.cue && this.props.cue.films ? this.props.cue.films.length > 0 ? 
+                            <input style={this.state.styleGreen} type="submit" value="Add film" />:
+                            <input style={this.state.styleRed} type="submit" value="Add film" />:
+                            <input style={this.state.styleRed} type="submit" value="Add film" />
+                            
+                    }
+                                
                             </label>
                         </form>
                     </div>
@@ -748,7 +808,7 @@ class CorrectEdit extends React.Component {
                 </div>
 
 
-                <div class="edit__container">
+                <div className="edit__container">
                     <div>
                         <h2>Sounds Like Bands</h2>
                         <div>
@@ -760,25 +820,29 @@ class CorrectEdit extends React.Component {
                     </div>
 
                     <div>
-                        <form onSubmit={this.handleBand}>
+                        <form className="edit__small-form" onSubmit={this.handleBand}>
                             <label>
                                 Band:
                     <input value={this.state.band} name="band" type="text" onChange={this.handleInput} />
-                                <input type="submit" value="Add band" />
-                            </label>
+                    {this.props.cue && this.props.cue.bands ? this.props.cue.bands.length > 0 ? 
+                        <input style={this.state.styleGreen} type="submit" value="Add band" /> :
+                        <input style={this.state.styleRed} type="submit" value="Add band" />:
+                        <input style={this.state.styleRed} type="submit" value="Add band" />
+                    }
+                      </label>
                         </form>
                     </div>
                 </div>
 
 
-                <div class="edit__container">
+                <div className="edit__container">
                     <div>
                         <h2>Tempo</h2>
                         <p>{this.props.cue && this.props.cue.tempo}</p>
                     </div>
 
                     <div>
-                        <form onSubmit={this.handleTempo}>
+                        <form className="edit__small-form" onSubmit={this.handleTempo}>
                             <label>
                                 Change Tempo:
                         <select value={this.state.tempo} name="tempo" onChange={this.handleInput}>
@@ -790,14 +854,18 @@ class CorrectEdit extends React.Component {
                                     <option value="Non-Rhythmic"> Non-Rhythmic</option>
                                     <option value="N/A">N/A</option>
                                 </select>
-                                <input type="submit" value="Update Tempo" />
+                                {this.props.cue && this.props.cue.tempo != "N/A" ? 
+                                <input style={this.state.styleGreen} type="submit" value="Update Tempo" />:
+                                <input style={this.state.styleRed} type="submit" value="Update Tempo" />
+                            }
+                                
                             </label>
                         </form>
                     </div>
                 </div>
 
 
-                <div class="edit__container">
+                {/* <div className="edit__container">
                     <div>
                         <h2>Main Version Filename</h2>
                         <p>{this.props.cue && this.props.cue.mainVersion}</p>
@@ -808,17 +876,17 @@ class CorrectEdit extends React.Component {
                             <input type="submit" value="Update Main Version" />
                         </form>
                     </div>
-                </div>
+                </div> */}
 
 
-                <div class="edit__container">
+                <div className="edit__container">
                     <div>
                         <h2>Status</h2>
                         <p>{this.props.cue && this.props.cue.status}</p>
                     </div>
 
                     <div>
-                        <form onSubmit={this.handleStatus}>
+                        <form className="edit__small-form" onSubmit={this.handleStatus}>
                             <label>
                                 <select value={this.state.status} name="status" onChange={this.handleInput}>
                                     <option value="Status">Status</option>
@@ -826,17 +894,39 @@ class CorrectEdit extends React.Component {
                                     <option value="Active">Active</option>
                                     <option value="Pulled">Pulled</option>
                                 </select>
-                                <input type="submit" value="Update Status" />
+                                {this.props.cue && this.props.cue.status ? this.props.cue.status == "Active" || this.props.cue.status == "Pulled" ? 
+                                <input style={this.state.styleGreen} type="submit" value="Update Status" /> :
+                                <input style={this.state.styleRed} type="submit" value="Update Status" /> :
+                                <input style={this.state.styleRed} type="submit" value="Update Status" /> 
+                              
+
+                            }
+                                
                             </label>
                         </form>
                     </div>
+
+                    
+
+
+
                 </div>
 
 
 
 
 
-
+                <div className="edit__container">
+                    <div>
+                        <h2>Main Version Filename</h2>
+                        <p>{this.props.cue && this.props.cue.mainVersion}</p>
+                    </div>
+                    <div>
+                        
+                    </div>
+                        
+                        
+                    </div>
 
 
 
