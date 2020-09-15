@@ -88,8 +88,14 @@ router.post("/getMetadata", function (req, res) {
                 .then(metadata => {
                    console.log(util.inspect(metadata, { showHidden: false, depth: null }));
 
-                    cue.metadataComposer = metadata.common.artists.join("/");
-                    cue.metadataPublisher = metadata.common.copyright;
+                    // cue.metadataComposer = metadata.common.artists.join("/");
+                    // cue.metadataPublisher = metadata.common.copyright;
+                     //console.log(metadata.native.exif[0].value)
+                    //console.log(metadata.native.exif[9].value)
+                    // cue.metadataComposer = metadata.native.exif[9].value;
+                    // cue.metadataPublisher = metadata.native.exif[0].value;
+                    cue.metadataComposer = metadata.common.artists.toString();
+                    cue.metadataPublisher = metadata.native.exif[0].value;
                     cue.save(function(err, cue){
                         console.log("You are getting metadata for that cue")
                         res.status(200).json(JSON.stringify(cue));

@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const path = require("path")
 const cors = require("cors");
+const dotenv = require("dotenv").config();
 // REQUIRED TO READ FILENAMES
 const fs = require('fs');
 // REQUIRED TO MAKE EXCEL FILE
@@ -143,6 +144,8 @@ app.get('/api/upload', (req, res) => {
                         let songName = file.replace("DLM - ", "");
                         songName = songName.replace(".mp3", "");
                         songName = songName.replace(".wav", "");
+                        songName = songName.replace("._", "");
+                        file = file.replace("._","");
                         let mv = "N/A";
                         mainVersions.forEach((m, index) => {
                             if (file.includes(m.songSplit) && file != m.fullFile) {
@@ -218,6 +221,6 @@ app.get("*", (req, res) => {
     res.sendFile(path.join(publicPath, "index.html"));
 })
 
-app.listen(port, "localhost", function () {
+app.listen(port, process.env.IP, function () {
     console.log("Server Started");
 })
