@@ -26,7 +26,7 @@ var moment = require('moment'); // require
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:8080" }));
 app.use(express.static(publicPath));
-
+ 
 const database = process.env.DATABASE;
 // connect to database
 mongoose.connect("mongodb://localhost/dl_music",
@@ -51,6 +51,27 @@ const biCuesRoutes = require("./routes/api.bicues");
 app.use("/api/bicues", biCuesRoutes);
 const exportRoutes = require("./routes/api.export")
 app.use("/api/export", exportRoutes);
+
+const composerList = require("./composers");
+
+composers.deleteMany({}, (err) => {
+    if(err){
+        console.log(err)
+    }
+    else{
+        composers.create(composerList, (err, docs) => {
+            if(err){
+                console.log("error")
+            }
+            else {
+                console.log("composers added")
+            }
+        })
+
+    }
+})
+
+
 
 
 

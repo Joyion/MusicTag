@@ -134,7 +134,18 @@ class CorrectEdit extends React.Component {
 
             let isthisNew = true;
             const id = this.props.match.params.id;
-            const fullName = `${this.state.fName.trim()} ${this.state.mName.trim()} ${this.state.lName.trim()} ${this.state.suffix.trim()}`;
+           // const fullName = `${this.state.fName.trim()} ${this.state.mName.trim()} ${this.state.lName.trim()} ${this.state.suffix.trim()}`;
+           let fullName = this.state.fName.trim() + " ";
+           if(this.state.mName.lemgth > 0){
+            fullName += this.state.mName.trim() + " ";
+           } 
+           if(this.state.lName.length > 0){
+               fullName += this.state.lName.trim() + " ";
+           }
+           if(this.state.suffix.length > 0){
+               fullName += this.state.lName.trim() + " ";
+           }
+           fullName = fullName.trim();
             const newComposer = {
                 fullName: fullName.trim(),
                 fName: this.state.fName.trim(),
