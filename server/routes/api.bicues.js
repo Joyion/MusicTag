@@ -177,7 +177,7 @@ router.put("/updateCue", function (req, res){
                         let data = {cue: cue, comps: comps}
                         res.status(200).json(JSON.stringify(data));
                     }
-                })
+                }).sort({fullName: "asc"})
 
             }
             
@@ -199,7 +199,7 @@ router.get("/allComposers", function (req, res ){
         else {
             res.status(200).json(JSON.stringify(comps));
         }
-    })
+    }).sort({fullName: "asc"})
 
 })
 
