@@ -72,3 +72,13 @@
     text-shadow: 1px 1px #0000006c
    }
 }
+
+
+.filter__titles{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+
+}
