@@ -494,12 +494,12 @@ class CorrectEdit extends React.Component {
     render() {
         return (
             <div>
-                <div>
+                <div class="edit__title__container">
                     <div className="edit__title">
-                        <h1>Song Title:</h1>
-                        <p>{this.props.cue && this.props.cue.songTitle}</p>
-                        <h1>Catalog:</h1>
-                        <p>{this.props.cue && this.props.cue.catalogName}</p>
+                        <h2>Song Title:</h2>
+                        <h2>{this.props.cue && this.props.cue.songTitle}</h2>
+                        <h2>Catalog:</h2>
+                        <h2>{this.props.cue && this.props.cue.catalogName}</h2>
                     </div>
 
 

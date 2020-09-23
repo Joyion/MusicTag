@@ -101,7 +101,12 @@ class ResultTable extends React.Component {
                         <div>
                             <h1>Background Instrumentals</h1>
                             <h2>Total Cues: {this.props.cues.totalCues}</h2>
-                            <h2>Status: {this.state.status}</h2>
+                            <h2 className="filter__status">Status: 
+                     {this.state.status && this.state.status == "Active" ? <span style={{color: "green"}}> {this.state.status}</span> :
+                     this.state.status && this.state.status == "Pulled" ? <span style={{color: "red"}}>{this.state.status}</span> : 
+                     this.state.status && this.state.status == "Pending" ? <span style={{color: "#ffa400"}}>{this.state.status}</span> : ""}
+                     </h2>
+
                             <form onSubmit={this.handleStatus}>
                                 <label>
                                     <select name="selectStatus" value={this.state.selectStatus} onChange={this.handleChange}>
@@ -115,10 +120,13 @@ class ResultTable extends React.Component {
                             </form>
                         </div>
 
-                        <div>
-                            <p>Page {this.props.cues.page} of {this.props.cues.totalPages}</p>
-                            <button name="back" onClick={this.backPage}>Back</button>
-                            <button name="next" onClick={this.nextPage}>Next</button>
+                        <div className="filter__pages">
+                            <h3>Page {this.props.cues.page} of {this.props.cues.totalPages}</h3>
+                            <div>
+                               <button name="back" onClick={this.backPage}>Back</button>
+                            <button name="next" onClick={this.nextPage}>Next</button> 
+                            </div>
+                            
                             <form onSubmit={this.handlePgInput}>
                                 <label>
                                     Enter page number:
@@ -143,12 +151,12 @@ class ResultTable extends React.Component {
                     <div><p>Tempo</p></div>
                     <div><p>Actions</p></div>   
                 </div> */}
-                <div>
+                <div className="resultTable__container">
                     {this.props.cues.cues.length > 0 ? this.props.cues.cues.map((c, i) => {
                         return <Song key={i} cue={c} setAudioFile={this.setAudioFile} />
-                    }) : <p>No Results</p>}
+                    }) : <div style={{textAlign: "center", position: "relative", top: "20px"}}> <h3 style={{margin: 0}}>No Results</h3></div>}
                 </div>
-                <p>{process.env.PUBLIC_URL}</p>
+               
             </div>
         )
     }

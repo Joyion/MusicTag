@@ -27,7 +27,7 @@ class Song extends React.Component {
             <div className="song">
                 <div>
                     <div>
-                        <p>{this.props.cue.songTitle}</p>
+                        <p className="song__title">{this.props.cue.songTitle}</p>
                     </div>
 
                     <div>
@@ -59,8 +59,8 @@ class Song extends React.Component {
                 </div>
 
                 <div>
-                    <button onClick={this.playingSong}>PLAY</button>
-                    <button onClick={this.editSong}>EDIT</button>
+                    <button className="song__play" onClick={this.playingSong}>PLAY</button>
+                    <button className="song__edit" onClick={this.editSong}>EDIT</button>
 
                 </div>
 
