@@ -5,12 +5,13 @@
     width: 100%;
     position: fixed;
     top: 70px;
-    height: 350px;
+    height: 290px;
     z-index: 2;
 
 
     h1, h2 {
-        text-shadow: 2px 2px #d6d4d431
+        text-shadow: 2px 2px #d6d4d431;
+        margin: 10px 0;
     }
     input[type=submit]{
         font-size: 18px;
@@ -24,17 +25,22 @@
     button {
         font-size: 18px;
         margin: 5px;
-        padding: 10px;
+        padding: 5px;
         background-color: rgb(97, 95, 95);
         color: white;
         border: none;
 
     }
     form > label > select, input[type = number] {
-        width: 100px;
+        width: 50px;
         font-size: 18px;
         margin: 3px;
         padding: 5px;
+        text-align: center;
+    }
+
+    form > label > select {
+        width: 100px;
     }
 
     audio {
@@ -51,19 +57,30 @@
     display: flex;
     justify-content: space-between;
     text-align: left;
-    padding: 25px;
+    padding: 5px 25px;
 }
 
 .filter__pages {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+   
 
 
     form {
-        margin-top: 20px;
+        margin-top: 0px;
     }
-  
+
+    form > label > input[type = submit] {
+        background-color: rgb(97, 95, 95);
+    }
+   
+}
+
+.filter__page__buttons{
+    display: flex;
+    flex-direction: row;
+
 }
 
 .filter__status{
@@ -80,5 +97,23 @@
     width: 100%;
     justify-content: space-between;
     align-items: center;
+
+}
+
+.filter__audio {
+    h4 {
+        
+        margin-bottom: 10px;
+        
+    }
+}
+
+.filter__display{
+    margin: 0;
+    margin-bottom: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 
 }

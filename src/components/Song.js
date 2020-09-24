@@ -13,7 +13,7 @@ class Song extends React.Component {
         e.preventDefault();
         console.log(`${this.props.cue.release}/${this.props.cue.fileName}`)
         let fileName = `${this.props.cue.release}/${this.props.cue.fileName}`;
-        this.props.setAudioFile(fileName);
+        this.props.setAudioFile(fileName, this.props.cue.songTitle);
     }
 
     editSong() {

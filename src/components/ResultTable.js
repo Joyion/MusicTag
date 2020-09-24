@@ -17,6 +17,7 @@ class ResultTable extends React.Component {
             selectStatus: "Pending",
             totalCues: this.props.cues.totalCues,
             audioFile: "",
+            songPlaying: "",
         }
         this.nextPage = this.nextPage.bind(this);
         this.backPage = this.backPage.bind(this);
@@ -24,6 +25,7 @@ class ResultTable extends React.Component {
         this.handleStatus = this.handleStatus.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.setAudioFile = this.setAudioFile.bind(this);
+        this.handlePageChange = this.handlePageChange.bind(this);
 
     }
 
@@ -75,11 +77,21 @@ class ResultTable extends React.Component {
 
     }
 
-    setAudioFile(file) {
+    setAudioFile(file, songTitle) {
         this.setState({
-            audioFile: "/wav/" + file
+            audioFile: "/wav/" + file,
+            songPlaying: songTitle
         })
 
+    }
+
+    handlePageChange(e){
+        let change = e.target.name;
+        if(e.target.value >= 1){
+            this.setState({
+                [change]: e.target.value
+            })
+        }
     }
 
     handleChange(e) {
@@ -100,12 +112,15 @@ class ResultTable extends React.Component {
                     <div className="filter__flexcontainer">
                         <div>
                             <h1>Background Instrumentals</h1>
-                            <h2>Total Cues: {this.props.cues.totalCues}</h2>
-                            <h2 className="filter__status">Status: 
-                     {this.state.status && this.state.status == "Active" ? <span style={{color: "green"}}> {this.state.status}</span> :
-                     this.state.status && this.state.status == "Pulled" ? <span style={{color: "red"}}>{this.state.status}</span> : 
-                     this.state.status && this.state.status == "Pending" ? <span style={{color: "#ffa400"}}>{this.state.status}</span> : ""}
-                     </h2>
+                            <div className="filter__display">
+                                <h2>Total Cues: {this.props.cues.totalCues}</h2>
+                                <h2 className="filter__status">Status:
+                     {this.state.status && this.state.status == "Active" ? <span style={{ color: "green" }}> {this.state.status}</span> :
+                                        this.state.status && this.state.status == "Pulled" ? <span style={{ color: "red" }}>{this.state.status}</span> :
+                                            this.state.status && this.state.status == "Pending" ? <span style={{ color: "#ffa400" }}>{this.state.status}</span> : ""}
+                                </h2>
+                            </div>
+
 
                             <form onSubmit={this.handleStatus}>
                                 <label>
@@ -121,22 +136,25 @@ class ResultTable extends React.Component {
                         </div>
 
                         <div className="filter__pages">
+
                             <h3>Page {this.props.cues.page} of {this.props.cues.totalPages}</h3>
-                            <div>
-                               <button name="back" onClick={this.backPage}>Back</button>
-                            <button name="next" onClick={this.nextPage}>Next</button> 
+                            <div className="filter__page__buttons">
+                                <form onSubmit={this.handlePgInput}>
+                                    <label>
+
+                                        <input onChange={this.handlePageChange} name="selectPage" type="number" value={this.state.selectPage} />
+                                        <input type="submit" value="Go To Page" />
+                                    </label>
+                                </form>
+                                <button name="back" onClick={this.backPage}>Back</button>
+                                <button name="next" onClick={this.nextPage}>Next</button>
                             </div>
-                            
-                            <form onSubmit={this.handlePgInput}>
-                                <label>
-                                    Enter page number:
-                            <input onChange={this.handleChange} name="selectPage" type="number" value={this.state.selectPage} />
-                                    <input type="submit" value="submit" />
-                                </label>
-                            </form>
+
+
                         </div>
                     </div>
-                    <div>
+                    <div className="filter__audio">
+                        <h4>Playing: {this.state.songPlaying}</h4>
                         <audio controls autoPlay src={this.state.audioFile} type="audio/wav" >
                         </audio>
 
@@ -154,9 +172,9 @@ class ResultTable extends React.Component {
                 <div className="resultTable__container">
                     {this.props.cues.cues.length > 0 ? this.props.cues.cues.map((c, i) => {
                         return <Song key={i} cue={c} setAudioFile={this.setAudioFile} />
-                    }) : <div style={{textAlign: "center", position: "relative", top: "20px"}}> <h3 style={{margin: 0}}>No Results</h3></div>}
+                    }) : <div style={{ textAlign: "center", position: "relative", top: "20px" }}> <h3 style={{ margin: 0 }}>No Results</h3></div>}
                 </div>
-               
+
             </div>
         )
     }
