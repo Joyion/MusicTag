@@ -5,7 +5,7 @@
     width: 100%;
     position: fixed;
     top: 70px;
-    height: 290px;
+    height: 3px;
     z-index: 2;
 
 
@@ -103,7 +103,7 @@
 .filter__audio {
     h4 {
         
-        margin-bottom: 10px;
+        margin-bottom: 5px;
         
     }
 }
@@ -116,4 +116,18 @@
     flex-direction: row;
     justify-content: space-between;
 
+}
+
+.filter__resultTitles{
+    display: flex;
+    div {
+        height: 40px;
+        font-size: 14px;
+        width: 30%;
+        background-color: rgb(49, 49, 49);
+        color: white;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
 }

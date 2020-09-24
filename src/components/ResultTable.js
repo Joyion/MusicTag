@@ -159,6 +159,13 @@ class ResultTable extends React.Component {
                         </audio>
 
                     </div>
+                    <div className="filter__resultTitles">
+                       <div><p>Song Title</p></div>
+                       <div><p>Composer</p></div>
+                       <div><p>Publisher</p></div>
+                       <div><p>Tempo</p></div>
+                       <div><p></p></div>
+                    </div>
 
                 </div>
 

@@ -55,7 +55,7 @@ router.get("/getBiCues", (req, res) => {
                     // res.status(200).json(JSON.stringify(data));
                 }
 
-            }).skip(skip).limit(pageLimit).exec(function (err, docs) {
+            }).sort({songTitle: "asc"}).skip(skip).limit(pageLimit).exec(function (err, docs) {
                 data.cues = docs;
                 //console.log(data);
                 res.status(200).json(JSON.stringify(data));
