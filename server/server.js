@@ -54,22 +54,24 @@ app.use("/api/export", exportRoutes);
 
 const composerList = require("./composers");
 
-composers.deleteMany({}, (err) => {
-    if(err){
-        console.log(err)
-    }
-    else{
-        composers.create(composerList, (err, docs) => {
-            if(err){
-                console.log("error")
-            }
-            else {
-                console.log("composers added")
-            }
-        })
+// populate database with old composer info 
 
-    }
-})
+// composers.deleteMany({}, (err) => {
+//     if(err){
+//         console.log(err)
+//     }
+//     else{
+//         composers.create(composerList, (err, docs) => {
+//             if(err){
+//                 console.log("error")
+//             }
+//             else {
+//                 console.log("composers added")
+//             }
+//         })
+
+//     }
+// })
 
 
 

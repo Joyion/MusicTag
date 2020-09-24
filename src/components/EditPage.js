@@ -708,7 +708,7 @@ class CorrectEdit extends React.Component {
 
                     <div>
                         <h3>Add Instruments</h3>
-                        <div>
+                        <div className="edit__container--scroll">
                             {this.state.instrumentArray && this.state.instrumentArray.map((i, index) => {
                                 return <button onClick={this.handleInstrument} name={i} key={index}>{i}</button>
                             })}
@@ -742,7 +742,7 @@ class CorrectEdit extends React.Component {
 
                     <div>
                         <h3>Add Description</h3>
-                        <div>
+                        <div className="edit__container--scroll">
                             {this.state.descriptionArray && this.state.descriptionArray.map((d, index) => {
                                 return <button onClick={this.handleDescription} name={d} key={index}>{d}</button>
                             })}
