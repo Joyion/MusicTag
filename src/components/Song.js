@@ -33,12 +33,16 @@ class Song extends React.Component {
                     <div className="song__desc">
                         <p>
                             {this.props.cue.descriptions && this.props.cue.descriptions.map((d, i) => {
-        
+                                let last = this.props.cue.descriptions.length - 1;
                                 if (i < 5) {
-                                    if(i == 4){
+                                    if(i == last){
                                         return d;
 
-                                    }else{
+                                    }
+                                    else if(i == 4){
+                                        return d + "..."
+                                    }
+                                    else{
                                        return d + ", " ;
                                     }
                                     
