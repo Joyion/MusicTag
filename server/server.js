@@ -163,6 +163,7 @@ app.get('/api/upload', (req, res) => {
                         }
                     })
                     let biSongs = [];
+                    console.log(files);
                     files.forEach((file, index) => {
                         let songName = file.replace("DLM - ", "");
                         songName = songName.replace(".mp3", "");
