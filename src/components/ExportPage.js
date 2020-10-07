@@ -1,6 +1,7 @@
 import React from 'react';
 import ResultTable from "./ResultTable";
 import axios from "axios";
+
 //import {withRouter} from "react-router-dom";
 
 class ExportPage extends React.Component {
@@ -62,9 +63,10 @@ class ExportPage extends React.Component {
     }
 
     exportData() {
-        console.log("export data")
+        console.log("export data");
+        console.log(process.env.IP);
         axios.get('/api/export/bi').then(function (response) {
-            
+            //fileDownload(response.data, "metadata.xlsx")
         });
     }
 
@@ -85,7 +87,7 @@ class ExportPage extends React.Component {
 
                 <div>
                     <h1>Download Metadata Sheets</h1>
-                    <button class="export__button" onClick={this.exportData}>Source Audio Metadata</button>
+                    <a className="export__button" href={"http://" + process.env.IP + ":5000/api/export/bi"}>Source Audio Metadata</a>
                 </div>
 
 

@@ -329,8 +329,23 @@ console.log("Inside Excel");
 
 
 
-            wb.write("public/BISourceAudio.xlsx");
-            res.redirect("/api/export/download");
+            wb.write("public/BISourceAudio.xlsx", () => {
+                if(err){
+                    console.log(err)
+                }
+                else{
+                // res.redirect("/api/export/download");
+                   res.download("public/BISourceAudio.xlsx", "BISourceAudio.xlsx", function (err) {
+                    if (err) {
+                        console.log("error");
+                    }
+                    else {
+                        console.log("sent");
+                    }
+                })
+                }
+            });
+            
             // end of bicue.find()
 
         }
@@ -347,7 +362,7 @@ console.log("Inside Excel");
 
 router.get("/download", function (req, res) {
     console.log("in download")
-    res.download("public/BISourceAudio.xlsx", "BISourceAudio.xlsx", function (err) {
+    res.download("public/BISourceAudio.xlsx",function (err) {
         if (err) {
             console.log("error");
         }
