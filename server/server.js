@@ -97,7 +97,7 @@ app.get('/api/upload', (req, res) => {
             console.log("error reading files");
         }
         else {
-
+            console.log(files.length);
             if (files.length > 0) {
 
                 releaseIsrc.findOne(function (err, docs) {
@@ -248,3 +248,5 @@ app.get("*", (req, res) => {
 app.listen(port, process.env.IP, function () {
     console.log("Server Started");
 })
+
+//

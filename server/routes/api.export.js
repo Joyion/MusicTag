@@ -46,7 +46,7 @@ const sourceAudioHeaders =
 
 router.get('/bi', (req, res) => {
 
-
+console.log("Inside Excel");
 
     biCue.find({}, (err, bicues) => {
         if (!bicues) {
@@ -329,7 +329,7 @@ router.get('/bi', (req, res) => {
 
 
 
-            wb.write("BIMetadata.xlsx");
+            wb.write("public/BISourceAudio.xlsx");
             res.redirect("/api/export/download");
             // end of bicue.find()
 
@@ -346,7 +346,8 @@ router.get('/bi', (req, res) => {
 
 
 router.get("/download", function (req, res) {
-    res.download("BIMetadata.xlsx", "BIMetadata.xlsx", function (err) {
+    console.log("in download")
+    res.download("public/BISourceAudio.xlsx", "BISourceAudio.xlsx", function (err) {
         if (err) {
             console.log("error");
         }

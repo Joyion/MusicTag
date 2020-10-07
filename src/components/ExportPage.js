@@ -64,7 +64,7 @@ class ExportPage extends React.Component {
     exportData() {
         console.log("export data")
         axios.get('/api/export/bi').then(function (response) {
-
+            
         });
     }
 
@@ -85,7 +85,7 @@ class ExportPage extends React.Component {
 
                 <div>
                     <h1>Download Metadata Sheets</h1>
-                    <button class="export__button" href="/api/export/bi">Source Audio Metadata</button>
+                    <button class="export__button" onClick={this.exportData}>Source Audio Metadata</button>
                 </div>
 
 
