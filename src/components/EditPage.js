@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux"
-import { startSetSong, startUpdateCue, startGetComposers } from "../actions/cues.action";
+import { startSetSong, startUpdateCue, startGetComposers,startCopy } from "../actions/cues.action";
 import genreObjArray from "./genreStyle";
 import instrumentArray from "./instruments";
 import descriptionArray from "./descriptions";
@@ -58,8 +58,8 @@ class CorrectEdit extends React.Component {
             film: "",
             status: "",
             mainVersion: "",
-            styleGreen: {backgroundColor: "green"},
-            styleRed: {backgroundColor: "red"},
+            styleGreen: { backgroundColor: "green" },
+            styleRed: { backgroundColor: "red" },
         }
 
 
@@ -87,6 +87,7 @@ class CorrectEdit extends React.Component {
         this.removeFilm = this.removeFilm.bind(this);
         this.removeBand = this.removeBand.bind(this);
         this.handleNewInstrument = this.handleNewInstrument.bind(this);
+        this.handleCopy = this.handleCopy.bind(this);
 
     }
 
@@ -134,18 +135,18 @@ class CorrectEdit extends React.Component {
 
             let isthisNew = true;
             const id = this.props.match.params.id;
-           // const fullName = `${this.state.fName.trim()} ${this.state.mName.trim()} ${this.state.lName.trim()} ${this.state.suffix.trim()}`;
-           let fullName = this.state.fName.trim() + " ";
-           if(this.state.mName.lemgth > 0){
-            fullName += this.state.mName.trim() + " ";
-           } 
-           if(this.state.lName.length > 0){
-               fullName += this.state.lName.trim() + " ";
-           }
-           if(this.state.suffix.length > 0){
-               fullName += this.state.lName.trim() + " ";
-           }
-           fullName = fullName.trim();
+            // const fullName = `${this.state.fName.trim()} ${this.state.mName.trim()} ${this.state.lName.trim()} ${this.state.suffix.trim()}`;
+            let fullName = this.state.fName.trim() + " ";
+            if (this.state.mName.lemgth > 0) {
+                fullName += this.state.mName.trim() + " ";
+            }
+            if (this.state.lName.length > 0) {
+                fullName += this.state.lName.trim() + " ";
+            }
+            if (this.state.suffix.length > 0) {
+                fullName += this.state.lName.trim() + " ";
+            }
+            fullName = fullName.trim();
             const newComposer = {
                 fullName: fullName.trim(),
                 fName: this.state.fName.trim(),
@@ -163,27 +164,27 @@ class CorrectEdit extends React.Component {
                     console.log(c.cae + " " + newComposer.cae);
                     console.log(c.pro + " " + newComposer.pro);
                     console.log(c.cae == newComposer.cae);
-                    if(c.cae == newComposer.cae && c.pro == newComposer.pro){
+                    if (c.cae == newComposer.cae && c.pro == newComposer.pro) {
                         isthisNew = false;
                     }
-                    
+
                 })
-                console.log( "Composer Length " + composerBank.length);
-              
+                console.log("Composer Length " + composerBank.length);
+
             }
-            
+
 
             console.log(isthisNew);
 
             //    console.log(newComposer);
 
-            if(isthisNew){
-            let composers = this.props.cue.composers.map((e) => { return e });
-            composers.push(newComposer);
-            startUpdateCue(id, "composers", composers, isthisNew, newComposer, this.props.dispatch);
+            if (isthisNew) {
+                let composers = this.props.cue.composers.map((e) => { return e });
+                composers.push(newComposer);
+                startUpdateCue(id, "composers", composers, isthisNew, newComposer, this.props.dispatch);
             }
 
-           
+
             this.setState({
                 fName: "",
                 mName: "",
@@ -477,6 +478,14 @@ class CorrectEdit extends React.Component {
 
     }
 
+    handleCopy(e) {
+        const id = this.props.match.params.id;
+        if (this.props.cue.mainVersion.trim()) {
+            // console.log(this.props.cue.mainVersion);
+            startCopy(id, this.props.cue, this.props.cue.mainVersion, this.props.dispatch);
+        }
+    }
+
 
     handleInput(e) {
         const name = e.target.name;
@@ -494,7 +503,7 @@ class CorrectEdit extends React.Component {
     render() {
         return (
             <div>
-                <div class="edit__title__container">
+                <div className="edit__title__container">
                     <div className="edit__title">
                         <h2>Song Title:</h2>
                         <h2>{this.props.cue && this.props.cue.songTitle}</h2>
@@ -509,10 +518,11 @@ class CorrectEdit extends React.Component {
                             </audio>
 
                         </div> : <div className="edit__title"><p>Unable to play media</p></div>}
+                    
                 </div>
 
 
-
+             
 
                 <div className="edit__container">
                     <div>
@@ -533,6 +543,13 @@ class CorrectEdit extends React.Component {
                     </div>
 
                     <div>
+                    <div>
+                    { this.props.cue && this.props.cue.mainVersion != "N/A" ?
+                        <div>
+                            <button onClick={this.handleCopy}>Copy All Metadata From Main Version</button>
+                        </div> : <div></div> 
+                    }
+                </div>
                         <h3>Add Composer</h3>
                         <form onSubmit={this.addComposer}>
                             <div>
@@ -564,15 +581,15 @@ class CorrectEdit extends React.Component {
                             </div>
                             <br />
 
-                            {this.props.cue && this.props.cue.composers ? this.props.cue.composers.length > 0 ? 
-                            <input style={this.state.styleGreen} type="submit" value="Add Composer" /> : 
-                            <input style={this.state.styleRed} type="submit" value="Add Composer" /> :
-                            <input style={this.state.styleRed} type="submit" value="Add Composer" /> 
+                            {this.props.cue && this.props.cue.composers ? this.props.cue.composers.length > 0 ?
+                                <input style={this.state.styleGreen} type="submit" value="Add Composer" /> :
+                                <input style={this.state.styleRed} type="submit" value="Add Composer" /> :
+                                <input style={this.state.styleRed} type="submit" value="Add Composer" />
                             }
 
 
 
-                            
+
                         </form>
 
                         <h3>New Composer</h3>
@@ -612,12 +629,12 @@ class CorrectEdit extends React.Component {
                                 </select>
                             </label>
 
-                            {this.props.cue && this.props.cue.composers ? this.props.cue.composers.length > 0 ? 
-                            <input style={this.state.styleGreen} type="submit" value="Add New Composer" />:
-                            <input style={this.state.styleRed} type="submit" value="Add New Composer" />:
-                            <input style={this.state.styleRed} type="submit" value="Add New Composer" />
+                            {this.props.cue && this.props.cue.composers ? this.props.cue.composers.length > 0 ?
+                                <input style={this.state.styleGreen} type="submit" value="Add New Composer" /> :
+                                <input style={this.state.styleRed} type="submit" value="Add New Composer" /> :
+                                <input style={this.state.styleRed} type="submit" value="Add New Composer" />
                             }
-                            
+
                         </form>
 
                     </div>
@@ -658,13 +675,13 @@ class CorrectEdit extends React.Component {
 
                             </label>
                             <br />
-                            {this.props.cue && this.props.cue.publishers ? this.props.cue.publishers.length > 0 ? 
-                            <input style={this.state.styleGreen} type="submit" value="Add Publisher" /> :
-                            <input style={this.state.styleRed} type="submit" value="Add Publisher" /> :
-                            <input style={this.state.styleRed} type="submit" value="Add Publisher" />
-                        }
+                            {this.props.cue && this.props.cue.publishers ? this.props.cue.publishers.length > 0 ?
+                                <input style={this.state.styleGreen} type="submit" value="Add Publisher" /> :
+                                <input style={this.state.styleRed} type="submit" value="Add Publisher" /> :
+                                <input style={this.state.styleRed} type="submit" value="Add Publisher" />
+                            }
 
-                            
+
                         </form>
 
                     </div>
@@ -687,11 +704,11 @@ class CorrectEdit extends React.Component {
                             </select>
 
                             {this.props.cue && this.props.cue.genreStyle ? this.props.cue.genreStyle != "N/A" ?
-                             <input style={this.state.styleGreen} type="submit" value="Update Genre" />
-                            : <input style={this.state.styleRed} type="submit" value="Update Genre" />:
-                            <input style={this.state.styleRed} type="submit" value="Update Genre" />
+                                <input style={this.state.styleGreen} type="submit" value="Update Genre" />
+                                : <input style={this.state.styleRed} type="submit" value="Update Genre" /> :
+                                <input style={this.state.styleRed} type="submit" value="Update Genre" />
                             }
-                            
+
                         </form>
                     </div>
                 </div>
@@ -717,12 +734,12 @@ class CorrectEdit extends React.Component {
                         <form className="edit__small-form" onSubmit={this.handleNewInstrument}>
                             <label>
                                 <input type="text" onChange={this.handleInput} value={this.state.newInstrument} name="newInstrument" />
-                                {this.props.cue && this.props.cue.instruments ? this.props.cue.instruments.length > 0 ? 
-                                <input style={this.state.styleGreen} type="submit" value="Add New Instrument" />:
-                                <input style={this.state.styleRed} type="submit" value="Add New Instrument" /> :
-                                <input style={this.state.styleRed} type="submit" value="Add New Instrument" /> 
+                                {this.props.cue && this.props.cue.instruments ? this.props.cue.instruments.length > 0 ?
+                                    <input style={this.state.styleGreen} type="submit" value="Add New Instrument" /> :
+                                    <input style={this.state.styleRed} type="submit" value="Add New Instrument" /> :
+                                    <input style={this.state.styleRed} type="submit" value="Add New Instrument" />
                                 }
-                                
+
                             </label>
                         </form>
                     </div>
@@ -755,12 +772,12 @@ class CorrectEdit extends React.Component {
                                     name="newDescription"
                                     type="text" />
                                 {this.props.cue && this.props.cue.descriptions ? this.props.cue.descriptions.length > 0 ?
-                                <input style={this.state.styleGreen} type="submit" value="Add Description" />:
-                                <input style={this.state.styleRed} type="submit" value="Add Description" /> :
-                                <input style={this.state.styleRed} type="submit" value="Add Description" /> 
-                                
+                                    <input style={this.state.styleGreen} type="submit" value="Add Description" /> :
+                                    <input style={this.state.styleRed} type="submit" value="Add Description" /> :
+                                    <input style={this.state.styleRed} type="submit" value="Add Description" />
+
                                 }
-                                
+
                             </label>
                         </form>
                     </div>
@@ -778,11 +795,11 @@ class CorrectEdit extends React.Component {
                             <label>
                                 New Rating:
                     <input value={this.state.rating} name="rating" type="number" onChange={this.handleInput} />
-                    {this.props.cue && this.props.cue.rating ? this.props.cue.rating > 0 ? 
-                     <input style={this.state.styleGreen} type="submit" value="Update Rating" /> : 
-                     <input style={this.state.styleRed} type="submit" value="Update Rating" /> :
-                     <input style={this.state.styleRed} type="submit" value="Update Rating" /> }
-                                
+                                {this.props.cue && this.props.cue.rating ? this.props.cue.rating > 0 ?
+                                    <input style={this.state.styleGreen} type="submit" value="Update Rating" /> :
+                                    <input style={this.state.styleRed} type="submit" value="Update Rating" /> :
+                                    <input style={this.state.styleRed} type="submit" value="Update Rating" />}
+
                             </label>
                         </form>
                     </div>
@@ -805,13 +822,13 @@ class CorrectEdit extends React.Component {
                             <label>
                                 Film
                         <input value={this.state.film} name="film" type="text" onChange={this.handleInput} />
-                        {this.props.cue && this.props.cue.films ? this.props.cue.films.length > 0 ? 
-                            <input style={this.state.styleGreen} type="submit" value="Add film" />:
-                            <input style={this.state.styleRed} type="submit" value="Add film" />:
-                            <input style={this.state.styleRed} type="submit" value="Add film" />
-                            
-                    }
-                                
+                                {this.props.cue && this.props.cue.films ? this.props.cue.films.length > 0 ?
+                                    <input style={this.state.styleGreen} type="submit" value="Add film" /> :
+                                    <input style={this.state.styleRed} type="submit" value="Add film" /> :
+                                    <input style={this.state.styleRed} type="submit" value="Add film" />
+
+                                }
+
                             </label>
                         </form>
                     </div>
@@ -835,12 +852,12 @@ class CorrectEdit extends React.Component {
                             <label>
                                 Band:
                     <input value={this.state.band} name="band" type="text" onChange={this.handleInput} />
-                    {this.props.cue && this.props.cue.bands ? this.props.cue.bands.length > 0 ? 
-                        <input style={this.state.styleGreen} type="submit" value="Add band" /> :
-                        <input style={this.state.styleRed} type="submit" value="Add band" />:
-                        <input style={this.state.styleRed} type="submit" value="Add band" />
-                    }
-                      </label>
+                                {this.props.cue && this.props.cue.bands ? this.props.cue.bands.length > 0 ?
+                                    <input style={this.state.styleGreen} type="submit" value="Add band" /> :
+                                    <input style={this.state.styleRed} type="submit" value="Add band" /> :
+                                    <input style={this.state.styleRed} type="submit" value="Add band" />
+                                }
+                            </label>
                         </form>
                     </div>
                 </div>
@@ -865,11 +882,11 @@ class CorrectEdit extends React.Component {
                                     <option value="Non-Rhythmic"> Non-Rhythmic</option>
                                     <option value="N/A">N/A</option>
                                 </select>
-                                {this.props.cue && this.props.cue.tempo != "N/A" ? 
-                                <input style={this.state.styleGreen} type="submit" value="Update Tempo" />:
-                                <input style={this.state.styleRed} type="submit" value="Update Tempo" />
-                            }
-                                
+                                {this.props.cue && this.props.cue.tempo != "N/A" ?
+                                    <input style={this.state.styleGreen} type="submit" value="Update Tempo" /> :
+                                    <input style={this.state.styleRed} type="submit" value="Update Tempo" />
+                                }
+
                             </label>
                         </form>
                     </div>
@@ -905,19 +922,19 @@ class CorrectEdit extends React.Component {
                                     <option value="Active">Active</option>
                                     <option value="Pulled">Pulled</option>
                                 </select>
-                                {this.props.cue && this.props.cue.status ? this.props.cue.status == "Active" || this.props.cue.status == "Pulled" ? 
-                                <input style={this.state.styleGreen} type="submit" value="Update Status" /> :
-                                <input style={this.state.styleRed} type="submit" value="Update Status" /> :
-                                <input style={this.state.styleRed} type="submit" value="Update Status" /> 
-                              
+                                {this.props.cue && this.props.cue.status ? this.props.cue.status == "Active" || this.props.cue.status == "Pulled" ?
+                                    <input style={this.state.styleGreen} type="submit" value="Update Status" /> :
+                                    <input style={this.state.styleRed} type="submit" value="Update Status" /> :
+                                    <input style={this.state.styleRed} type="submit" value="Update Status" />
 
-                            }
-                                
+
+                                }
+
                             </label>
                         </form>
                     </div>
 
-                    
+
 
 
 
@@ -933,29 +950,11 @@ class CorrectEdit extends React.Component {
                         <p>{this.props.cue && this.props.cue.mainVersion}</p>
                     </div>
                     <div>
-                        
-                    </div>
-                        
-                        
+
                     </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                </div>
 
                 {/* this is the last div */}
             </div>

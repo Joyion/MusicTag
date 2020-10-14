@@ -11,6 +11,7 @@ const ffmetadata = require("ffmetadata");
 // read metadata from files
 const mm = require('music-metadata');
 const util = require('util');
+const e = require("express");
 
 // GET A LIST OF BI CUES
 router.get("/getBiCues", (req, res) => {
@@ -114,6 +115,64 @@ router.post("/getMetadata", function (req, res) {
     })
 })
 
+
+/// COPY UPDATE CUE 
+
+router.put("/copyCue", (req, res) => {
+    const selectCue = req.body.cue;
+    const mv = req.body.mainVersion;
+    console.log("This is the id" +req.body.id)
+    biCue.findOne({fileName: mv}, (err, cue) =>{
+        if(err){
+            const error = {error: true, message: "UPDATE FAILED"}
+            res.status(400).json(JSON.stringify(error))
+            
+        }
+        else{
+            console.log("THIs is the cue" + cue);
+            console.log(cue.composers);
+
+            biCue.findByIdAndUpdate(req.body.id,{
+                ...selectCue, 
+                composers: cue.composers,
+                publishers: cue.publishers,
+                genre: cue.genre,
+                style: cue.style,
+                genreStyle: cue.genreStyle,
+                genreId: cue.genreId,
+                descriptions: cue.descriptions,
+                tempo: cue.tempo,
+                rating: cue.rating,
+                bands: cue.bands,
+                films: cue.films,
+                top: cue.top,
+                          
+            }, {new: true}, (err, newCue) => {
+                if(err){
+                    const error = {error: true, message: "UPDATE FAILED"}
+                    res.status(400).json(JSON.stringify(error))
+                }
+                else{
+                    composers.find({}, (err, comps)=> {
+                        if(err){
+                            const error = {error: true, message: "UPDATE FAILED"}
+                            res.status(400).json(JSON.stringify(error))
+                        }
+                        else {
+                            console.log("copying data")
+                            console.log(newCue)
+                            let data = {cue: newCue, comps: comps}
+                            res.status(200).json(JSON.stringify(data));
+                        }
+                    })
+
+                }
+            } ) 
+        }
+
+    })
+
+})
 
 
 /// UPDATES THE INFORMATION ON THE CUE AND ALSO CHECKS TO ADD NEW COMPOSER TO COMPOSER LIST IF IT'S NEW 

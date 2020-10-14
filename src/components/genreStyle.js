@@ -134,6 +134,5 @@
 let genreObjArray = genreArray.map((g, index) => {return {genre: g, genreId: index + 1}})
 
 
-console.log(genreObjArray[1].genre);
 
 export default genreObjArray;
