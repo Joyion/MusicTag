@@ -5,7 +5,7 @@ import genreObjArray from "./genreStyle";
 import instrumentArray from "./instruments";
 import descriptionArray from "./descriptions";
 import pros from "./pros"
-import { throttle } from 'lodash';
+
 class CorrectEdit extends React.Component {
 
     constructor(props) {

@@ -175,6 +175,12 @@ router.put("/copyCue", (req, res) => {
 })
 
 
+router.put("/updateCueComposer", function(req, res){
+    const id = req.body.id 
+    const composer = req.body.composer
+})
+
+
 /// UPDATES THE INFORMATION ON THE CUE AND ALSO CHECKS TO ADD NEW COMPOSER TO COMPOSER LIST IF IT'S NEW 
 router.put("/updateCue", function (req, res){
     const id = req.body.id;
