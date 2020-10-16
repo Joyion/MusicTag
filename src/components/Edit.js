@@ -47,7 +47,12 @@ class Edit extends React.Component{
     render(){
         return(
             <div>
-                
+                <h2>Add Composer</h2>
+                <form onSubmit={this.addComposer}>
+                    <select onChange={this.handleInput}>
+
+                    </select>
+                </form>
             </div>
         )
     }

@@ -56,7 +56,7 @@ class Song extends React.Component {
 
                 <div className="song__large" >
                     <div>
-                        {this.props.cue.composers ? this.props.cue.composers.map((c, i) => { return <p key={i}>{c.fullName}</p> }) : " "}
+                        {this.props.cue.composers ? this.props.cue.composers.map((c, i) => { return <p key={i}>{c.composer.fullName}</p> }) : " "}
                     </div>
                 </div>
 

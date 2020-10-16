@@ -48,7 +48,7 @@ router.get('/bi', (req, res) => {
 
 console.log("Inside Excel");
 
-    biCue.find({}, (err, bicues) => {
+    biCue.find({}).populate({path: 'composers.composer', model: "Composer"}).exec((err, bicues) => {
         if (!bicues) {
             console.log("Error creating excel");
 
@@ -261,19 +261,19 @@ console.log("Inside Excel");
                         let cc = cue.composers[ploop]
 
                         // Writer first name
-                        ws.cell(row, count).string(cc.fName).style(style);
+                        ws.cell(row, count).string(cc.composer.fName).style(style);
                         count++;
                         // Writer last name
-                        ws.cell(row, count).string(cc.lName).style(style);
+                        ws.cell(row, count).string(cc.composer.lName).style(style);
                         count++;
                         // Writer Company 
                         ws.cell(row, count).string("").style(style);
                         count++;
                         // Writer Pro Affliation
-                        ws.cell(row, count).string(cc.pro).style(style);
+                        ws.cell(row, count).string(cc.composer.pro).style(style);
                         count++;
                         // writer cae/ipi 
-                        ws.cell(row, count).string(cc.cae).style(style);
+                        ws.cell(row, count).string(cc.composer.cae).style(style);
                         count++;
                         //Writer Ownership share
                         ws.cell(row, count).string(`${cc.split}%`).style(style);

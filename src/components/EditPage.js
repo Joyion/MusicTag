@@ -148,14 +148,15 @@ class CorrectEdit extends React.Component {
             }
             fullName = fullName.trim();
             const newComposer = {
+                c:{
                 fullName: fullName.trim(),
                 fName: this.state.fName.trim(),
                 mName: this.state.mName.trim(),
                 lName: this.state.lName.trim(),
                 suffix: this.state.suffix.trim(),
-                split: this.state.cSplit,
                 cae: this.state.cae.trim(),
-                pro: this.state.pro
+                pro: this.state.pro},
+                split: this.state.cSplit,
             }
 
             if (this.props.composers.length > 0) {
@@ -179,9 +180,8 @@ class CorrectEdit extends React.Component {
             //    console.log(newComposer);
 
             if (isthisNew) {
-                let composers = this.props.cue.composers.map((e) => { return e });
-                composers.push(newComposer);
-                startUpdateCue(id, "composers", composers, isthisNew, newComposer, this.props.dispatch);
+                
+                startUpdateCue(id, "addNewComposer", newComposer, isthisNew, newComposer, this.props.dispatch);
             }
 
 
@@ -200,33 +200,24 @@ class CorrectEdit extends React.Component {
 
     removeComposer(e) {
         e.preventDefault();
-        const id = this.props.match.params.id;
-        // console.log(e.target.name);
-        const composerId = e.target.name;
-        let composers = this.props.cue.composers.filter((e) => { return e._id != composerId });
-        startUpdateCue(id, "composers", composers, null, null, this.props.dispatch);
+        const id = this.props.match.params.id;  
+        let c = e.target.name;
+        console.log(e.target.name)
+        startUpdateCue(id, "removeComposer", c, null, null, this.props.dispatch);
     }
 
     addComposer(e) {
-
+        const id = this.props.match.params.id;
         e.preventDefault();
 
         if (this.state.addComposer != -1 && this.state.newSplit > 0) {
-            let c = this.props.composers[this.state.addComposer];
-            const id = this.props.match.params.id;
-            const newComposer = {
-                fullName: c.fullName,
-                fName: c.fName,
-                mName: c.mName,
-                lName: c.lName,
-                suffix: c.suffix,
-                split: this.state.newSplit,
-                cae: c.cae,
-                pro: c.pro,
-            }
-            let composers = this.props.cue.composers.map((e) => { return e });
-            composers.push(newComposer);
-            startUpdateCue(id, "composers", composers, false, null, this.props.dispatch);
+            let c = this.props.composers[this.state.addComposer]
+            console.log(this.state.newSplit);
+            let split = this.state.newSplit;
+            let comp = {c: c, split: split}
+
+            
+            startUpdateCue(id, "addComposer", comp, false, null, this.props.dispatch);
             this.setState({
                 addComposer: -1,
                 newSplit: 0
@@ -535,7 +526,7 @@ class CorrectEdit extends React.Component {
                         {/* this shows all the current composers on the cue's record */}
                         {this.props.cue && this.props.cue.composers ? this.props.cue.composers.length > 0 ?
                             this.props.cue.composers.map((c, i) => {
-                                return <button onClick={this.removeComposer} name={c._id} key={i}>  {`${c.fullName} (${c.pro}) ${c.split}%`}</button>
+                                return <button onClick={this.removeComposer} name={c._id} key={i}>  {`${c.composer.fullName} (${c.composer.pro}) ${c.split}%`}</button>
                             })
                             : <p>No Composer data found. Please enter all Composer info</p>
                             : <p>No Composer data found. Please enter all Composer info</p>
@@ -557,15 +548,7 @@ class CorrectEdit extends React.Component {
                                     <select name="addComposer" onChange={this.handleInput} value={this.state.addComposer}>
                                         <option value={-1}>Composers</option>
                                         {this.props.composers && this.props.composers.map((c, i) => {
-                                            const info = {
-                                                fullName: c.fullName,
-                                                fName: c.fName,
-                                                mName: c.mName,
-                                                lName: c.lName,
-                                                suffix: c.suffix,
-                                                cae: c.cae,
-                                                pro: c.pro,
-                                            }
+                                           
 
                                             return <option key={i} value={i}>{`${c.fullName} (${c.pro}) CAE: ${c.cae}`}</option>
                                         })}

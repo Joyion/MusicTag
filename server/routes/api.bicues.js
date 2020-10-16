@@ -46,22 +46,14 @@ router.get("/getBiCues", (req, res) => {
                 data.totalPages = Math.ceil(division);
             }
 
-            biCue.find({ status: data.status }, function (err, cues) {
-                if (err) {
-                    res.status(400).json({ error: "ERROR" });
-                }
-                else {
-                    //     data.cues = cues;
-                    //     console.log(data);
-                    // res.status(200).json(JSON.stringify(data));
-                }
+            biCue.find({ status: data.status }).populate({ path: "composers", populate: { path: "composer", model: "Composer" } })
+                .sort({ songTitle: "asc" }).skip(skip).limit(pageLimit).exec(function (err, docs) {
+                    data.cues = docs;
+                    //console.log(data);
 
-            }).sort({songTitle: "asc"}).skip(skip).limit(pageLimit).exec(function (err, docs) {
-                data.cues = docs;
-                //console.log(data);
-                res.status(200).json(JSON.stringify(data));
+                    res.status(200).json(JSON.stringify(data));
 
-            })
+                })
         }
     });
 
@@ -73,40 +65,41 @@ router.get("/getBiCues", (req, res) => {
 
 router.post("/getMetadata", function (req, res) {
     console.log("getting metadata for... " + req.body.id + "\n");
-   // console.log(req.body.id);
+    // console.log(req.body.id);
     const id = req.body.id;
-    biCue.findById(id, function (err, cue) {
+    biCue.findById(id).populate({ path: 'composers.composer', model: "Composer" }).exec(function (err, cue) {
         if (err) {
             res.status(400).json({ error: "ERROR IN GetMetadata route" });
         }
         else {
-            if(cue){
+            if (cue) {
 
                 // const filename = mp3Path + "/" + cue.release + "/" + cue.fileName;
                 const filename = wavPath + "/" + cue.release + "/" + cue.fileName;
-            console.log(filename.toString());
-            mm.parseFile(filename)
-                .then(metadata => {
-                   console.log(util.inspect(metadata, { showHidden: false, depth: null }));
+                console.log(filename.toString());
+                mm.parseFile(filename)
+                    .then(metadata => {
+                        //   console.log(util.inspect(metadata, { showHidden: false, depth: null }));
 
-                    // cue.metadataComposer = metadata.common.artists.join("/");
-                    // cue.metadataPublisher = metadata.common.copyright;
-                     //console.log(metadata.native.exif[0].value)
-                    //console.log(metadata.native.exif[9].value)
-                    // cue.metadataComposer = metadata.native.exif[9].value;
-                    // cue.metadataPublisher = metadata.native.exif[0].value;
-                    cue.metadataComposer = metadata.common.artists.toString();
-                    cue.metadataPublisher = metadata.native.exif[0].value;
-                    cue.save(function(err, cue){
-                        console.log("You are getting metadata for that cue")
-                        res.status(200).json(JSON.stringify(cue));
+                        // cue.metadataComposer = metadata.common.artists.join("/");
+                        // cue.metadataPublisher = metadata.common.copyright;
+                        //console.log(metadata.native.exif[0].value)
+                        //console.log(metadata.native.exif[9].value)
+                        // cue.metadataComposer = metadata.native.exif[9].value;
+                        // cue.metadataPublisher = metadata.native.exif[0].value;
+                        cue.metadataComposer = metadata.common.artists.toString();
+                        cue.metadataPublisher = metadata.native.exif[0].value;
+                        cue.save(function (err, cue) {
+                            console.log("You are getting metadata for that cue")
+                            console.log(cue.composers);
+                            res.status(200).json(JSON.stringify(cue));
+                        })
                     })
-                })
-                .catch(err => {
-                    console.error(err.message);
-                });
+                    .catch(err => {
+                        console.error(err.message);
+                    });
             }
-            else{
+            else {
                 res.status(400).json({ error: "ERROR IN GetMetadata route" });
             }
 
@@ -121,19 +114,19 @@ router.post("/getMetadata", function (req, res) {
 router.put("/copyCue", (req, res) => {
     const selectCue = req.body.cue;
     const mv = req.body.mainVersion;
-    console.log("This is the id" +req.body.id)
-    biCue.findOne({fileName: mv}, (err, cue) =>{
-        if(err){
-            const error = {error: true, message: "UPDATE FAILED"}
+    console.log("This is the id" + req.body.id)
+    biCue.findOne({ fileName: mv }, (err, cue) => {
+        if (err) {
+            const error = { error: true, message: "UPDATE FAILED" }
             res.status(400).json(JSON.stringify(error))
-            
+
         }
-        else{
+        else {
             console.log("THIs is the cue" + cue);
             console.log(cue.composers);
 
-            biCue.findByIdAndUpdate(req.body.id,{
-                ...selectCue, 
+            biCue.findByIdAndUpdate(req.body.id, {
+                ...selectCue,
                 composers: cue.composers,
                 publishers: cue.publishers,
                 genre: cue.genre,
@@ -146,28 +139,28 @@ router.put("/copyCue", (req, res) => {
                 bands: cue.bands,
                 films: cue.films,
                 top: cue.top,
-                          
-            }, {new: true}, (err, newCue) => {
-                if(err){
-                    const error = {error: true, message: "UPDATE FAILED"}
+
+            }, { new: true }, (err, newCue) => {
+                if (err) {
+                    const error = { error: true, message: "UPDATE FAILED" }
                     res.status(400).json(JSON.stringify(error))
                 }
-                else{
-                    composers.find({}, (err, comps)=> {
-                        if(err){
-                            const error = {error: true, message: "UPDATE FAILED"}
+                else {
+                    composers.find({}, (err, comps) => {
+                        if (err) {
+                            const error = { error: true, message: "UPDATE FAILED" }
                             res.status(400).json(JSON.stringify(error))
                         }
                         else {
                             console.log("copying data")
                             console.log(newCue)
-                            let data = {cue: newCue, comps: comps}
+                            let data = { cue: newCue, comps: comps }
                             res.status(200).json(JSON.stringify(data));
                         }
                     })
 
                 }
-            } ) 
+            })
         }
 
     })
@@ -175,96 +168,223 @@ router.put("/copyCue", (req, res) => {
 })
 
 
-router.put("/updateCueComposer", function(req, res){
-    const id = req.body.id 
+router.put("/updateCueComposer", function (req, res) {
+    const id = req.body.id
     const composer = req.body.composer
 })
 
 
 /// UPDATES THE INFORMATION ON THE CUE AND ALSO CHECKS TO ADD NEW COMPOSER TO COMPOSER LIST IF IT'S NEW 
-router.put("/updateCue", function (req, res){
+router.put("/updateCue", function (req, res) {
     const id = req.body.id;
+
+    const name = req.body.name;
     let update = {}
     let composer = null;
-   // console.log(req.body);
-    if(req.body.name == "genreStyle"){
-      let gs = req.body.value.genre.split("/");
-      let g = gs[0].trim();
-      let s = gs[1].trim();
-      let id = req.body.value.genreId;
-    update = {[req.body.name]: req.body.value.genre, genre: g, style: s, genreId: id};
-   // console.log(update);
-     composer = req.body.newComposer;  
+    // console.log(req.body);
+    if (req.body.name == "genreStyle") {
+        let gs = req.body.value.genre.split("/");
+        let g = gs[0].trim();
+        let s = gs[1].trim();
+        let id = req.body.value.genreId;
+        update = { [req.body.name]: req.body.value.genre, genre: g, style: s, genreId: id };
+        // console.log(update);
+        composer = req.body.newComposer;
     }
-    else{
-     update = {[req.body.name]: req.body.value};
-    composer = req.body.newComposer;   
+    else {
+        update = { [req.body.name]: req.body.value };
+        composer = req.body.newComposer;
     }
-    
-   // res.status(200).json(JSON.stringify(update));
 
-
-    biCue.findByIdAndUpdate(id, {...update},{new: true}, (err, cue) => {
-        if(err){
-            const error = {error: true, message: "UPDATE FAILED"}
-            res.status(400).json(JSON.stringify(error))
-        }
-        else {
-            if(req.body.isThisNew == true){
-                console.log("Is this a new Composer? " + req.body.isThisNew);
-                const newComposer = new composers({...composer})
-                newComposer.save((err, c) => {
-
-                    composers.find({}, (err, comps)=> {
-                        if(err){
-                            const error = {error: true, message: "UPDATE FAILED"}
-                            res.status(400).json(JSON.stringify(error))
-                        }
-                        else {
-                            let data = {cue: cue, comps: comps}
-                            res.status(200).json(JSON.stringify(data));
-                        }
-                    })
-
-
-                    
-                })
-
+    if (name == "addComposer") {
+        console.log("Cue ID " + id)
+        const cid = req.body.value.c._id;
+        const value = req.body.value.split;
+        console.log(value);
+        composers.findById(cid, (err, comp) => {
+            if (err) {
 
             }
             else {
-                composers.find({}, (err, comps)=> {
-                    if(err){
-                        const error = {error: true, message: "UPDATE FAILED"}
-                        res.status(400).json(JSON.stringify(error))
+                biCue.findById(id, (err, cue) => {
+                    if (err) {
+
                     }
                     else {
-                        let data = {cue: cue, comps: comps}
-                        res.status(200).json(JSON.stringify(data));
+                        cue.composers.push({ composer: comp._id, split: value });
+                        cue.save((err) => {
+                            if (err) {
+                                console.log(err)
+                            }
+                            else {
+                                biCue.findById(id)
+                                    .populate({ path: 'composers.composer', model: "Composer" })
+                                    .exec((err, pcue) => {
+                                        composers.find({}, (err, comps) => {
+                                            if (err) {
+
+                                            }
+                                            else {
+                                                console.log(pcue)
+                                                let data = { cue: pcue, comps: comps }
+                                                res.status(200).json(JSON.stringify(data));
+                                            }
+                                        })
+                                    })
+                            }
+
+                        })
                     }
-                }).sort({fullName: "asc"})
+                })
 
             }
-            
-            
-        }
+        })
+    }
+
+    if (name = "addNewComposer") {
+        let c = new composers({ ...req.body.value.c })
+        console.log(c);
+        c.save((err, newComp) => {
+            biCue.findById(id, (err, cue) => {
+                if (err) {
+
+                }
+                else {
+                    cue.composer.push({ composer: newComp._id, split: req.body.split })
+                    cue.save((err) => {
+                        if (err) {
+
+                        }
+                        else {
+                            biCue.findById(id)
+                                .populate()
+                                .exec((err, pcue) => {
+                                    if (err) {
+
+                                    }
+                                    else {
+                                        composers.find({}, (err, comps) => {
+                                            if (err) {
+
+                                            }
+                                            else {
+                                                console.log(pcue)
+                                                let data = { cue: pcue, comps: comps }
+                                                res.status(200).json(JSON.stringify(data));
+
+                                            }
+                                        })
+
+                                    }
+                                })
+
+                        }
+                    })
+                }
+            })
+        })
+
+    }
 
 
-    })
+    if (name == "removeComposer") {
+        console.log(req.body.value)
+        biCue.findById(id)
+            .populate({ path: 'composers.composer', model: "Composer" })
+            .exec((err, cue) => {
+                if (err) {
+
+                }
+                else {
+                    let c = cue.composers.filter((comp) => { return comp._id != req.body.value });
+                    console.log(c);
+                    cue.composers = c;
+                    cue.save((err, pcue) => {
+                        composers.find({}, (err, comps) => {
+                            if (err) {
+
+                            }
+                            else {
+                                console.log(pcue)
+                                let data = { cue: pcue, comps: comps }
+                                res.status(200).json(JSON.stringify(data));
+
+                            }
+                        })
+
+                    })
+
+                }
+            })
+
+    }
+
+
+
+
+
+
+    // biCue.findByIdAndUpdate(id, { ...update }, { new: true }, (err, cue) => {
+    //     if (err) {
+    //         const error = { error: true, message: "UPDATE FAILED" }
+    //         res.status(400).json(JSON.stringify(error))
+    //     }
+    //     else {
+    //         if (req.body.isThisNew == true) {
+    //             console.log("Is this a new Composer? " + req.body.isThisNew);
+    //             const newComposer = new composers({ ...composer })
+    //             newComposer.save((err, c) => {
+
+    //                 composers.find({}, (err, comps) => {
+    //                     if (err) {
+    //                         const error = { error: true, message: "UPDATE FAILED" }
+    //                         res.status(400).json(JSON.stringify(error))
+    //                     }
+    //                     else {
+    //                         let data = { cue: cue, comps: comps }
+    //                         res.status(200).json(JSON.stringify(data));
+    //                     }
+    //                 })
+
+
+
+    //             })
+
+
+    //         }
+    //         else {
+    //             composers.find({}, (err, comps) => {
+    //                 if (err) {
+    //                     const error = { error: true, message: "UPDATE FAILED" }
+    //                     res.status(400).json(JSON.stringify(error))
+    //                 }
+    //                 else {
+    //                     let data = { cue: cue, comps: comps }
+    //                     res.status(200).json(JSON.stringify(data));
+    //                 }
+    //             }).sort({ fullName: "asc" })
+
+    //         }
+
+
+    //     }
+
+
+    // })
 
 })
 
-router.get("/allComposers", function (req, res ){
+router.get("/allComposers", function (req, res) {
 
-    composers.find({}, (err, comps)=> {
-        if(err){
-            const error = {error: true, message: "UPDATE FAILED"}
+    composers.find({}, (err, comps) => {
+        if (err) {
+            const error = { error: true, message: "UPDATE FAILED" }
             res.status(400).json(JSON.stringify(error))
         }
         else {
             res.status(200).json(JSON.stringify(comps));
         }
-    }).sort({fullName: "asc"})
+    }).sort({ fullName: "asc" })
 
 })
 

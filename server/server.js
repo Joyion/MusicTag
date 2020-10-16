@@ -40,10 +40,11 @@ db.once('open', function () {
     console.log("Connected to Database");
 });
 
-const biCue = require("./models/bi_cue_model");
+
 const composers = require('./models/composer.model');
 const Publisher = require("./models/publisher.model");
 const releaseIsrc = require("./models/releaseIsrc.model");
+const biCue = require("./models/bi_cue_model");
 
 //routes 
 const biCuesRoutes = require("./routes/api.bicues");
