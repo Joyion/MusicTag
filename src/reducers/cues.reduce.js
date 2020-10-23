@@ -7,7 +7,8 @@ const defaultState = {
         selectSong: {
             catalogName: ""
         },
-        composers: []
+        composers: [],
+        releases: []
 }
 
 export default (state = defaultState, action) => {
@@ -41,6 +42,11 @@ export default (state = defaultState, action) => {
         case "GET_SET_SONG":
             return{
                 ...state
+            }
+        case "GET_RELEASES":
+            return {
+                ...state,
+                releases: action.releases
             }
         case "PLAY_SONG":
             return {

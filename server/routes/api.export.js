@@ -5,8 +5,11 @@ const router = express.Router();
 const xl = require("excel4node");
 const biCue = require("../models/bi_cue_model");
 const composers = require('../models/composer.model');
+const releaseIsrc = require("../models/releaseIsrc.model");
 const sourceAudioGenre = require("../sourceAudioGenre");
 const getSourceAudioGenre = require("../sourceAudioGenre");
+const releaseIsrcModel = require("../models/releaseIsrc.model");
+
 
 
 const sourceAudioHeaders =
@@ -46,9 +49,17 @@ const sourceAudioHeaders =
 
 router.get('/bi', (req, res) => {
 
-console.log("Inside Excel");
 
-    biCue.find({}).populate({path: 'composers.composer', model: "Composer"}).exec((err, bicues) => {
+
+// console.log("Inside Excel");
+// console.log("params " + req.query.release);
+let releasefilter = {}
+if(req.query.release != "All"){
+    releasefilter = {release: req.query.release}
+
+}
+
+    biCue.find(releasefilter).populate({path: 'composers.composer', model: "Composer"}).exec((err, bicues) => {
         if (!bicues) {
             console.log("Error creating excel");
 
@@ -372,6 +383,19 @@ router.get("/download", function (req, res) {
     })
 })
 
+
+router.get("/releases", function(req, res){
+    releaseIsrc.find({}, (err, r) => {
+        if(err){
+        
+
+        }
+        else{
+            console.log(r.releases);
+            res.status(200).json(JSON.stringify(r));
+        }
+    })
+})
 
 module.exports = router;
 

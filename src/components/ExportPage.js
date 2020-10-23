@@ -1,6 +1,8 @@
 import React from 'react';
-import ResultTable from "./ResultTable";
+import {startGetReleases} from "../actions/cues.action"
+
 import axios from "axios";
+import { connect } from "react-redux"
 
 //import {withRouter} from "react-router-dom";
 
@@ -13,17 +15,20 @@ class ExportPage extends React.Component {
             release: "",
             displayMessage: false,
             message: "",
-            error: false
+            error: false,
+            release: "",
+            exportRelease: "All",
         }
         this.getFiles = this.getFiles.bind(this);
         this.exportData = this.exportData.bind(this);
         this.handleRelease = this.handleRelease.bind(this);
+        this.handleReleaseSelection = this.handleReleaseSelection.bind(this);
     }
 
     componentDidMount() {
-        this.setState({
-
-        })
+        startGetReleases(this.props.dispatch)
+        
+       
     }
 
     getFiles() {
@@ -53,6 +58,7 @@ class ExportPage extends React.Component {
                         error: true
 
                     })
+                    startGetReleases(this.props.dispatch);
                 }
 
             })
@@ -65,7 +71,15 @@ class ExportPage extends React.Component {
     exportData() {
         console.log("export data");
         console.log(process.env.IP);
-        axios.get('/api/export/bi').then(function (response) {
+        let filterRelease = "";
+        if(this.state.release == "All"){
+        
+        }
+        else {
+            filterRelease = this.state.exportRelease;
+        }
+        console.log("filter " + filterRelease);
+        axios.get('/api/export/bi', {params: {release: filterRelease}}).then(function (response) {
             //fileDownload(response.data, "metadata.xlsx")
         });
     }
@@ -78,6 +92,11 @@ class ExportPage extends React.Component {
         })
     }
 
+    handleReleaseSelection(e){
+        console.log(e.target.value)
+        this.setState({exportRelease: e.target.value})
+    }
+
     render() {
         return (
             <div className="export__container">
@@ -86,8 +105,15 @@ class ExportPage extends React.Component {
                 {/* <button onClick={this.exportData}>Export Metadata</button> */}
 
                 <div>
+                    <h1>Select Release</h1>
+                    <select value={this.state.exportRelease} onChange={this.handleReleaseSelection}>
+                        <option key={-1} value="All">All</option>
+                        {this.props.releases && this.props.releases.map((d, i) => {
+                            return <option key={i} value={d}>{d}</option>
+                        })}         
+                    </select>
                     <h1>Download Metadata Sheets</h1>
-                    <a className="export__button" href={"http://" + process.env.IP + ":5000/api/export/bi"}>Source Audio Metadata</a>
+                    <a className="export__button" href={"http://" + process.env.IP + ":5000/api/export/bi?release=" + this.state.exportRelease}>Source Audio Metadata</a>
                 </div>
 
 
@@ -110,4 +136,10 @@ class ExportPage extends React.Component {
     }
 }
 
-export default ExportPage;
+const mapStateToProps = (state, props) =>({
+    releases: state.cues.releases
+
+})
+
+
+export default connect(mapStateToProps)(ExportPage);
