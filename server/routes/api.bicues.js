@@ -67,45 +67,48 @@ router.post("/getMetadata", function (req, res) {
     console.log("getting metadata for... " + req.body.id + "\n");
     // console.log(req.body.id);
     const id = req.body.id;
-    biCue.findById(id).populate({ path: 'composers.composer', model: "Composer" }).exec(function (err, cue) {
-        if (err) {
-            res.status(400).json({ error: "ERROR IN GetMetadata route" });
-        }
-        else {
-            if (cue) {
-
-                // const filename = mp3Path + "/" + cue.release + "/" + cue.fileName;
-                const filename = wavPath + "/" + cue.release + "/" + cue.fileName;
-                console.log(filename.toString());
-                mm.parseFile(filename)
-                    .then(metadata => {
-                        //   console.log(util.inspect(metadata, { showHidden: false, depth: null }));
-
-                        // cue.metadataComposer = metadata.common.artists.join("/");
-                        // cue.metadataPublisher = metadata.common.copyright;
-                        //console.log(metadata.native.exif[0].value)
-                        //console.log(metadata.native.exif[9].value)
-                        // cue.metadataComposer = metadata.native.exif[9].value;
-                        // cue.metadataPublisher = metadata.native.exif[0].value;
-                        cue.metadataComposer = metadata.common.artists.toString();
-                        cue.metadataPublisher = metadata.native.exif[0].value;
-                        cue.save(function (err, cue) {
-                            console.log("You are getting metadata for that cue")
-                            console.log(cue.composers);
-                            res.status(200).json(JSON.stringify(cue));
-                        })
-                    })
-                    .catch(err => {
-                        console.error(err.message);
-                    });
-            }
-            else {
+    biCue.findById(id)
+        .populate({ path: 'composers.composer', model: "Composer" })
+        .populate({ path: "publishers.publisher", model: "Publisher" })
+        .exec(function (err, cue) {
+            if (err) {
                 res.status(400).json({ error: "ERROR IN GetMetadata route" });
             }
+            else {
+                if (cue) {
+
+                    // const filename = mp3Path + "/" + cue.release + "/" + cue.fileName;
+                    const filename = wavPath + "/" + cue.release + "/" + cue.fileName;
+                    console.log(filename.toString());
+                    mm.parseFile(filename)
+                        .then(metadata => {
+                            //   console.log(util.inspect(metadata, { showHidden: false, depth: null }));
+
+                            // cue.metadataComposer = metadata.common.artists.join("/");
+                            // cue.metadataPublisher = metadata.common.copyright;
+                            //console.log(metadata.native.exif[0].value)
+                            //console.log(metadata.native.exif[9].value)
+                            // cue.metadataComposer = metadata.native.exif[9].value;
+                            // cue.metadataPublisher = metadata.native.exif[0].value;
+                            cue.metadataComposer = metadata.common.artists.toString();
+                            cue.metadataPublisher = metadata.native.exif[0].value;
+                            cue.save(function (err, cue) {
+                                console.log("You are getting metadata for that cue")
+                                console.log(cue.composers);
+                                res.status(200).json(JSON.stringify(cue));
+                            })
+                        })
+                        .catch(err => {
+                            console.error(err.message);
+                        });
+                }
+                else {
+                    res.status(400).json({ error: "ERROR IN GetMetadata route" });
+                }
 
 
-        }
-    })
+            }
+        })
 })
 
 
@@ -146,18 +149,28 @@ router.put("/copyCue", (req, res) => {
                     res.status(400).json(JSON.stringify(error))
                 }
                 else {
-                    composers.find({}, (err, comps) => {
-                        if (err) {
-                            const error = { error: true, message: "UPDATE FAILED" }
-                            res.status(400).json(JSON.stringify(error))
-                        }
-                        else {
-                            console.log("copying data")
-                            console.log(newCue)
-                            let data = { cue: newCue, comps: comps }
-                            res.status(200).json(JSON.stringify(data));
-                        }
-                    })
+                    biCue.findOne({ fileName: mv })
+                        .populate({ path: 'composers.composer', model: "Composer" })
+                        .populate({ path: "publishers.publisher", model: "Publisher" })
+                        .exec((err, cpop) => {
+                            composers.find({}, (err, comps) => {
+                                if (err) {
+                                    const error = { error: true, message: "UPDATE FAILED" }
+                                    res.status(400).json(JSON.stringify(error))
+                                }
+                                else {
+                                    Publisher.find({}, (err, pubs) =>{
+                                        console.log("copying data")
+                                        console.log(cpop)
+                                        let data = { cue: cpop, comps: comps, pubs: pubs}
+                                        res.status(200).json(JSON.stringify(data));
+                                    })
+
+
+                                   
+                                }
+                            }).sort({fullName: "asc"})
+                        })           
 
                 }
             })
@@ -168,10 +181,6 @@ router.put("/copyCue", (req, res) => {
 })
 
 
-router.put("/updateCueComposer", function (req, res) {
-    const id = req.body.id
-    const composer = req.body.composer
-})
 
 
 /// UPDATES THE INFORMATION ON THE CUE AND ALSO CHECKS TO ADD NEW COMPOSER TO COMPOSER LIST IF IT'S NEW 
@@ -196,6 +205,7 @@ router.put("/updateCue", function (req, res) {
         composer = req.body.newComposer;
     }
 
+
     if (name == "addComposer") {
         console.log("Cue ID " + id)
         const cid = req.body.value.c._id;
@@ -219,17 +229,24 @@ router.put("/updateCue", function (req, res) {
                             else {
                                 biCue.findById(id)
                                     .populate({ path: 'composers.composer', model: "Composer" })
+                                    .populate({path: "publishers.publisher", model: "Publisher"})
                                     .exec((err, pcue) => {
                                         composers.find({}, (err, comps) => {
                                             if (err) {
 
                                             }
                                             else {
-                                                console.log(pcue)
-                                                let data = { cue: pcue, comps: comps }
-                                                res.status(200).json(JSON.stringify(data));
+                                                Publisher.find({}, (err, mypubs) => {
+                                                    if (err) {
+        
+                                                    } else {
+                                                        console.log(pcue)
+                                                        let data = { cue: pcue, comps: comps, pubs: mypubs }
+                                                        res.status(200).json(JSON.stringify(data));
+                                                    }
+                                                })
                                             }
-                                        })
+                                        }).sort({fullName: "asc"})
                                     })
                             }
 
@@ -241,7 +258,7 @@ router.put("/updateCue", function (req, res) {
         })
     }
 
-    if (name = "addNewComposer") {
+    else if (name == "addNewComposer") {
         let c = new composers({ ...req.body.value.c })
         console.log(c);
         c.save((err, newComp) => {
@@ -250,14 +267,15 @@ router.put("/updateCue", function (req, res) {
 
                 }
                 else {
-                    cue.composer.push({ composer: newComp._id, split: req.body.split })
+                    cue.composers.push({ composer: newComp._id, split: req.body.value.split })
                     cue.save((err) => {
                         if (err) {
 
                         }
                         else {
                             biCue.findById(id)
-                                .populate()
+                                .populate({ path: 'composers.composer', model: "Composer" })
+                                .populate({path: "publishers.publisher", model: "Publisher"})
                                 .exec((err, pcue) => {
                                     if (err) {
 
@@ -268,12 +286,18 @@ router.put("/updateCue", function (req, res) {
 
                                             }
                                             else {
-                                                console.log(pcue)
-                                                let data = { cue: pcue, comps: comps }
-                                                res.status(200).json(JSON.stringify(data));
+                                                Publisher.find({}, (err, mypubs) => {
+                                                    if (err) {
+        
+                                                    } else {
+                                                        console.log(pcue)
+                                                        let data = { cue: pcue, comps: comps, pubs: mypubs }
+                                                        res.status(200).json(JSON.stringify(data));
+                                                    }
+                                                })
 
                                             }
-                                        })
+                                        }).sort({fullName: "asc"})
 
                                     }
                                 })
@@ -287,10 +311,13 @@ router.put("/updateCue", function (req, res) {
     }
 
 
-    if (name == "removeComposer") {
+
+
+    else if (name == "removeComposer") {
         console.log(req.body.value)
         biCue.findById(id)
             .populate({ path: 'composers.composer', model: "Composer" })
+            .populate({path: "publishers.publisher", model: "Publisher"})
             .exec((err, cue) => {
                 if (err) {
 
@@ -305,12 +332,18 @@ router.put("/updateCue", function (req, res) {
 
                             }
                             else {
-                                console.log(pcue)
-                                let data = { cue: pcue, comps: comps }
-                                res.status(200).json(JSON.stringify(data));
+                                Publisher.find({}, (err, mypubs) => {
+                                    if (err) {
+
+                                    } else {
+                                        console.log(pcue)
+                                        let data = { cue: pcue, comps: comps, pubs: mypubs }
+                                        res.status(200).json(JSON.stringify(data));
+                                    }
+                                })
 
                             }
-                        })
+                        }).sort({fullName: "asc"})
 
                     })
 
@@ -319,59 +352,134 @@ router.put("/updateCue", function (req, res) {
 
     }
 
+    else if (name == "updatePublishers") {
+
+        biCue.findById(id, (err, cue) => {
+            if (err) {
+
+            }
+            else {
+                cue.publishers.push({ publisher: req.body.value.publisher, split: req.body.value.split })
+                cue.save((err) => {
+                    biCue.findById(id)
+                        .populate({ path: "publishers.publisher", model: "Publisher" })
+                        .populate({ path: "composers.composer", model: "Composer" })
+                        .exec((err, pcue) => {
+                            if (err) {
+
+                            }
+                            else {
+                                composers.find({}, (err, comps) => {
+                                    if (err) {
+
+                                    }
+                                    else {
+                                        Publisher.find({}, (err, mypubs) => {
+                                            if (err) {
+
+                                            } else {
+                                                console.log(pcue)
+                                                let data = { cue: pcue, comps: comps, pubs: mypubs }
+                                                res.status(200).json(JSON.stringify(data));
+                                            }
+                                        })
+                                    }
+                                }).sort({fullName: "asc"})
+                            }
+                        })
+                })
+            }
+        })
+
+
+    }
+
+    else if (name == "removePublishers") {
+        console.log("removing pub");
+        biCue.findById(id)
+            .populate({ path: "publishers.publisher", model: "Publisher" })
+            .populate({ path: "composers.composer", model: "Composer" })
+            .exec((err, cue) => {
+                if (err) {
+
+                }
+                else {
+                    let p = cue.publishers.filter((pub) => { return pub._id != req.body.value })
+                    cue.publishers = p;
+
+                    cue.save((err, pcue) => {
+
+                        composers.find({}, (err, comps) => {
+                            if (err) {
+
+                            }
+                            else {
+
+                                Publisher.find({}, (err, mypubs) => {
+                                    if (err) {
+
+                                    } else {
+                                        console.log(pcue)
+                                        let data = { cue: pcue, comps: comps, pubs: mypubs }
+                                        res.status(200).json(JSON.stringify(data));
+                                    }
+                                })
+
+
+
+                            }
+                        }).sort({fullName: "asc"})
+
+
+                    })
+                }
+            })
+
+    }
 
 
 
 
+    else {
 
-    // biCue.findByIdAndUpdate(id, { ...update }, { new: true }, (err, cue) => {
-    //     if (err) {
-    //         const error = { error: true, message: "UPDATE FAILED" }
-    //         res.status(400).json(JSON.stringify(error))
-    //     }
-    //     else {
-    //         if (req.body.isThisNew == true) {
-    //             console.log("Is this a new Composer? " + req.body.isThisNew);
-    //             const newComposer = new composers({ ...composer })
-    //             newComposer.save((err, c) => {
+        biCue.findByIdAndUpdate(id, { ...update }, { new: true }, (err, cue) => {
+            if (err) {
+                const error = { error: true, message: "UPDATE FAILED" }
+                res.status(400).json(JSON.stringify(error))
+            }
+            else {
+                biCue.findById(id)
+                .populate({ path: "publishers.publisher", model: "Publisher" })
+                .populate({ path: "composers.composer", model: "Composer" })
+                .sort({"Composers.composer.fullName": 1})
+                .exec((err, pcue) => {
+                    composers.find({}, (err, comps) => {
+                        if (err) {
 
-    //                 composers.find({}, (err, comps) => {
-    //                     if (err) {
-    //                         const error = { error: true, message: "UPDATE FAILED" }
-    //                         res.status(400).json(JSON.stringify(error))
-    //                     }
-    //                     else {
-    //                         let data = { cue: cue, comps: comps }
-    //                         res.status(200).json(JSON.stringify(data));
-    //                     }
-    //                 })
+                        }
+                        else {
+                            Publisher.find({}, (err, mypubs) => {
+                                if (err) {
 
+                                } else {
+                                    console.log(pcue)
+                                    let data = { cue: pcue, comps: comps, pubs: mypubs }
+                                    res.status(200).json(JSON.stringify(data));
+                                }
+                            })
+                        }
+                    }).sort({fullName: "asc"})
 
-
-    //             })
-
-
-    //         }
-    //         else {
-    //             composers.find({}, (err, comps) => {
-    //                 if (err) {
-    //                     const error = { error: true, message: "UPDATE FAILED" }
-    //                     res.status(400).json(JSON.stringify(error))
-    //                 }
-    //                 else {
-    //                     let data = { cue: cue, comps: comps }
-    //                     res.status(200).json(JSON.stringify(data));
-    //                 }
-    //             }).sort({ fullName: "asc" })
-
-    //         }
+                })
 
 
-    //     }
+
+            }
 
 
-    // })
-
+        })
+        // end of else
+    }
 })
 
 router.get("/allComposers", function (req, res) {
@@ -382,7 +490,17 @@ router.get("/allComposers", function (req, res) {
             res.status(400).json(JSON.stringify(error))
         }
         else {
-            res.status(200).json(JSON.stringify(comps));
+
+            Publisher.find({}, (err, pubs) => {
+                if (err) {
+
+                }
+                else {
+                    console.log("this is a the composer" + comps[0])
+                    res.status(200).json(JSON.stringify({ composers: comps, pubs: pubs }));
+                }
+            })
+
         }
     }).sort({ fullName: "asc" })
 

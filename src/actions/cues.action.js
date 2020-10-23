@@ -40,16 +40,17 @@ export const startCopy = (id, cue, mv, dispatch) => {
       mainVersion: mv
     }).then((response) => {
       const data = JSON.parse(response.data)
-      dispatch(updateCue(data.cue, data.comps))
+      dispatch(updateCue(data.cue, data.comps, data.pubs))
     }).catch((e) => {
       console.log(e);
     })
 }
 
-export const updateCue = (cue, comps) => ({
+export const updateCue = (cue, comps, pubs) => ({
   type: "UPDATE_CUE",
   cue,
-  comps
+  comps,
+  pubs,
 })
 
 export const startUpdateCue = (cue, name, value, isThisNew, newComposer, dispatch) => {
@@ -66,7 +67,7 @@ export const startUpdateCue = (cue, name, value, isThisNew, newComposer, dispatc
     .then(function (response) {
       const data = JSON.parse(response.data);
       // console.log(data);
-      dispatch(updateCue(data.cue, data.comps));
+      dispatch(updateCue(data.cue, data.comps, data.pubs));
     })
     .catch(function (error) {
       console.log(error);
@@ -125,8 +126,8 @@ export const startGetComposers = (dispatch) => {
   )
     .then(function (response) {
       const data = JSON.parse(response.data);
-      //  console.log("Returned From all composers \n" + data);
-      dispatch(getAllComposers(data))
+      console.log("Returned From all composers \n" + data);
+      dispatch(getAllComposers(data.composers, data.pubs))
     })
     .catch(function (error) {
       console.log(error);
@@ -134,9 +135,10 @@ export const startGetComposers = (dispatch) => {
 
 }
 
-export const getAllComposers = (composers) => ({
+export const getAllComposers = (composers, pubs) => ({
   type: "GET_ALL_COMPOSERS",
-  composers
+  composers,
+  pubs,
 })
 
 
@@ -144,7 +146,9 @@ export const startGetReleases = (dispatch) => {
   axios.get("/api/export/releases").then((response) => {
     console.log(response.data);
     let d = JSON.parse(response.data);
+    if(d.length > 0){
     dispatch(getReleases(d[0].releases))
+    }
   })
 }
 

@@ -101,19 +101,19 @@ class CorrectEdit extends React.Component {
 
     updatePublisher(e) {
         e.preventDefault();
-        console.log(this.state.publisher);
-        console.log(this.state.publisherSplit);
         const id = this.props.match.params.id;
         if (this.state.publisher != -1) {
             const p = this.state.publisherArray[this.state.publisher];
             if (this.state.publisherSplit == 0) {
                 console.log("No split");
             } else {
-                console.log(p.publisherName);
-
-                let publisherArray = this.props.cue.publishers.map((p) => { return p });
-                publisherArray.push({ ...p, publisherSplit: this.state.publisherSplit });
-                startUpdateCue(id, "publishers", publisherArray, false, null, this.props.dispatch);
+                let p = this.props.publishers[this.state.publisher]._id;
+                let data = {publisher: p, split: this.state.publisherSplit}
+                console.log(data);
+                startUpdateCue(id, "updatePublishers", data, false, null, this.props.dispatch);
+                this.setState({
+                    publisher: -1
+                })
             }
         }
         else {
@@ -123,9 +123,10 @@ class CorrectEdit extends React.Component {
 
     removePublisher(e) {
         const id = this.props.match.params.id;
-        const publisherId = e.target.name;
-        let publisherArray = this.props.cue.publishers.filter((p) => { return p._id != publisherId });
-        startUpdateCue(id, "publishers", publisherArray, false, null, this.props.dispatch);
+        console.log(e.target.name);
+        let pid = e.target.name;
+        console.log(pid);
+        startUpdateCue(id, "removePublishers", pid, false, null, this.props.dispatch);
     }
 
     updateComposer(e) {
@@ -137,14 +138,16 @@ class CorrectEdit extends React.Component {
             const id = this.props.match.params.id;
             // const fullName = `${this.state.fName.trim()} ${this.state.mName.trim()} ${this.state.lName.trim()} ${this.state.suffix.trim()}`;
             let fullName = this.state.fName.trim() + " ";
-            if (this.state.mName.lemgth > 0) {
+            
+            if (this.state.mName.length > 0) {
+                console.log(this.state.mName);
                 fullName += this.state.mName.trim() + " ";
             }
             if (this.state.lName.length > 0) {
                 fullName += this.state.lName.trim() + " ";
             }
             if (this.state.suffix.length > 0) {
-                fullName += this.state.lName.trim() + " ";
+                fullName += this.state.suffix.trim() + " ";
             }
             fullName = fullName.trim();
             const newComposer = {
@@ -157,21 +160,6 @@ class CorrectEdit extends React.Component {
                 cae: this.state.cae.trim(),
                 pro: this.state.pro},
                 split: this.state.cSplit,
-            }
-
-            if (this.props.composers.length > 0) {
-                console.log("in composer lenght");
-                let composerBank = this.props.composers.map((c) => {
-                    console.log(c.cae + " " + newComposer.cae);
-                    console.log(c.pro + " " + newComposer.pro);
-                    console.log(c.cae == newComposer.cae);
-                    if (c.cae == newComposer.cae && c.pro == newComposer.pro) {
-                        isthisNew = false;
-                    }
-
-                })
-                console.log("Composer Length " + composerBank.length);
-
             }
 
 
@@ -255,6 +243,7 @@ class CorrectEdit extends React.Component {
         else {
             newInstruments.push(i);
             startUpdateCue(id, "instruments", newInstruments, false, null, this.props.dispatch);
+            
         }
 
     }
@@ -625,12 +614,12 @@ class CorrectEdit extends React.Component {
 
                 <div className="edit__container">
                     <div>
-                        <h2>Publisher Metadata</h2>
+                        <h2>Publisher Metadata</h2> 
                         <p>{this.props.cue && this.props.cue.metadataPublisher}</p>
                         <h2>Publishers</h2>
 
                         {this.props.cue && this.props.cue.publishers ? this.props.cue.publishers.length > 0 ? this.props.cue.publishers.map((p, i) => {
-                            return <button onClick={this.removePublisher} name={p._id} key={i}>{`${p.publisherName} (${p.publisherPro}) ${p.publisherSplit}%`}</button>
+                            return <button onClick={this.removePublisher} name={p._id} key={i}>{`${p.publisher.publisherName} (${p.publisher.publisherPro}) ${p.split}%`}</button>
                         }) : <p>No Publisher Data</p>
                             : <p>No Publisher Data</p>}
                     </div>
@@ -644,7 +633,7 @@ class CorrectEdit extends React.Component {
 
                                     <option value={-1}>Publishers</option>
 
-                                    {this.state.publisherArray && this.state.publisherArray.map((p, i) => {
+                                    {this.props.publishers && this.props.publishers.map((p, i) => {
 
                                         return <option key={i} value={i}>{`${p.publisherName} (${p.publisherPro}) IPI: ${p.publisherIpi}`}</option>
                                     })}
@@ -948,7 +937,8 @@ class CorrectEdit extends React.Component {
 
 const mapStateToProps = (state, props) => ({
     cue: state.cues.selectSong,
-    composers: state.cues.composers
+    composers: state.cues.composers,
+    publishers: state.cues.publishers
 })
 
 export default connect(mapStateToProps)(CorrectEdit);

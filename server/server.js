@@ -46,6 +46,30 @@ const Publisher = require("./models/publisher.model");
 const releaseIsrc = require("./models/releaseIsrc.model");
 const biCue = require("./models/bi_cue_model");
 
+// populate publishers
+// const publisherArray = [
+//     {
+//         publisherName: "Derek Luff Music, Inc.",
+//         publisherIpi: "337689810",
+//         publisherPro: "ASCAP",
+//     },
+//     {
+//         publisherName: "Dewmarc Music",
+//         publisherIpi: "355468339",
+//         publisherPro: "BMI",
+//     },
+//     {
+//         publisherName: "Ridek Music",
+//         publisherIpi: "568242236",
+//         publisherPro: "SESAC",
+//     }
+// ]
+
+
+// Publisher.create(publisherArray, (err, pubs) => {
+//     console.log(pubs);
+// })
+
 //routes 
 const biCuesRoutes = require("./routes/api.bicues");
 // const { resolveAny } = require("dns");

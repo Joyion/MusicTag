@@ -18,10 +18,8 @@ const biCue = new mongoose.Schema(
         ],
         publishers: [
             {
-                publisherName: { type: String },
-                publisherSplit: { type: String },
-                publisherIpi: { type: String },
-                publisherPro: { type: String }
+                publisher: {type: Schema.Types.ObjectId, ref: "Publisher"},
+                split: {type: Number}
 
             }
         ],
