@@ -120,12 +120,14 @@ class ExportPage extends React.Component {
 
                 <div>
                     <h1>Select Release and Status</h1>
-                    <select value={this.state.release} onChange={this.handleStatus}>
+                    <p>Status:</p>
+                    <select value={this.state.status} onChange={this.handleStatus}>
                         <option value="All">All</option>
                         <option value="Active">Active</option>
                         <option value="Pending">Pending</option>
                         <option value="Pulled">Pulled</option>
                     </select>
+                    <p>Release</p>
                     <select value={this.state.exportRelease} onChange={this.handleReleaseSelection}>
                         <option key={-1} value="All">All</option>
                         {this.props.releases && this.props.releases.map((d, i) => {
