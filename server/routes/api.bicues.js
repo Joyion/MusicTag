@@ -46,7 +46,9 @@ router.get("/getBiCues", (req, res) => {
                 data.totalPages = Math.ceil(division);
             }
 
-            biCue.find({ status: data.status }).populate({ path: "composers", populate: { path: "composer", model: "Composer" } })
+            biCue.find({ status: data.status })
+            .populate({ path: 'composers.composer', model: "Composer" })
+            .populate({ path: "publishers.publisher", model: "Publisher" })
                 .sort({ songTitle: "asc" }).skip(skip).limit(pageLimit).exec(function (err, docs) {
                     data.cues = docs;
                     //console.log(data);
