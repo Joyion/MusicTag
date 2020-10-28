@@ -149,7 +149,7 @@ router.put("/copyCue", (req, res) => {
                     res.status(400).json(JSON.stringify(error))
                 }
                 else {
-                    biCue.findOne({ fileName: mv })
+                    biCue.findById(req.body.id)
                         .populate({ path: 'composers.composer', model: "Composer" })
                         .populate({ path: "publishers.publisher", model: "Publisher" })
                         .exec((err, cpop) => {

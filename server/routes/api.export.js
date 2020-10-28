@@ -54,12 +54,33 @@ router.get('/bi', (req, res) => {
 // console.log("Inside Excel");
 // console.log("params " + req.query.release);
 let releasefilter = {}
-if(req.query.release != "All"){
-    releasefilter = {release: req.query.release}
+if(req.query.release != "All" || req.query.status != "All"){
+
+    if(req.query.release != "All"){
+        if(req.query.status != "All"){
+            releasefilter = {release: req.query.release, status: req.query.status}
+        }
+        else{
+            releasefilter = {release: req.query.release}
+        }     
+    }
+    else {
+        if(req.query.status != All){
+            releasefilter = {status: req.query.status}
+        }
+        else{
+        
+        }
+    }
+   
 
 }
 
-    biCue.find(releasefilter).populate({path: 'composers.composer', model: "Composer"}).exec((err, bicues) => {
+
+    biCue.find(releasefilter)
+    .populate({path: 'composers.composer', model: "Composer"})
+    .populate({ path: "publishers.publisher", model: "Publisher" })
+    .exec((err, bicues) => {
         if (!bicues) {
             console.log("Error creating excel");
 
@@ -221,16 +242,16 @@ if(req.query.release != "All"){
                     if (ploop < cue.publishers.length) {
                         cp = cue.publishers[ploop];
                         // publisher company
-                        ws.cell(row, count).string(cp.publisherName).style(style);
+                        ws.cell(row, count).string(cp.publisher.publisherName).style(style);
                         count++;
                         // publisher pro 
-                        ws.cell(row, count).string(cp.publisherPro).style(style);
+                        ws.cell(row, count).string(cp.publisher.publisherPro).style(style);
                         count++;
                         // publisher cae/ipi 
-                        ws.cell(row, count).string(cp.publisherIpi).style(style);
+                        ws.cell(row, count).string(cp.publisher.publisherIpi).style(style);
                         count++;
                         // publisher ownership share
-                        ws.cell(row, count).string(`${cp.publisherSplit}%`).style(style);
+                        ws.cell(row, count).string(`${cp.split}%`).style(style);
                         count++;
                         // publisher role
                         ws.cell(row, count).string("Original Publisher").style(style);

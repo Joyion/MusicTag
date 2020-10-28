@@ -16,13 +16,15 @@ class ExportPage extends React.Component {
             displayMessage: false,
             message: "",
             error: false,
-            release: "",
+            status: "All",
+            release: "All",
             exportRelease: "All",
         }
         this.getFiles = this.getFiles.bind(this);
         this.exportData = this.exportData.bind(this);
         this.handleRelease = this.handleRelease.bind(this);
         this.handleReleaseSelection = this.handleReleaseSelection.bind(this);
+        this.handleStatus = this.handleStatus.bind(this);
     }
 
     componentDidMount() {
@@ -72,14 +74,22 @@ class ExportPage extends React.Component {
         console.log("export data");
         console.log(process.env.IP);
         let filterRelease = "";
+        let filterStatus = "";
         if(this.state.release == "All"){
         
         }
         else {
             filterRelease = this.state.exportRelease;
         }
+        if(this.state.status == "All"){
+
+
+        }
+        else{
+            filterStatus = this.state.status;
+        }
         console.log("filter " + filterRelease);
-        axios.get('/api/export/bi', {params: {release: filterRelease}}).then(function (response) {
+        axios.get('/api/export/bi', {params: {release: filterRelease, status: filterStatus}}).then(function (response) {
             //fileDownload(response.data, "metadata.xlsx")
         });
     }
@@ -97,6 +107,10 @@ class ExportPage extends React.Component {
         this.setState({exportRelease: e.target.value})
     }
 
+    handleStatus(e){
+        this.setState({status: e.target.value})
+    }
+
     render() {
         return (
             <div className="export__container">
@@ -105,7 +119,13 @@ class ExportPage extends React.Component {
                 {/* <button onClick={this.exportData}>Export Metadata</button> */}
 
                 <div>
-                    <h1>Select Release</h1>
+                    <h1>Select Release and Status</h1>
+                    <select value={this.state.release} onChange={this.handleStatus}>
+                        <option value="All">All</option>
+                        <option value="Active">Active</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Pulled">Pulled</option>
+                    </select>
                     <select value={this.state.exportRelease} onChange={this.handleReleaseSelection}>
                         <option key={-1} value="All">All</option>
                         {this.props.releases && this.props.releases.map((d, i) => {
@@ -113,7 +133,7 @@ class ExportPage extends React.Component {
                         })}         
                     </select>
                     <h1>Download Metadata Sheets</h1>
-                    <a className="export__button" href={"http://" + process.env.IP + ":5000/api/export/bi?release=" + this.state.exportRelease}>Source Audio Metadata</a>
+                    <a className="export__button" href={"http://" + process.env.IP + ":5000/api/export/bi?release=" + this.state.exportRelease + "&status=" +this.state.status}>Source Audio Metadata</a>
                 </div>
 
 
