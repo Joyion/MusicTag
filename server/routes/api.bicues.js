@@ -137,6 +137,7 @@ router.put("/copyCue", (req, res) => {
                 genreStyle: cue.genreStyle,
                 genreId: cue.genreId,
                 descriptions: cue.descriptions,
+                instruments: cue.instruments,
                 tempo: cue.tempo,
                 rating: cue.rating,
                 bands: cue.bands,
