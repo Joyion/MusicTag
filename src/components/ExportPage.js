@@ -12,7 +12,7 @@ class ExportPage extends React.Component {
 
         this.state = {
             biSongs: [],
-            release: "",
+            release: "All",
             displayMessage: false,
             message: "",
             error: false,
