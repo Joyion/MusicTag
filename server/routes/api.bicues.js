@@ -145,6 +145,7 @@ router.put("/copyCue", (req, res) => {
                 bands: cue.bands,
                 films: cue.films,
                 top: cue.top,
+                hidden: cue.hidden
 
             }, { new: true }, (err, newCue) => {
                 if (err) {

@@ -137,6 +137,8 @@ if(req.query.release != "All" || req.query.status != "All"){
             ws.cell(row, count).string(`Pro`).style(style);
             count++;
             ws.cell(row, count).string(`Release`).style(style);
+            count++;
+            ws.cell(row, count).string("Hidden").style(style);
             row++;
 
 
@@ -353,7 +355,7 @@ if(req.query.release != "All" || req.query.status != "All"){
                 count++;
                 ws.cell(row, count).string(cue.release).style(style);
                 count++;
-
+                ws.cell(row, count).string(cue.hidden.toString(", ")).style(style);
                 row++
             })
 

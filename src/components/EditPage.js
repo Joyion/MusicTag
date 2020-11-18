@@ -4,7 +4,8 @@ import { startSetSong, startUpdateCue, startGetComposers,startCopy } from "../ac
 import genreObjArray from "./genreStyle";
 import instrumentArray from "./instruments";
 import descriptionArray from "./descriptions";
-import pros from "./pros"
+import pros from "./pros";
+import hidden from "./hidden";
 
 class CorrectEdit extends React.Component {
 
@@ -52,6 +53,7 @@ class CorrectEdit extends React.Component {
             newInstrument: "",
             descriptionArray: descriptionArray,
             newDescription: "",
+            hiddenArray: hidden,
             tempo: "",
             rating: 0,
             band: "",
@@ -88,6 +90,7 @@ class CorrectEdit extends React.Component {
         this.removeBand = this.removeBand.bind(this);
         this.handleNewInstrument = this.handleNewInstrument.bind(this);
         this.handleCopy = this.handleCopy.bind(this);
+        this.handleHidden =this.handleHidden.bind(this);
 
     }
 
@@ -295,6 +298,20 @@ class CorrectEdit extends React.Component {
             startUpdateCue(id, "descriptions", newDescription, false, null, this.props.dispatch);
         }
 
+    }
+
+    handleHidden(e){
+        const id = this.props.match.params.id;
+        let hidden = this.props.cue.hidden.map((h) => {return h})
+        hidden.push(e.target.name);
+        console.log(e.target.name);
+        startUpdateCue(id, "hidden", hidden, false, null, this.props.dispatch);
+    }
+    removeHidden(e){
+        const id = this.props.match.params.id;
+        console.log(e.target.name);
+        let h = this.props.cue.hidden.filter((h) => {return h != e.target.name})
+        startUpdateCue(id,"hidden", h, false, null, this.props.dispatch );
     }
 
     handleNewDescription(e) {
@@ -754,6 +771,45 @@ class CorrectEdit extends React.Component {
                         </form>
                     </div>
                 </div>
+
+                <div className="edit__container">
+                    <div>
+                        <h2>Hidden Words</h2>
+                        <div>
+                            {this.props.cue && this.props.cue.hidden ? this.props.cue.hidden.length > 0 ? this.props.cue.hidden.map((d, index) => {
+                                return <button name={d} onClick={this.removeHidden} key={index}>{d}</button>
+
+                            }) : <p>No Hidden Words Added</p> : <p>No Hideen Words Added</p>}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3>Add Hidden Words</h3>
+                        <div className="edit__container--scroll">
+                            {this.state.hiddenArray && this.state.hiddenArray.map((d, index) => {
+                                return <button onClick={this.handleHidden} name={d} key={index}>{d}</button>
+                            })}
+                        </div>
+                        <h3>Add Hidden Words</h3>
+                        <form className="edit__small-form" onSubmit={this.handleNewDescription}>
+                            <label>
+                                <input value={this.state.newHidden}
+                                    onChange={this.handleInput}
+                                    name="newHidden"
+                                    type="text" />
+                                {this.props.cue && this.props.cue.descriptions ? this.props.cue.descriptions.length > 0 ?
+                                    <input style={this.state.styleGreen} type="submit" value="Add Hidden" /> :
+                                    <input style={this.state.styleRed} type="submit" value="Add Hidden" /> :
+                                    <input style={this.state.styleRed} type="submit" value="Add Hidden" />
+
+                                }
+
+                            </label>
+                        </form>
+                    </div>
+                </div>
+
+
 
 
                 <div className="edit__container">

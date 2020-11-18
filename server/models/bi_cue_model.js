@@ -45,7 +45,8 @@ const biCue = new mongoose.Schema(
         trackNum: { type: String },
         trackNumInRelease: { type: Number },
         isrc: { type: String },
-        mainVersion: { type: String, default: "N/A" }
+        mainVersion: { type: String, default: "N/A" },
+        hidden: {type: Array}
 
     })
 
