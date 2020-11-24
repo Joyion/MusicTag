@@ -91,6 +91,7 @@ class CorrectEdit extends React.Component {
         this.handleNewInstrument = this.handleNewInstrument.bind(this);
         this.handleCopy = this.handleCopy.bind(this);
         this.handleHidden =this.handleHidden.bind(this);
+        this.removeHidden = this.removeHidden.bind(this);
 
     }
 
