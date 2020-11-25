@@ -12,12 +12,11 @@ class ExportPage extends React.Component {
 
         this.state = {
             biSongs: [],
-            release: "All",
             displayMessage: false,
             message: "",
             error: false,
             status: "All",
-            release: "All",
+            release: "",
             exportRelease: "All",
         }
         this.getFiles = this.getFiles.bind(this);
