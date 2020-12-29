@@ -1,3 +1,5 @@
+// This is my set up for the node server on a music application 
+
 const express = require("express");
 const app = express();
 const path = require("path")
@@ -5,8 +7,6 @@ const cors = require("cors");
 const dotenv = require("dotenv").config();
 // REQUIRED TO READ FILENAMES
 const fs = require('fs');
-// REQUIRED TO MAKE EXCEL FILE
-const xl = require("excel4node");
 // for port and serving front end react
 const port = 5000;
 const publicPath = path.join(__dirname, "..", "public", "dist")
