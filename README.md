@@ -7,7 +7,7 @@ can serve as a template for your own.
 
 <h2>How does it work </h2>
 <ul>
-  <li> You place your audio files (MUST BE .WAV) in a folder under public/dist/wav.The folder must following this naming convention, must start with capital R followed by a number, (e.g. R40, R22)</li>
+  <li> You place your audio files (MUST BE .WAV) in a folder under public/dist/wav.The folder must follow this naming convention by starting with capital R followed by a number, (e.g. R40, R22)</li>
    <li>The wav files in the folder should have the name of the track title</li>
   <li>Go to upload/export, type the name of folder and click upload. The application will read the name of the files and 
 save them to the database.</li>
