@@ -4,7 +4,6 @@ const express = require("express");
 const app = express();
 const path = require("path")
 const cors = require("cors");
-const dotenv = require("dotenv").config();
 // REQUIRED TO READ FILENAMES
 const fs = require('fs');
 // for port and serving front end react
@@ -14,7 +13,8 @@ const publicPath = path.join(__dirname, "..", "public", "dist")
 // mongoose for database
 const mongoose = require("mongoose");
 // dotenv for keys
-require("dotenv").config();
+const dotenv = require("dotenv").config();
+
 
 // format time date
 var moment = require('moment'); // require
