@@ -60,3 +60,23 @@
     font-weight: normal;
     font-style: italic;
 }
+
+@media only screen and (max-width: 600px) {
+    .resultTable__container{
+        position: relative;
+        top: 425px;
+        
+    }
+    
+   .song{
+       font-size: 12px;
+       flex-direction: column;
+   }
+
+   .song > div{
+       width: 100%;
+   }
+   .song__title{
+       font-size: 12px;
+   }
+  }

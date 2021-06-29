@@ -132,8 +132,59 @@
     }
 }
 
-// @media only screen and (max-width: 600px) {
-//     .filter__container {
-//      color: green;
-//     }
-//   }
+@media only screen and (max-width: 660px) {
+
+    .filter__container{
+        font-size: 12px;
+        input[type=submit] {
+            font-size: 12px;
+        }
+
+
+        form > label > select, input[type = number]{
+            font-size: 12px;
+        }
+
+        button{
+            font-size: 12px;
+        }
+
+        form > label > select, input[type = number]{
+            font-size: 12px;
+            padding: 2px;
+           
+        }
+    }
+
+
+
+
+    .filter_page_buttons{
+       font-size: 12px;
+    }
+
+    .filter__flexcontainer {
+        flex-direction: column;
+     padding: 0 10px;
+     font-size: 12px;
+    }
+
+    .button{
+       font-size: 12px;
+    }
+    form > label > select, input[type = number]{
+        width: 25px;
+    }
+
+  
+
+    .filter__resultTitles{
+       display: none;
+        div{
+            font-size: 12px;
+           min-width: 25%;
+           
+        }
+    }
+    
+  }

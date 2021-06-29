@@ -31,3 +31,33 @@
 .active-links {
     color: red;
 }
+
+
+@media only screen and (max-width: 660px) {
+  .navbar__container {
+      display: inline;
+      div {
+          min-width: 100%;
+      }
+      div h1 {
+          font-size: 12px;
+          text-align: center;
+          min-width: 100%;
+      }
+    }
+    .navbar__links{
+        display: flex;
+        text-align: center;
+        justify-items: space-between;
+        min-width: 100%;
+    }
+
+ 
+        
+    
+    .nav-link{
+        font-size: 10px;
+       
+    }
+    
+}
