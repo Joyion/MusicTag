@@ -65,7 +65,7 @@ if(req.query.release != "All" || req.query.status != "All"){
         }     
     }
     else {
-        if(req.query.status != All){
+        if(req.query.status != "All"){
             releasefilter = {status: req.query.status}
         }
         else{
@@ -87,7 +87,7 @@ if(req.query.release != "All" || req.query.status != "All"){
         }
         else {
 
-            bicues = getSourceAudioGenre(bicues);
+          //  bicues = getSourceAudioGenre(bicues);
             //  console.log(bicues);
 
             const wb = new xl.Workbook();
@@ -198,7 +198,7 @@ if(req.query.release != "All" || req.query.status != "All"){
                 ws.cell(row, count).string(pubs.toString(" / ")).style(style);
                 count++;
                 // Genres
-                ws.cell(row, count).string(cue.genreStyle).style(style);
+                ws.cell(row, count).string(cue.genre).style(style);
                 count++;
                 // Tempos
                 ws.cell(row, count).string(cue.tempo).style(style);
