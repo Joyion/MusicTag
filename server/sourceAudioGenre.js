@@ -411,7 +411,7 @@ let getSourceAudioGenre = (bicues) => {
     
 
 
-    return bicues;
+    return bicues.sort();
 }
 
 module.exports = getSourceAudioGenre;
