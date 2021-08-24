@@ -91,7 +91,7 @@ let genreArray = [
 "Stingers / Suspense",
 "Stingers / Swells",
 "Stingers / World",
-"World / Reggae - Ska",
+"World Music / Reggae - Ska",
 "World Music / African",
 "World Music / Asian",
 "World Music / Australian",
