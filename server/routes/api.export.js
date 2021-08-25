@@ -147,14 +147,12 @@ if(req.query.release != "All" || req.query.status != "All"){
 
 
             bicues.forEach((cue) => {
-                let genreId ;
-                for(i = 0; i < arrayGenres.length; i++){
-                    if(cue.genreStyle == arrayGenres[i].genre){
-                        genreId = arrayGenres.genreId;
-                    }
-                }
-         
-                let trackGenreId = 100 + parseInt(cue.genreId);
+
+                let trackGenreId = cue.genreId.toString();
+                 trackGenreId = trackGenreId.padStart(3, "0")
+            
+             
+        
 
                let artists = "";
                for(let aCount = 0; aCount < 5; aCount++){
