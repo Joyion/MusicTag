@@ -9,6 +9,7 @@ const releaseIsrc = require("../models/releaseIsrc.model");
 const sourceAudioGenre = require("../sourceAudioGenre");
 const getSourceAudioGenre = require("../sourceAudioGenre");
 const releaseIsrcModel = require("../models/releaseIsrc.model");
+const arrayGenres = require("../../src/components/genreStyle");
 
 
 
@@ -139,11 +140,22 @@ if(req.query.release != "All" || req.query.status != "All"){
             ws.cell(row, count).string(`Release`).style(style);
             count++;
             ws.cell(row, count).string("Hidden").style(style);
+            count++;
+            ws.cell(row, count).string("Rating").style(style);
             row++;
 
 
 
             bicues.forEach((cue) => {
+                let genreId ;
+                for(i = 0; i < arrayGenres.length; i++){
+                    if(cue.genreStyle == arrayGenres[i].genre){
+                        genreId = arrayGenres.genreId;
+                    }
+                }
+         
+                let trackGenreId = 100 + parseInt(cue.genreId);
+
                 count = 1;
                 //console.log("track " + count);
                 // main version
@@ -173,7 +185,6 @@ if(req.query.release != "All" || req.query.status != "All"){
                 ws.cell(row, count).string(albumName).style(style);
                 count++;
                 // Album Code
-                let trackGenreId = 100 + parseInt(cue.genreId);
                 let ac = "DLM-BI-" + trackGenreId + "-" + cue.release;
                 ws.cell(row, count).string(ac).style(style);
                 count++;
@@ -186,12 +197,11 @@ if(req.query.release != "All" || req.query.status != "All"){
                 // Track Number
                 ws.cell(row, count).string(cue.track).style(style);
                 count++;
-                // Artist
-                let artists = cue.composers.map((a) => { return a.fullName })
-                ws.cell(row, count).string(artists.toString(" / ")).style(style);
+                // Artist  
+                ws.cell(row, count).string("").style(style);
                 count++;
                 // Composer
-                ws.cell(row, count).string(artists.toString(" / ")).style(style);
+                ws.cell(row, count).string("").style(style);
                 count++;
                 // Publisher
                 let pubs = cue.publishers.map((p) => { return p.publisherName })
@@ -213,7 +223,7 @@ if(req.query.release != "All" || req.query.status != "All"){
                 ws.cell(row, count).string(cue.releaseDate).style(style);
                 count++;
                 // Description
-                ws.cell(row, count).string(cue.descriptions.toString(", ")).style(style);
+                ws.cell(row, count).string(cue.descriptions.join(", ")).style(style);
                 count++;
                 // Mood
                 ws.cell(row, count).string(cue.descriptions.toString(", ")).style(style);
@@ -349,15 +359,19 @@ if(req.query.release != "All" || req.query.status != "All"){
                     }
                 }
                 // instruments
-                ws.cell(row, count).string(cue.instruments.toString(", ")).style(style);
+                ws.cell(row, count).string(cue.instruments.join(", ")).style(style);
                 count++;
                 ws.cell(row, count).string("").style(style);
                 count++;
                 ws.cell(row, count).string(cue.release).style(style);
                 count++;
-                ws.cell(row, count).string(cue.hidden.toString(", ")).style(style);
-                row++
+                ws.cell(row, count).string(cue.hidden.join(", ")).style(style);
+                count++;
+                ws.cell(row, count).string(cue.rating.toString()).style(style);
+                row++;
             })
+
+           
 
 
 

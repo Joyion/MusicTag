@@ -110,4 +110,4 @@ let genreObjArray = genreArray.map((g, index) => {return {genre: g, genreId: ind
 
 
 
-export default genreObjArray;
+module.exports = genreObjArray;
