@@ -156,6 +156,27 @@ if(req.query.release != "All" || req.query.status != "All"){
          
                 let trackGenreId = 100 + parseInt(cue.genreId);
 
+               let artists = "";
+               for(let aCount = 0; aCount < 5; aCount++){
+                   if(aCount < cue.composers.length){
+                       artists += cue.composers[aCount].composer.fullName;
+                   }
+                   if(aCount < (cue.composers.length - 1)){
+                       artists += " / ";
+                   }
+               }
+
+               let publishernames = "";
+
+               for(let pCount = 0; pCount < 5; pCount++){
+                   if(pCount < cue.publishers.length){
+                       publishernames += cue.publishers[pCount].publisher.publisherName;
+                   }
+                   if(pCount < (cue.publishers.length - 1)){
+                       publishernames += " / ";
+                   }
+               }
+
                 count = 1;
                 //console.log("track " + count);
                 // main version
@@ -198,14 +219,13 @@ if(req.query.release != "All" || req.query.status != "All"){
                 ws.cell(row, count).string(cue.track).style(style);
                 count++;
                 // Artist  
-                ws.cell(row, count).string("").style(style);
+                ws.cell(row, count).string(artists).style(style);
                 count++;
                 // Composer
-                ws.cell(row, count).string("").style(style);
+                ws.cell(row, count).string(artists).style(style);
                 count++;
                 // Publisher
-                let pubs = cue.publishers.map((p) => { return p.publisherName })
-                ws.cell(row, count).string(pubs.toString(" / ")).style(style);
+                ws.cell(row, count).string(publishernames).style(style);
                 count++;
                 // Genres
                 ws.cell(row, count).string(cue.genre).style(style);
