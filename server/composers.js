@@ -50,7 +50,6 @@ let composerList = [
 { fName: "Brent", mName: "Scott", lName: "Godin", suffix: "", pro: "BMI", cae: "643420276"},
 { fName: "William", mName: "Frederick", lName: "Graettinger", suffix: "Jr", pro: "BMI", cae: "615455846"},
 { fName: "Damian", mName: "Michael Lamone", lName: "Williams", suffix: "", pro: "BMI", cae: "426358355"},
-{ fName: "Daniel", mName: "Kurt", lName: "Radlauer", suffix: "", pro: "BMI", cae: "138945049"},
 { fName: "Brendan", mName: "H", lName: "Murphy", suffix: "", pro: "BMI", cae: "602599544"},
 { fName: "Terrence", mName: "Christopher", lName: "Town", suffix: "", pro: "BMI", cae: "665126247"},
 { fName: "Shane", mName: "", lName: "Murphy", suffix: "", pro: "BMI", cae: "550230711"},
