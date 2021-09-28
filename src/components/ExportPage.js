@@ -135,6 +135,8 @@ class ExportPage extends React.Component {
                     </select>
                     <h1>Download Metadata Sheets</h1>
                     <a className="export__button" href={"http://" + process.env.IP + ":5000/api/export/bi?release=" + this.state.exportRelease + "&status=" +this.state.status}>Source Audio Metadata</a>
+                    <a className="export__button" href={"http://" + process.env.IP + ":5000/api/musicMark/bi?release=" + this.state.exportRelease + "&status=" +this.state.status}>Music Mark Metadata</a>
+
                 </div>
 
 

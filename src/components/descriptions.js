@@ -187,7 +187,7 @@ const description = [
     "Hip Hop Tasking",
     "Hip Hop Tension",
     "Hip Hop Underscore",
-    "Hip-hop Holiday",
+    "Hip Hop Holiday",
     "Hollow",
     "Hope",
     "Hopeful",

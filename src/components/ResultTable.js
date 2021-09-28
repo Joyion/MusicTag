@@ -155,7 +155,7 @@ class ResultTable extends React.Component {
                     </div>
                     <div className="filter__audio">
                         <h4>Playing: {this.state.songPlaying}</h4>
-                        <audio controls autoPlay src={this.state.audioFile} type="audio/wav" >
+                        <audio loop controls autoPlay src={this.state.audioFile} type="audio/wav" >
                         </audio>
 
                     </div>

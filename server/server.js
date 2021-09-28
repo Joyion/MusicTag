@@ -77,6 +77,9 @@ app.use("/api/bicues", biCuesRoutes);
 const exportRoutes = require("./routes/api.export")
 app.use("/api/export", exportRoutes);
 
+const exportMusicMark = require('./routes/api.export.musicMark');
+app.use('/api/musicMark', exportMusicMark);
+
 const composerList = require("./composers");
 
 // populate database with old composer info 
