@@ -512,7 +512,7 @@ class CorrectEdit extends React.Component {
 
                     {this.props.cue ?
                         <div className="edit__title">
-                            <audio controls src={"/wav/" + this.props.cue.release + "/" + this.props.cue.fileName} type="audio/wav" >
+                            <audio loop controls src={"/wav/" + this.props.cue.release + "/" + this.props.cue.fileName} type="audio/wav" >
                             </audio>
 
                         </div> : <div className="edit__title"><p>Unable to play media</p></div>}
