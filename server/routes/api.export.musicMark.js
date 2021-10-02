@@ -274,11 +274,11 @@ const sourceAudioHeaders =
     ]
 
 
-
+let globalRelease = ""
 
 router.get('/bi', (req, res) => {
 
-
+globalRelease = req.query.release;
 
 // console.log("Inside Excel");
 // console.log("params " + req.query.release);
@@ -328,53 +328,11 @@ if(req.query.release != "All" || req.query.status != "All"){
                 ws.cell(row, count).string(sourceAudioHeaders[h]).style(style);
                 count++;
             }
-            for (let pc = 0; pc < 5; pc++) {
-                let num = pc + 1;
-                ws.cell(row, count).string(`Publisher ${num} Company`).style(style);
-                count++;
-                ws.cell(row, count).string(`Publisher ${num} Pro Affiliation`).style(style);
-                count++;
-                ws.cell(row, count).string(`Publisher ${num} CAE/IPI`).style(style);
-                count++;
-                ws.cell(row, count).string(`Publisher ${num} Ownership Share`).style(style);
-                count++;
-                ws.cell(row, count).string(`Publisher ${num} Role`).style(style);
-                count++;
-                ws.cell(row, count).string(`Publisher ${num} Collection Share Percentage`).style(style);
-                count++;
-                ws.cell(row, count).string(`Publisher ${num} Collection Share Territory`).style(style);
-                count++;
-                ws.cell(row, count).string(`Writer ${num} First Name`).style(style);
-                count++;
-                ws.cell(row, count).string(`Writer ${num} Last Name`).style(style);
-                count++;
-                ws.cell(row, count).string(`Writer ${num} Company`).style(style);
-                count++;
-                ws.cell(row, count).string(`Writer ${num} Pro Affiliation`).style(style);
-                count++;
-                ws.cell(row, count).string(`Writer ${num} CAE/IPI`).style(style);
-                count++;
-                ws.cell(row, count).string(`Writer ${num} Ownership Share`).style(style);
-                count++;
-                ws.cell(row, count).string(`Writer ${num} Publisher`).style(style);
-                count++;
-                ws.cell(row, count).string(`Writer ${num} Role`).style(style);
-                count++;
-            }
-            ws.cell(row, count).string(`Instrumentation`).style(style);
-            count++;
-            ws.cell(row, count).string(`Pro`).style(style);
-            count++;
-            ws.cell(row, count).string(`Release`).style(style);
-            count++;
-            ws.cell(row, count).string("Hidden").style(style);
-            count++;
-            ws.cell(row, count).string("Rating").style(style);
             row++;
 
 
 
-            bicues.forEach((cue) => {
+            bicues.forEach((cue, cueIndex) => {
                 let genreId ;
                 for(i = 0; i < arrayGenres.length; i++){
                     if(cue.genreStyle == arrayGenres[i].genre){
@@ -405,218 +363,94 @@ if(req.query.release != "All" || req.query.status != "All"){
                    }
                }
 
+               let IDcode = cue.release.replace("R", "");
+               IDcode = IDcode.replace("_", "");
+               let numId = cueIndex.toString();
+               console.log(cueIndex);
+                numId = numId.padStart(4, "0");
+               IDcode = "DLMBI" + IDcode + numId;
                 count = 1;
                 //console.log("track " + count);
                 // main version
-                ws.cell(row, count).string(cue.mainVersion).style(style);
-                count++;
-                // sourceaudio id
-                ws.cell(row, count).string(" ").style(style);
-                count++;
-                // catalog
-                ws.cell(row, count).string("DL Music").style(style);
-                count++;
-                // label
-                ws.cell(row, count).string("DL Music").style(style);
-                count++;
-                // song title
                 ws.cell(row, count).string(cue.songTitle).style(style);
                 count++;
-                // filename
-                ws.cell(row, count).string(cue.fileName).style(style);
+                ws.cell(row, count).string(IDcode).style(style);
                 count++;
-                // master id
-                ws.cell(row, count).string("").style(style);
+                ws.cell(row, count).string("");
                 count++;
-                // album name
-                let releaseNum = cue.release.replace("R", "");
-                let albumName = cue.genre + ", " + cue.style + " Vol." + releaseNum;
-                ws.cell(row, count).string(albumName).style(style);
+                ws.cell(row, count).string(cue.isrc);
                 count++;
-                // Album Code
-                let ac = "DLM-BI-" + trackGenreId + "-" + cue.release;
-                ws.cell(row, count).string(ac).style(style);
-                count++;
-                //Album Description
-                ws.cell(row, count).string(cue.genreStyle).style(style);
-                count++;
-                //Album Genre
-                ws.cell(row, count).string(cue.genreStyle).style(style);
-                count++;
-                // Track Number
-                ws.cell(row, count).string(cue.track).style(style);
-                count++;
-                // Artist  
-                ws.cell(row, count).string(artists).style(style);
-                count++;
-                // Composer
-                ws.cell(row, count).string(artists).style(style);
-                count++;
-                // Publisher
-                ws.cell(row, count).string(publishernames).style(style);
-                count++;
-                // Genres
-                ws.cell(row, count).string(cue.genre).style(style);
-                count++;
-                // Tempos
-                ws.cell(row, count).string(cue.tempo).style(style);
-                count++;
-                // Cue Types
-                ws.cell(row, count).string("Songs").style(style);
-                count++;
-                //BPM
-                ws.cell(row, count).string("").style(style);
-                count++;
-                // Release Date
-                ws.cell(row, count).string(cue.releaseDate).style(style);
-                count++;
-                // Description
-                ws.cell(row, count).string(cue.descriptions.join(", ")).style(style);
-                count++;
-                // Mood
-                ws.cell(row, count).string(cue.descriptions.toString(", ")).style(style);
-                count++;
-                // style
-                ws.cell(row, count).string(cue.style).style(style);
-                count++;
-                // style of
-                ws.cell(row, count).string("").style(style);
-                count++;
-                // lyrics
-                ws.cell(row, count).string("").style(style);
-                count++;
-                // has vocal
-                ws.cell(row, count).string("No").style(style);
-                count++;
-                // explicit
-                ws.cell(row, count).string("").style(style);
-                count++;
-                // isrc
-                ws.cell(row, count).string(cue.isrc).style(style);
-                count++;
-                //iswc
-                ws.cell(row, count).string("").style(style);
-                count++;
-                for (let ploop = 0; ploop < 5; ploop++) {
+                count += 41;
+           
 
-                    if (ploop < cue.publishers.length) {
-                        cp = cue.publishers[ploop];
-                        // publisher company
-                        ws.cell(row, count).string(cp.publisher.publisherName).style(style);
+                for (let ploop = 0; ploop < 10; ploop++) {
+
+                    if (ploop < cue.composers.length) {
+                        cp = cue.composers[ploop];
+                    
+                    ws.cell(row, count).string()
+                        
+                        ws.cell(row,count).string(cp.lName).style(style);
                         count++;
-                        // publisher pro 
-                        ws.cell(row, count).string(cp.publisher.publisherPro).style(style);
+                        ws.cell(row,count).string(cp.fName).style(style);
                         count++;
-                        // publisher cae/ipi 
-                        ws.cell(row, count).string(cp.publisher.publisherIpi).style(style);
-                        count++;
-                        // publisher ownership share
-                        ws.cell(row, count).string(`${cp.split}%`).style(style);
-                        count++;
-                        // publisher role
-                        ws.cell(row, count).string("Original Publisher").style(style);
-                        count++;
-                        // publisher collection share percentage 
-                        ws.cell(row, count).string("").style(style);
-                        count++;
-                        // publisher share territory
-                        ws.cell(row, count).string("").style(style);
+                        ws.cell(row, count).string("CA - Composer/Author").style(style);
                         count++;
 
+                        if(cp.pro == "ASCAP"){
+                            ws.cell(row,count).string("10 - ASCAP");
+                            count++;
+                        }
+                        else if(cp.pro == "BMI"){
+                            ws.cell(row, count).string("21 - BMI");
+                            count++
+                        }
+                        else if (cp.pro == "SOCAN"){
+                            ws.cell(row,count).string("101 - SOCAN");
+                            count++;
+                        }
+                        else if(cp.pro == "APRA"){
+                            ws.cell(row,count).string("8 - APRA");
+                            count++;
+                        }
+                        else if(cp.pro = "SIAE"){
+                            ws.cell(row,count).string("74 - SIAE");
+                            count++;
+                        }
+                        else if(cp.pro = "SICAM"){
+                            ws.cell(row,count).string("86 - SICAM");
+                            count++;
+                        }
+                        else{
+                            ws.cell(row,count).string(cp.pro);
+                            count++;
+                        }
+                        ws.cell(row,count).string(cp.cae);
+                        count++;
+                        ws.cell(row,count).string(cp.cae);
+                        count++;
+                        count += 6;
+                        
                     }
                     else {
-                        // publisher company
-                        ws.cell(row, count).string("").style(style);
-                        count++;
-                        // publisher pro 
-                        ws.cell(row, count).string("").style(style);
-                        count++;
-                        // publisher cae/ipi 
-                        ws.cell(row, count).string("").style(style);
-                        count++;
-                        // publisher ownership share
-                        ws.cell(row, count).string("").style(style);
-                        count++;
-                        // publisher role
-                        ws.cell(row, count).string("").style(style);
-                        count++;
-                        // publisher collection share percentage 
-                        ws.cell(row, count).string("").style(style);
-                        count++;
-                        // publisher share territory
-                        ws.cell(row, count).string("").style(style);
-                        count++;
+              
 
                     }
 
                     if (ploop < cue.composers.length) {
                         let cc = cue.composers[ploop]
 
-                        // Writer first name
-                        ws.cell(row, count).string(cc.composer.fName).style(style);
-                        count++;
-                        // Writer last name
-                        ws.cell(row, count).string(cc.composer.lName).style(style);
-                        count++;
-                        // Writer Company 
-                        ws.cell(row, count).string("").style(style);
-                        count++;
-                        // Writer Pro Affliation
-                        ws.cell(row, count).string(cc.composer.pro).style(style);
-                        count++;
-                        // writer cae/ipi 
-                        ws.cell(row, count).string(cc.composer.cae).style(style);
-                        count++;
-                        //Writer Ownership share
-                        ws.cell(row, count).string(`${cc.split}%`).style(style);
-                        count++;
-                        // Writer Publisher
-                        ws.cell(row, count).string("").style(style);
-                        count++;
-                        // writer role
-                        ws.cell(row, count).string("Composer, Writer").style(style);
-                        count++;
+                  
                     }
                     else {
 
-                        // Writer first name
-                        ws.cell(row, count).string("").style(style);
-                        count++;
-                        // Writer last name
-                        ws.cell(row, count).string("").style(style);
-                        count++;
-                        // Writer Company 
-                        ws.cell(row, count).string("").style(style);
-                        count++;
-                        // Writer Pro Affliation
-                        ws.cell(row, count).string("").style(style);
-                        count++;
-                        // writer cae/ipi 
-                        ws.cell(row, count).string("").style(style);
-                        count++;
-                        //Writer Ownership share
-                        ws.cell(row, count).string("").style(style);
-                        count++;
-                        // Writer Publisher
-                        ws.cell(row, count).string("").style(style);
-                        count++;
-                        // writer role
-                        ws.cell(row, count).string("").style(style);
-                        count++;
+                      
+              
 
                     }
                 }
                 // instruments
-                ws.cell(row, count).string(cue.instruments.join(", ")).style(style);
-                count++;
-                ws.cell(row, count).string("").style(style);
-                count++;
-                ws.cell(row, count).string(cue.release).style(style);
-                count++;
-                ws.cell(row, count).string(cue.hidden.join(", ")).style(style);
-                count++;
-                ws.cell(row, count).string(cue.rating.toString()).style(style);
-                row++;
+        
             })
 
            
@@ -658,7 +492,10 @@ if(req.query.release != "All" || req.query.status != "All"){
 
 router.get("/download", function (req, res) {
     console.log("in download")
-    res.download("public/BISourceAudio.xlsx",function (err) {
+    
+    let excelFileName = "public/MusicMark_" + globalRelease + ".xlsx";
+
+    res.download(excelFileName,function (err) {
         if (err) {
             console.log("error");
         }
