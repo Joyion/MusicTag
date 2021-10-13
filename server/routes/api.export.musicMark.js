@@ -270,6 +270,60 @@ const sourceAudioHeaders =
 "5th AM/Sub Pub Internal ID 2",
 "5th AM/Sub Pub IPI Name# 2",
 "6th AM/Sub Pub Name 2",
+"6th AM/Sub Pub Role Code 2",
+"6th AM/Sub Pub PR Affiliation 2",
+"6th AM/Sub Pub Territory Code 2",
+"6th AM/Sub Pub Collect Share 2",
+"6th AM/Sub Pub Internal ID 2",
+"6th AM/Sub Pub IPI Name# 2",
+"Original Pub Name 3",
+"Original Pub PR Affiliation 3",
+"Original Pub World Own Share 3",
+"Original Pub Internal ID 3",
+"Original Pub IPI Name# 3",
+"Original Pub Controlled (Y/N) 3",
+"1st AM/Sub Pub Name 3",
+"1st AM/Sub Pub Role Code 3",
+"1st AM/Sub Pub PR Affiliation 3",
+"1st AM/Sub Pub Territory Code 3",
+"1st AM/Sub Pub Collect Share 3",
+"1st AM/Sub Pub Internal ID 3",
+"1st AM/Sub Pub IPI Name# 3",
+"2nd AM/Sub Pub Name 3",
+"2nd AM/Sub Pub Role Code 3",
+"2nd AM/Sub Pub PR Affiliation 3",
+"2nd AM/Sub Pub Territory Code 3",
+"2nd AM/Sub Pub Collect Share 3",
+"2nd AM/Sub Pub Internal ID 3",
+"2nd AM/Sub Pub IPI Name# 3",
+"3rd AM/Sub Pub Name 3",
+"3rd AM/Sub Pub Role Code 3",
+"3rd AM/Sub Pub PR Affiliation 3",
+"3rd AM/Sub Pub Territory Code 3",
+"3rd AM/Sub Pub Collect Share 3",
+"3rd AM/Sub Pub Internal ID 3",
+"3rd AM/Sub Pub IPI Name# 3",
+"4th AM/Sub Pub Name 3",
+"4th AM/Sub Pub Role Code 3",
+"4th AM/Sub Pub PR Affiliation 3",
+"4th AM/Sub Pub Territory Code 3",
+"4th AM/Sub Pub Collect Share 3",
+"4th AM/Sub Pub Internal ID 3",
+"4th AM/Sub Pub IPI Name# 3",
+"5th AM/Sub Pub Name 3",
+"5th AM/Sub Pub Role Code 3",
+"5th AM/Sub Pub PR Affiliation 3",
+"5th AM/Sub Pub Territory Code 3",
+"5th AM/Sub Pub Collect Share 3",
+"5th AM/Sub Pub Internal ID 3",
+"5th AM/Sub Pub IPI Name# 3",
+"6th AM/Sub Pub Name 3",
+"6th AM/Sub Pub Role Code 3",
+"6th AM/Sub Pub PR Affiliation 3",
+"6th AM/Sub Pub Territory Code 3",
+"6th AM/Sub Pub Collect Share 3",
+"6th AM/Sub Pub Internal ID 3",
+"6th AM/Sub Pub IPI Name# 3",
 
     ]
 
@@ -334,6 +388,7 @@ if(req.query.release != "All" || req.query.status != "All"){
 
             bicues.forEach((cue, cueIndex) => {
                 let genreId ;
+                
                 for(i = 0; i < arrayGenres.length; i++){
                     if(cue.genreStyle == arrayGenres[i].genre){
                         genreId = arrayGenres.genreId;
@@ -366,7 +421,7 @@ if(req.query.release != "All" || req.query.status != "All"){
                let IDcode = cue.release.replace("R", "");
                IDcode = IDcode.replace("_", "");
                let numId = cueIndex.toString();
-               console.log(cueIndex);
+              // console.log(cueIndex);
                 numId = numId.padStart(4, "0");
                IDcode = "DLMBI" + IDcode + numId;
                 count = 1;
@@ -380,7 +435,7 @@ if(req.query.release != "All" || req.query.status != "All"){
                 count++;
                 ws.cell(row, count).string(cue.isrc);
                 count++;
-                count += 41;
+                count += 42;
            
 
                 for (let ploop = 0; ploop < 10; ploop++) {
@@ -390,25 +445,36 @@ if(req.query.release != "All" || req.query.status != "All"){
                     
                     ws.cell(row, count).string()
                         
-                        ws.cell(row,count).string(cp.lName).style(style);
+                        ws.cell(row,count).string(cp.composer.lName).style(style);
                         count++;
-                        ws.cell(row,count).string(cp.fName).style(style);
+                        ws.cell(row,count).string(cp.composer.fName).style(style);
                         count++;
                         ws.cell(row, count).string("CA - Composer/Author").style(style);
                         count++;
 
+                        let publisherIpi = cue.publishers[0].publisher.cae;
+
                         if(cp.pro == "ASCAP"){
                             ws.cell(row,count).string("10 - ASCAP");
+                            publisherIpi = "337689810";
                             count++;
                         }
                         else if(cp.pro == "BMI"){
                             ws.cell(row, count).string("21 - BMI");
+                            publisherIpi = "355468339";
                             count++
+                        }
+                        else if(cp.pro == "SESAC"){
+                            ws.cell(row,count).string("71 - SESAC");
+                            publisherIpi = "568242236"
+                            count++;
                         }
                         else if (cp.pro == "SOCAN"){
                             ws.cell(row,count).string("101 - SOCAN");
+                            
                             count++;
                         }
+                  
                         else if(cp.pro == "APRA"){
                             ws.cell(row,count).string("8 - APRA");
                             count++;
@@ -422,35 +488,85 @@ if(req.query.release != "All" || req.query.status != "All"){
                             count++;
                         }
                         else{
-                            ws.cell(row,count).string(cp.pro);
+                            ws.cell(row,count).string(cp.composer.pro);
                             count++;
                         }
-                        ws.cell(row,count).string(cp.cae);
+
+
+
+
+
+                       // console.log(cp.split + "This is composer split");
+                        let cpSplitString = String(cp.split);
+                        ws.cell(row,count).string(cpSplitString);
                         count++;
-                        ws.cell(row,count).string(cp.cae);
+                        ws.cell(row,count).string(cp.composer.cae);
                         count++;
-                        count += 6;
+                        ws.cell(row,count).string(cp.composer.cae);
+                        count++;
+                        ws.cell(row,count).string(publisherIpi);
+                        count += 5;
                         
                     }
                     else {
-              
-
-                    }
-
-                    if (ploop < cue.composers.length) {
-                        let cc = cue.composers[ploop]
-
-                  
-                    }
-                    else {
-
-                      
-              
+                        for(let ecount = 0; ecount < 12; ecount++){
+                            ws.cell(row,count).string("");
+                            count++;
+                        }
 
                     }
                 }
+
+                for (let cloop = 0; cloop < 10; cloop++) {
+
+                    if (cloop < cue.publishers.length) {
+                      //  console.log("In Publisher Export");
+                        pp = cue.publishers[cloop].publisher;
+                        
+                
+                        let splitPub = String(cue.publishers[cloop].split);
+                        
+                        ws.cell(row,count).string(pp.publisherName);
+                        count++;
+                        ws.cell(row,count).string(splitPub);
+                        count++;
+                        switch(pp.publisherPro){
+                            case "ASCAP":
+                                ws.cell(row,count).string("10 - ASCAP");
+                                count++;
+                                break;
+                            case "BMI":
+                                ws.cell(row,count).string("21 - BMI");
+                                count++;
+                                break;
+                            case "SESAC":
+                                ws.cell(row,count).string("71 - SESAC");
+                                count++;
+                                break;
+                            default:
+                                ws.cell(row,count).string(pp.publisherPro);
+                                count++;
+                                break;
+
+                        }
+                        ws.cell(row,count).string(pp.publisherIpi);
+                        count++;
+                        ws.cell(row,count).string(pp.publisherIpi);
+                        count++;
+                        ws.cell(row, count).string("Y");
+                        count++;                     
+                    }
+                    else{
+                        count = count + 6;
+                    }
+
+                    
+                    count = count + 42;
+                    
+
+                }
                 // instruments
-        
+                row++;
             })
 
            
@@ -491,7 +607,7 @@ if(req.query.release != "All" || req.query.status != "All"){
 
 
 router.get("/download", function (req, res) {
-    console.log("in download")
+    console.log("in download for export")
     
     let excelFileName = "public/MusicMark_" + globalRelease + ".xlsx";
 
@@ -513,9 +629,9 @@ router.get("/releases", function(req, res){
 
         }
         else{
-            console.log(r.releases);
+            console.log("Release: " + r.releases);
             res.status(200).json(JSON.stringify(r));
-        }
+        }      
     })
 })
 
