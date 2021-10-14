@@ -46,7 +46,7 @@ const Publisher = require("./models/publisher.model");
 const releaseIsrc = require("./models/releaseIsrc.model");
 const biCue = require("./models/bi_cue_model");
 
-// populate publishers
+//populate publishers
 // const publisherArray = [
 //     {
 //         publisherName: "Derek Luff Music, Inc.",
@@ -82,7 +82,7 @@ app.use('/api/musicMark', exportMusicMark);
 
 const composerList = require("./composers");
 
-// populate database with old composer info 
+//populate database with old composer info 
 
 // composers.deleteMany({}, (err) => {
 //     if(err){
