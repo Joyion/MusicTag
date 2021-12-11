@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from "react-redux"
-import { startSetSong, startUpdateCue, startGetComposers,startCopy } from "../actions/cues.action";
+import { startSetIASong, startUpdateIACue, startGetIAComposers,startIACopy } from "../actions/cues.action";
 import genreObjArray from "./genreStyle";
 import instrumentArray from "./instruments";
 import descriptionArray from "./descriptions";
 import pros from "./pros";
 import hidden from "./hidden";
 
-class IAEdit extends React.Component {
+class CorrectEdit extends React.Component {
 
     constructor(props) {
         super(props);
@@ -98,8 +98,8 @@ class IAEdit extends React.Component {
     componentDidMount() {
         console.log("this is the param: " + this.props.match.params.id);
         let id = this.props.match.params.id;
-        startSetSong(id, this.props.dispatch);
-        startGetComposers(this.props.dispatch)
+        startSetIASong(id, this.props.dispatch);
+        startGetIAComposers(this.props.dispatch)
 
     }
 
@@ -114,7 +114,7 @@ class IAEdit extends React.Component {
                 let p = this.props.publishers[this.state.publisher]._id;
                 let data = {publisher: p, split: this.state.publisherSplit}
                 console.log(data);
-                startUpdateCue(id, "updatePublishers", data, false, null, this.props.dispatch);
+                startUpdateIACue(id, "updatePublishers", data, false, null, this.props.dispatch);
                 this.setState({
                     publisher: -1
                 })
@@ -130,7 +130,7 @@ class IAEdit extends React.Component {
         console.log(e.target.name);
         let pid = e.target.name;
         console.log(pid);
-        startUpdateCue(id, "removePublishers", pid, false, null, this.props.dispatch);
+        startUpdateIACue(id, "removePublishers", pid, false, null, this.props.dispatch);
     }
 
     updateComposer(e) {
@@ -173,7 +173,7 @@ class IAEdit extends React.Component {
 
             if (isthisNew) {
                 
-                startUpdateCue(id, "addNewComposer", newComposer, isthisNew, newComposer, this.props.dispatch);
+                startUpdateIACue(id, "addNewComposer", newComposer, isthisNew, newComposer, this.props.dispatch);
             }
 
 
@@ -195,7 +195,7 @@ class IAEdit extends React.Component {
         const id = this.props.match.params.id;  
         let c = e.target.name;
         console.log(e.target.name)
-        startUpdateCue(id, "removeComposer", c, null, null, this.props.dispatch);
+        startUpdateIACue(id, "removeComposer", c, null, null, this.props.dispatch);
     }
 
     addComposer(e) {
@@ -209,7 +209,7 @@ class IAEdit extends React.Component {
             let comp = {c: c, split: split}
 
             
-            startUpdateCue(id, "addComposer", comp, false, null, this.props.dispatch);
+            startUpdateIACue(id, "addComposer", comp, false, null, this.props.dispatch);
             this.setState({
                 addComposer: -1,
                 newSplit: 0
@@ -228,7 +228,7 @@ class IAEdit extends React.Component {
             //   console.log(genreObjArray)
             let value = genreObjArray.filter((v) => { return gs == v.genre })
             //   console.log("This is the genre " + value[0].genre);
-            startUpdateCue(id, "genreStyle", value[0], false, null, this.props.dispatch);
+            startUpdateIACue(id, "genreStyle", value[0], false, null, this.props.dispatch);
         }
         else {
             console.log("Choose a genre");
@@ -246,7 +246,7 @@ class IAEdit extends React.Component {
         }
         else {
             newInstruments.push(i);
-            startUpdateCue(id, "instruments", newInstruments, false, null, this.props.dispatch);
+            startUpdateIACue(id, "instruments", newInstruments, false, null, this.props.dispatch);
             
         }
 
@@ -257,7 +257,7 @@ class IAEdit extends React.Component {
         const id = this.props.match.params.id;
         const newInst = e.target.name;
         const newInstruments = this.props.cue.instruments.filter((i) => { return i != newInst });
-        startUpdateCue(id, "instruments", newInstruments, false, null, this.props.dispatch);
+        startUpdateIACue(id, "instruments", newInstruments, false, null, this.props.dispatch);
     }
 
     handleNewInstrument(e) {
@@ -271,7 +271,7 @@ class IAEdit extends React.Component {
             }
             else {
                 newInstruments.push(i);
-                startUpdateCue(id, "instruments", newInstruments, false, null, this.props.dispatch);
+                startUpdateIACue(id, "instruments", newInstruments, false, null, this.props.dispatch);
                 this.setState({
                     newInstrument: ""
                 })
@@ -296,7 +296,7 @@ class IAEdit extends React.Component {
         }
         else {
             newDescription.push(d);
-            startUpdateCue(id, "descriptions", newDescription, false, null, this.props.dispatch);
+            startUpdateIACue(id, "descriptions", newDescription, false, null, this.props.dispatch);
         }
 
     }
@@ -306,13 +306,13 @@ class IAEdit extends React.Component {
         let hidden = this.props.cue.hidden.map((h) => {return h})
         hidden.push(e.target.name);
         console.log(e.target.name);
-        startUpdateCue(id, "hidden", hidden, false, null, this.props.dispatch);
+        startUpdateIACue(id, "hidden", hidden, false, null, this.props.dispatch);
     }
     removeHidden(e){
         const id = this.props.match.params.id;
         console.log(e.target.name);
         let h = this.props.cue.hidden.filter((h) => {return h != e.target.name})
-        startUpdateCue(id,"hidden", h, false, null, this.props.dispatch );
+        startUpdateIACue(id,"hidden", h, false, null, this.props.dispatch );
     }
 
     handleNewDescription(e) {
@@ -330,7 +330,7 @@ class IAEdit extends React.Component {
             }
             else {
                 newDescription.push(d.trim());
-                startUpdateCue(id, "descriptions", newDescription, false, null, this.props.dispatch);
+                startUpdateIACue(id, "descriptions", newDescription, false, null, this.props.dispatch);
                 this.setState({
                     newDescription: ""
                 })
@@ -346,7 +346,7 @@ class IAEdit extends React.Component {
         const id = this.props.match.params.id;
         const d = e.target.name;
         const newDescription = this.props.cue.descriptions.filter((de) => { return de != d });
-        startUpdateCue(id, "descriptions", newDescription, false, null, this.props.dispatch);
+        startUpdateIACue(id, "descriptions", newDescription, false, null, this.props.dispatch);
 
     }
 
@@ -356,7 +356,7 @@ class IAEdit extends React.Component {
         const r = this.state.rating;
         if (r >= 0) {
             console.log(r);
-            startUpdateCue(id, "rating", r, false, null, this.props.dispatch);
+            startUpdateIACue(id, "rating", r, false, null, this.props.dispatch);
             this.setState({
                 rating: 0
             })
@@ -369,7 +369,7 @@ class IAEdit extends React.Component {
         const s = this.state.status;
         if (s != "status") {
             console.log(s);
-            startUpdateCue(id, "status", s, false, null, this.props.dispatch);
+            startUpdateIACue(id, "status", s, false, null, this.props.dispatch);
             this.setState({
                 status: "Status"
             })
@@ -382,7 +382,7 @@ class IAEdit extends React.Component {
         const t = this.state.tempo;
         if (t != "tempo") {
             console.log(t);
-            startUpdateCue(id, "tempo", t, false, null, this.props.dispatch);
+            startUpdateIACue(id, "tempo", t, false, null, this.props.dispatch);
             this.setState({
                 tempo: ""
             })
@@ -405,7 +405,7 @@ class IAEdit extends React.Component {
             }
             else {
                 newFilms.push(f);
-                startUpdateCue(id, "films", newFilms, false, null, this.props.dispatch);
+                startUpdateIACue(id, "films", newFilms, false, null, this.props.dispatch);
                 this.setState({
                     film: ""
                 })
@@ -421,7 +421,7 @@ class IAEdit extends React.Component {
         const id = this.props.match.params.id;
         const film = e.target.name;
         const newFilms = this.props.cue.films.filter((f) => { return f != film });
-        startUpdateCue(id, "films", newFilms, false, null, this.props.dispatch);
+        startUpdateIACue(id, "films", newFilms, false, null, this.props.dispatch);
     }
 
     handleBand(e) {
@@ -438,7 +438,7 @@ class IAEdit extends React.Component {
             }
             else {
                 newBands.push(b);
-                startUpdateCue(id, "bands", newBands, false, null, this.props.dispatch);
+                startUpdateIACue(id, "bands", newBands, false, null, this.props.dispatch);
                 console.log(b);
                 this.setState({
                     band: ""
@@ -455,7 +455,7 @@ class IAEdit extends React.Component {
         const id = this.props.match.params.id;
         const band = e.target.name;
         const newBands = this.props.cue.bands.filter((b) => { return b != band });
-        startUpdateCue(id, "bands", newBands, false, null, this.props.dispatch);
+        startUpdateIACue(id, "bands", newBands, false, null, this.props.dispatch);
 
     }
 
@@ -465,7 +465,7 @@ class IAEdit extends React.Component {
         if (this.state.mainVersion.trim()) {
             const v = this.state.mainVersion.trim();
             console.log(v)
-            startUpdateCue(id, 'mainVersion', v, false, null, this.props.dispatch);
+            startUpdateIACue(id, 'mainVersion', v, false, null, this.props.dispatch);
             this.setState({
                 mainVersion: ""
             })
@@ -480,7 +480,7 @@ class IAEdit extends React.Component {
         const id = this.props.match.params.id;
         if (this.props.cue.mainVersion.trim()) {
             // console.log(this.props.cue.mainVersion);
-            startCopy(id, this.props.cue, this.props.cue.mainVersion, this.props.dispatch);
+            startIACopy(id, this.props.cue, this.props.cue.mainVersion, this.props.dispatch);
         }
     }
 
@@ -998,4 +998,4 @@ const mapStateToProps = (state, props) => ({
     publishers: state.cues.publishers
 })
 
-export default connect(mapStateToProps)(IAEdit);
+export default connect(mapStateToProps)(CorrectEdit);

@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar";
 import EditPage from "../components/EditPage";
 import ExportPage from "../components/ExportPage";
 import IAPage from '../components/IAPage';
+import IAEdit from '../components/IAEditPage';
 
 const AppRouter = () => (
 
@@ -23,6 +24,8 @@ const AppRouter = () => (
                 <IAPage />
             </Route>
             <Route  path="/EditSong/:id" component={EditPage} />
+            
+            <Route path="/IAEditSong/:id" component={IAEdit} />
               
             <Route path="/Export">
                 <ExportPage />

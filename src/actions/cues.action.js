@@ -28,7 +28,27 @@ export const startGetCues = (page, filter, dispatch) => {
     })
 
 }
+// get Cues and pages count for IA
 
+export const startGetIACues = (page, filter, dispatch) => {
+  console.log("In start get IA cues"),
+  console.log("Current page: " + page);
+  axios.get('/api/iacues/getIACues', {
+    params: {
+      page,
+      status: filter,
+    }
+  })
+    .then (function (response){
+      const data = JSON.parse(response.data);
+      dispatch(getCues(data.cues, data.totalCues, data.page, data.totalPages, data.status))
+    })
+    .catch(function(error){
+      console.log(error);
+    })
+}
+
+// copy feature for BI Cues
 export const startCopy = (id, cue, mv, dispatch) => {
   console.log(cue + "/n");
   console.log(mv + "/n");
@@ -53,9 +73,50 @@ export const updateCue = (cue, comps, pubs) => ({
   pubs,
 })
 
+
 export const startUpdateCue = (cue, name, value, isThisNew, newComposer, dispatch) => {
   // console.log("Starting update");
-  axios.put('/api/bicues/updateCue', {
+  axios.put('/api/iacues/updateCue', {
+
+    id: cue,
+    name,
+    value,
+    isThisNew,
+    newComposer
+
+  })
+    .then(function (response) {
+      const data = JSON.parse(response.data);
+      // console.log(data);
+      dispatch(updateCue(data.cue, data.comps, data.pubs));
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+}
+// Copy features
+
+export const startIACopy = (id, cue, mv, dispatch) => {
+  console.log(cue + "/n");
+  console.log(mv + "/n");
+
+  axios.put("/api/iacues/copyCue",
+    {
+      id: id,
+      cue: cue,
+      mainVersion: mv
+    }).then((response) => {
+      const data = JSON.parse(response.data)
+      dispatch(updateCue(data.cue, data.comps, data.pubs))
+    }).catch((e) => {
+      console.log(e);
+    })
+}
+
+
+export const startUpdateIACue = (cue, name, value, isThisNew, newComposer, dispatch) => {
+  // console.log("Starting update");
+  axios.put('/api/iacues/updateCue', {
 
     id: cue,
     name,
@@ -74,6 +135,13 @@ export const startUpdateCue = (cue, name, value, isThisNew, newComposer, dispatc
     })
 }
 
+
+
+
+
+
+//
+
 export const setSong = (cue) => ({
   type: "SET_SONG",
   cue
@@ -82,6 +150,24 @@ export const setSong = (cue) => ({
 export const startSetSong = (cue, dispatch) => {
   // console.log("Starting update " + cue);
   axios.post('/api/bicues/getMetadata', {
+    id: cue
+
+  })
+    .then((response) => {
+      const data = JSON.parse(response.data);
+      // console.log(data);
+      dispatch(setSong(data));
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+
+}
+
+
+export const startSetIASong = (cue, dispatch) => {
+  // console.log("Starting update " + cue);
+  axios.post('/api/iacues/getMetadata', {
     id: cue
 
   })
@@ -123,6 +209,20 @@ export const getSetSong = () => ({
 
 export const startGetComposers = (dispatch) => {
   axios.get('/api/bicues/allComposers'
+  )
+    .then(function (response) {
+      const data = JSON.parse(response.data);
+      console.log("Returned From all composers \n" + data);
+      dispatch(getAllComposers(data.composers, data.pubs))
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+
+}
+
+export const startGetIAComposers = (dispatch) => {
+  axios.get('/api/iacues/allComposers'
   )
     .then(function (response) {
       const data = JSON.parse(response.data);

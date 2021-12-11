@@ -1,7 +1,7 @@
 import React from 'react';
-import Song from "./Song";
+import IASong from "./IASong";
 import { connect } from "react-redux";
-import { startGetCues } from "../actions/cues.action";
+import { startGetIACues } from "../actions/cues.action";
 
 
 class IAResultTable extends React.Component {
@@ -31,7 +31,7 @@ class IAResultTable extends React.Component {
 
     componentDidMount() {
         console.log("START");
-        startGetCues(this.props.cues.page, this.props.cues.status, this.props.dispatch);
+        startGetIACues(this.props.cues.page, this.props.cues.status, this.props.dispatch);
     }
 
     nextPage() {
@@ -79,7 +79,7 @@ class IAResultTable extends React.Component {
 
     setAudioFile(file, songTitle) {
         this.setState({
-            audioFile: "/wav/" + file,
+            audioFile: "/ia/wav/" + file,
             songPlaying: songTitle
         })
 
@@ -178,7 +178,7 @@ class IAResultTable extends React.Component {
                 </div> */}
                 <div className="resultTable__container">
                     {this.props.cues.cues.length > 0 ? this.props.cues.cues.map((c, i) => {
-                        return <Song key={i} cue={c} setAudioFile={this.setAudioFile} />
+                        return <IASong key={i} cue={c} setAudioFile={this.setAudioFile} />
                     }) : <div style={{ textAlign: "center", position: "relative", top: "20px" }}> <h3 style={{ margin: 0 }}>No Results</h3></div>}
                 </div>
 
@@ -192,7 +192,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    getCues: (page, filters) => { startGetCues(page, filters); }
+    getCues: (page, filters) => { startGetIACues(page, filters); }
 })
 
 export default connect(mapStateToProps)(IAResultTable);
