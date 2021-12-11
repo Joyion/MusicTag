@@ -6,6 +6,7 @@ export const history = createBrowserHistory();
 import Navbar from "../components/Navbar";
 import EditPage from "../components/EditPage";
 import ExportPage from "../components/ExportPage";
+import IAPage from '../components/IAPage';
 
 const AppRouter = () => (
 
@@ -19,7 +20,7 @@ const AppRouter = () => (
                 <BIPage />
             </Route>
             <Route  path="/IndieArtist">
-                <BIPage />
+                <IAPage />
             </Route>
             <Route  path="/EditSong/:id" component={EditPage} />
               

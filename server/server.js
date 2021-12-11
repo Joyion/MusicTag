@@ -45,6 +45,9 @@ const composers = require('./models/composer.model');
 const Publisher = require("./models/publisher.model");
 const releaseIsrc = require("./models/releaseIsrc.model");
 const biCue = require("./models/bi_cue_model");
+const IACue = require("./models/ia_cue_model");
+const IAcomposers = require("./models/ia_composer.model");
+const IApublisher = require("./models/ia_publisher.model");
 
 //populate publishers
 // const publisherArray = [
@@ -79,6 +82,9 @@ app.use("/api/export", exportRoutes);
 
 const exportMusicMark = require('./routes/api.export.musicMark');
 app.use('/api/musicMark', exportMusicMark);
+
+const iaCuesRoutes = require("./routes/api.iacues");
+app.use("/api/iacues", iaCuesRoutes);
 
 const composerList = require("./composers");
 
@@ -116,10 +122,18 @@ app.get('/test', (req, res) => {
 // to sync mp3 information to database 
 app.get('/api/upload', (req, res) => {
     const release = req.query.release.toUpperCase();
+    const catalog = req.query.catalog.toUpperCase();
     let d = new Date();
     let year = d.getFullYear();
+    let myfiles;
     console.log(release);
-    const file = "./public/dist/wav/" + release;
+    console.log(catalog);
+    let file
+    if(catalog == "IA"){
+        file = "./public/dist/ia/wav/" + release;
+    } else{
+        file = "./public/dist/wav/" + release;
+    }
     fs.readdir(file, (err, files) => {
         if (err) {
             console.log("error reading files");
@@ -128,6 +142,12 @@ app.get('/api/upload', (req, res) => {
             console.log(files.length);
             if (files.length > 0) {
 
+                 myfiles = files.filter((f) => {
+                     let top = f.substring(0, 2);
+                     top = top.toUpperCase().trim();
+                     return top == "IA" || top == "DL";
+                 })
+
                 releaseIsrc.findOne(function (err, docs) {
                     console.log("Are there any releases in releaseIsrc? " + docs);
                     if (!docs) {
@@ -135,11 +155,11 @@ app.get('/api/upload', (req, res) => {
                         let newDoc = new releaseIsrc({
                             releases: [release],
                             currentYear: year,
-                            totalTracksThisYear: files.length
+                            totalTracksThisYear: myfiles.length
                         })
 
                         newDoc.save(function (err, doc) {
-                            startUpdate(release, year, doc.totalTracksThisYear - files.length);
+                            startUpdate(release, year, doc.totalTracksThisYear - myfiles.length, catalog);
                         })
 
 
@@ -163,14 +183,14 @@ app.get('/api/upload', (req, res) => {
                             if (docs.currentYear != year) {
                                 console.log("I'm not new" + docs.currentYear);
                                 docs.currentYear = year;
-                                docs.totalTracksThisYear = files.length;
+                                docs.totalTracksThisYear = myfiles.length;
                             }
                             else {
-                                docs.totalTracksThisYear += files.length;
+                                docs.totalTracksThisYear += myfiles.length;
                             }
                             docs.save(function (error, docs) {
                                 console.log(docs);
-                                startUpdate(release, docs.currentYear, (docs.totalTracksThisYear - files.length))
+                                startUpdate(release, docs.currentYear, (docs.totalTracksThisYear - myfiles.length), catalog)
                             });
                         }
 
@@ -180,9 +200,9 @@ app.get('/api/upload', (req, res) => {
 
                 // release cannont be over 99,000 tracks.
                 // startupdate is the function that is called in the  callback above.
-                const startUpdate = (r, y, t) => {
+                const startUpdate = (r, y, t, catalog) => {
                     let mainVersions = [];
-                    files.forEach((f, i) => {
+                    myfiles.forEach((f, i) => {
                         if (f.includes(" v1 ")) {
                             let songSplit = f.split(" v1 ");
                             mainVersions.push({ songSplit: songSplit[0], fullFile: f });
@@ -191,9 +211,11 @@ app.get('/api/upload', (req, res) => {
                         }
                     })
                     let biSongs = [];
-                    console.log(files);
-                    files.forEach((file, index) => {
+                    console.log("these are the files");
+                    console.log(myfiles);
+                    myfiles.forEach((file, index) => {
                         let songName = file.replace("DLM - ", "");
+                         songName = file.replace("IA - ", "");
                         songName = songName.replace(".mp3", "");
                         songName = songName.replace(".wav", "");
                         songName = songName.replace("._", "");
@@ -238,6 +260,29 @@ app.get('/api/upload', (req, res) => {
                         biSongs.push(song);
                     });
 
+                if(catalog == "IA"){
+
+                    IACue.create(biSongs, function (err) {
+                        if (err) {
+                            console.log("Unable to Save to Database: \n" + error);
+                        }
+                        else {
+                            let message = release + " was successfully uploaded";
+                            console.log("Successfully written to database")
+                            let myjson = {
+                                biCues: biSongs,
+                                error: "false",
+                                message: message
+                            }
+
+                            const data = JSON.stringify(myjson);
+                            res.json(data);
+                        }
+                    });
+
+
+                }
+                else{
                     biCue.create(biSongs, function (err) {
                         if (err) {
                             console.log("Unable to Save to Database: \n" + error);
@@ -256,6 +301,7 @@ app.get('/api/upload', (req, res) => {
                         }
                     });
                 }
+            }
 
             }
             else{

@@ -18,22 +18,23 @@ class ExportPage extends React.Component {
             status: "All",
             release: "",
             exportRelease: "All",
+            catalog: "BI"
         }
         this.getFiles = this.getFiles.bind(this);
         this.exportData = this.exportData.bind(this);
         this.handleRelease = this.handleRelease.bind(this);
         this.handleReleaseSelection = this.handleReleaseSelection.bind(this);
         this.handleStatus = this.handleStatus.bind(this);
+        this.handleCat = this.handleCat.bind(this);
     }
 
     componentDidMount() {
         startGetReleases(this.props.dispatch)
-        
-       
+    
     }
 
     getFiles() {
-        axios.get('/api/upload', { params: { release: this.state.release } })
+        axios.get('/api/upload', { params: { release: this.state.release, catalog: this.state.catalog } })
             .then((response) => {
                 console.log(response.data);
 
@@ -110,6 +111,12 @@ class ExportPage extends React.Component {
         this.setState({status: e.target.value})
     }
 
+    handleCat(e){
+        console.log(e.target.value);
+        console.log("Joy");
+        this.setState({catalog: e.target.value})
+    }
+
     render() {
         return (
             <div className="export__container">
@@ -126,6 +133,12 @@ class ExportPage extends React.Component {
                         <option value="Pending">Pending</option>
                         <option value="Pulled">Pulled</option>
                     </select>
+
+                    <select value={this.state.catalog} onChange={this.handleCat}>
+                        <option value="BI">BI</option>
+                        <option value="IA">IA</option>
+                    </select>
+                
                     <p>Release</p>
                     <select value={this.state.exportRelease} onChange={this.handleReleaseSelection}>
                         <option key={-1} value="All">All</option>

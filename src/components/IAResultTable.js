@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { startGetCues } from "../actions/cues.action";
 
 
-class ResultTable extends React.Component {
+class IAResultTable extends React.Component {
 
     constructor(props) {
         super(props);
@@ -111,9 +111,9 @@ class ResultTable extends React.Component {
                 <div className="filter__container">
                     <div className="filter__flexcontainer">
                         <div>
-                            <h1>Background Instrumentals</h1>
+                            <h1 style={{color: "red"}} >Indie Artist </h1>
                             <div className="filter__display">
-                                <h2>Total Cues: {this.props.cues.totalCues}</h2>
+                                <h2 style={{paddingRight: "20px"}}>Total Cues: {this.props.cues.totalCues} </h2>
                                 <h2 className="filter__status">Status:
                      {this.state.status && this.state.status == "Active" ? <span style={{ color: "green" }}> {this.state.status}</span> :
                                         this.state.status && this.state.status == "Pulled" ? <span style={{ color: "red" }}>{this.state.status}</span> :
@@ -133,19 +133,6 @@ class ResultTable extends React.Component {
                                     <input type="submit" value="Update Status" />
                                 </label>
                             </form>
-
-                            <form onSubmit={this.handleStatus}>
-                                <label>
-                                    <select name="selectStatus" value={this.state.selectStatus} onChange={this.handleChange}>
-                                        {/* <option value="Status"> Status</option> */}
-                                        <option value="Pending">Pending</option>
-                                        <option value="Active">Active</option>
-                                        <option value="Pulled">Pulled</option>
-                                    </select>
-                                    <input type="submit" value="Select Composer" />
-                                </label>
-                            </form>
-
                         </div>
 
                         <div className="filter__pages">
@@ -208,4 +195,4 @@ const mapDispatchToProps = dispatch => ({
     getCues: (page, filters) => { startGetCues(page, filters); }
 })
 
-export default connect(mapStateToProps)(ResultTable);
+export default connect(mapStateToProps)(IAResultTable);

@@ -12,7 +12,7 @@ const NavBar = () => {
             </div>
             <div className="navbar__links">
                 <NavLink className="nav-link" activeClassName="active-links" to="/backgroundInstrumentals">Background Instrumentals</NavLink>
-                {/* <NavLink className="nav-link" activeClassName="active-links" to="/IndieArtist">Indie Artist</NavLink> */}
+                 <NavLink className="nav-link" activeClassName="active-links" to="/IndieArtist">Indie Artist</NavLink> 
                 
                 <NavLink className="nav-link" activeClassName="active-links" to="/Export">Upload/Export</NavLink>
             </div>   
