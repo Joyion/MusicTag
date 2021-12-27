@@ -147,9 +147,15 @@ if(req.query.release != "All" || req.query.status != "All"){
 
 
             bicues.forEach((cue) => {
-
-                let trackGenreId = cue.genreId.toString();
+                let trackGenreId;
+                if(cue.genreId){
+                trackGenreId = cue.genreId.toString();
                  trackGenreId = trackGenreId.padStart(3, "0")
+                }
+                else{
+                    trackGenreId = cue.genreId;
+                }
+                
             
              
         

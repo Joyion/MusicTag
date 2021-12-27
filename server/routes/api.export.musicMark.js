@@ -394,8 +394,16 @@ if(req.query.release != "All" || req.query.status != "All"){
                         genreId = arrayGenres.genreId;
                     }
                 }
+
+                let trackGenreId;
+                if(cue.genreId){
+                    let trackGenreId = 100 + parseInt(cue.genreId);
+                }
+                else{
+                    trackGenreId = cue.genreId;
+                }
          
-                let trackGenreId = 100 + parseInt(cue.genreId);
+                
 
                let artists = "";
                for(let aCount = 0; aCount < 5; aCount++){
