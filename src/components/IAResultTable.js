@@ -77,6 +77,10 @@ class IAResultTable extends React.Component {
 
     }
 
+    handleComposureTitle(e){
+
+    }
+
     setAudioFile(file, songTitle) {
         this.setState({
             audioFile: "/ia/wav/" + file,
