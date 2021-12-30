@@ -446,14 +446,16 @@ router.get("/download", function (req, res) {
 
 
 router.get("/releases", function(req, res){
-    releaseIsrc.find({}, (err, r) => {
+    releaseIsrc.findOne({}, (err, data) => {
         if(err){
         
 
         }
         else{
-            console.log(r.releases);
-            res.status(200).json(JSON.stringify(r));
+            
+            res.status(200).json(JSON.stringify(data));
+            
+           
         }
     })
 })

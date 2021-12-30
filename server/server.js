@@ -101,6 +101,21 @@ const composerList = require("./composers");
 //     }
 // })
 
+// releaseIsrc.findOne(function(err, docs){
+//     if(!docs){
+//         console.log("Initializing release irsc");
+//         let d = new Date();
+//         let year = d.getFullYear();
+//         let newDoc = new releaseIsrc({
+//             releaes: [],
+//             currentYear: year,
+//             totalTracksThisYear: 0
+//         })
+//     }
+//     else{
+//         console.log("Irsc already initialized");
+//     }
+// })
 
 
 

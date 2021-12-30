@@ -1,27 +1,30 @@
 import axios from "axios"
 
-export const getCues = (cues, totalCues, page, totalPages, status) => ({
+export const getCues = (cues, totalCues, page, totalPages, status, releases) => ({
   type: "GET_CUES",
   cues,
   totalCues: parseInt(totalCues),
   page: parseInt(page),
   totalPages: parseInt(totalPages),
-  status,
+  status: status,
+  releases: releases
 })
 
-export const startGetCues = (page, filter, dispatch) => {
+export const startGetCues = (page, status, release, dispatch) => {
   console.log("In start get cues");
   console.log("Current page: " + page);
   axios.get('/api/bicues/getBiCues', {
     params: {
       page,
-      status: filter,
+      status: status,
+      release: release
     }
   })
     .then(function (response) {
       const data = JSON.parse(response.data);
       // console.log("Returned From startgetCues \n" + data.cues);
-      dispatch(getCues(data.cues, data.totalCues, data.page, data.totalPages, data.status))
+      console.log("hello in dispatch " + data.releases);
+      dispatch(getCues(data.cues, data.totalCues, data.page, data.totalPages, data.status, data.releases))
     })
     .catch(function (error) {
       console.log(error);
@@ -143,12 +146,20 @@ export const getAllComposers = (composers, pubs) => ({
 
 
 export const startGetReleases = (dispatch) => {
-  axios.get("/api/export/releases").then((response) => {
-    console.log(response.data);
+  axios.get("/api/export/releases")
+    .then(function (response) {
+  
     let d = JSON.parse(response.data);
-    if(d.length > 0){
-    dispatch(getReleases(d[0].releases))
+    console.log("this is in start get releases" + response.data);
+    if(response.data){
+    dispatch(getReleases(d.releases))
+    }{
+      console.log("NO need")
     }
+    
+  })
+  .catch(function(err){
+    console.log(err);
   })
 }
 

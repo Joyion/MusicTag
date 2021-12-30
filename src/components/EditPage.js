@@ -783,7 +783,7 @@ class CorrectEdit extends React.Component {
                             }) : <p>No Hidden Words Added</p> : <p>No Hideen Words Added</p>}
                         </div>
                     </div>
-
+{/* 
                     <div>
                         <h3>Add Hidden Words</h3>
                         <div className="edit__container--scroll">
@@ -807,7 +807,7 @@ class CorrectEdit extends React.Component {
 
                             </label>
                         </form>
-                    </div>
+                    </div> */}
                 </div>
 
 

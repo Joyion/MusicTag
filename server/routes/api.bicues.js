@@ -3,6 +3,7 @@ const router = express.Router();
 const biCue = require("../models/bi_cue_model");
 const composers = require('../models/composer.model');
 const Publisher = require("../models/publisher.model");
+const releaseIsrc = require("../models/releaseIsrc.model");
 const path = require("path");
 const mp3path = path.join(__dirname, "..", "..", "public", "dist", "mp3");
 const wavPath = path.join(__dirname, "..", "..", "public", "dist", "wav")
@@ -16,29 +17,43 @@ const e = require("express");
 // GET A LIST OF BI CUES
 router.get("/getBiCues", (req, res) => {
     let status = req.query.status;
+    let release = req.query.release;
     let page = parseInt(req.query.page);
-    // dummy info for testinga
+    // dummy info for testing but
+    // this dummy info is overwritten with real data. Don't delete data objet. it's being used.
     let data = {
         cues: ["eeney", "meeney", "miney"],
         totalCues: 3400,
         page: 1,
         totalPages: 1250,
-        status: status
+        status: status,
+        releases: ""
     }
+    // rewriting dummy datat in some parts.
     let pageLimit = 25;
     let skip = pageLimit * (page - 1);
     data.page = page;
     console.log("Status: " + data.status + " page limit: " + pageLimit + " skip: " + skip + " page: " + page);
+    let filter = {};
+    if(req.query.release != "All"){
+        filter = {
+            status: status,
+            release: release
+        }
+    }
+    else{
+        filter ={status: status};
+    }
+    console.log(filter);
 
-
-    biCue.countDocuments({ status: data.status }, function (err, count) {
+    biCue.countDocuments(filter, function (err, count) {
         if (err) {
 
         }
         else {
             data.totalCues = count;
             let division = data.totalCues / pageLimit;
-
+            console.log("Number of filtered cues " + count);
             if (division < 1) {
                 data.totalPages = 1;
             }
@@ -46,14 +61,29 @@ router.get("/getBiCues", (req, res) => {
                 data.totalPages = Math.ceil(division);
             }
 
-            biCue.find({ status: data.status })
+            biCue.find(filter)
             .populate({ path: 'composers.composer', model: "Composer" })
             .populate({ path: "publishers.publisher", model: "Publisher" })
                 .sort({ songTitle: "asc" }).skip(skip).limit(pageLimit).exec(function (err, docs) {
                     data.cues = docs;
                     //console.log(data);
+                   // console.log(data.cues[0]);
 
-                    res.status(200).json(JSON.stringify(data));
+                    // releaseIsrc.find(function(err,countReleases){
+                    //     if(err){
+                    //          console.log("Unable to retrieve releases");
+                    //     }
+                    //     else{
+                    //         data.releases = countReleases[0].releases.map(r => r);
+                    //         console.log(data.releases);
+                           
+                          
+                    //     }
+
+                    // })
+
+
+                      res.status(200).json(JSON.stringify(data));
 
                 })
         }

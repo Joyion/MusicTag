@@ -4,9 +4,11 @@ const defaultState = {
         page: 1,
         totalPages: 1,
         status: "Pending",
+        release: "All",
         selectSong: {
             catalogName: ""
         },
+        releases: [],
         composers: [],
         releases: [],
         publishers: [],
@@ -24,6 +26,7 @@ export default (state = defaultState, action) => {
                     totalPages: action.totalPages,
                     selectSong: action.selectSong,
             }
+            break;
         case "UPDATE_CUE":
             return {
                 ...state,
@@ -31,6 +34,7 @@ export default (state = defaultState, action) => {
                 composers: action.comps,
                 publishers: action.pubs,
             };
+            break;
         case "GET_ALL_COMPOSERS":
             return {
                 ...state,
@@ -42,6 +46,7 @@ export default (state = defaultState, action) => {
                 ...state,
                 selectSong: action.cue
             }
+            break;
         case "GET_SET_SONG":
             return{
                 ...state
@@ -51,11 +56,13 @@ export default (state = defaultState, action) => {
                 ...state,
                 releases: action.releases
             }
+            break;
         case "PLAY_SONG":
             return {
                 ...state,
                 selectSong: action.selectSong
             }
+            break;
         default:
             return state;
     }

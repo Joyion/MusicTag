@@ -1,7 +1,8 @@
 import React from 'react';
 import Song from "./Song";
 import { connect } from "react-redux";
-import { startGetCues } from "../actions/cues.action";
+import { startGetCues, startGetReleases } from "../actions/cues.action";
+
 
 
 class ResultTable extends React.Component {
@@ -14,7 +15,10 @@ class ResultTable extends React.Component {
             totalPages: this.props.cues.totalPages,
             selectPage: 1,
             status: this.props.cues.status,
+            release: this.props.cues.release,
+            releases: this.props.cues.releases,
             selectStatus: this.props.cues.status,
+            selectRelease: this.props.cues.release,
             totalCues: this.props.cues.totalCues,
             audioFile: "",
             songPlaying: "",
@@ -26,12 +30,17 @@ class ResultTable extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.setAudioFile = this.setAudioFile.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
+        this.handleRelease = this.handleRelease.bind(this);
 
     }
 
     componentDidMount() {
         console.log("START");
-        startGetCues(this.props.cues.page, this.props.cues.status, this.props.dispatch);
+        console.log(this.props.cues);
+        startGetReleases(this.props.dispatch);
+        startGetCues(this.props.cues.page, this.props.cues.status, this.props.cues.release, this.props.dispatch);
+        
+        
     }
 
     nextPage() {
@@ -39,7 +48,7 @@ class ResultTable extends React.Component {
         console.log(this.props.cues.page + 1);
         const nextPage = this.props.cues.page + 1;
         if (nextPage <= this.props.cues.totalPages && nextPage > 0) {
-            startGetCues(nextPage, this.state.status, this.props.dispatch);
+            startGetCues(nextPage, this.state.status, this.state.release, this.props.dispatch);
             this.setState({
                 selectPage: nextPage
             })
@@ -49,7 +58,7 @@ class ResultTable extends React.Component {
     backPage() {
         const backPage = this.props.cues.page - 1;
         if (backPage <= this.props.cues.totalPages && backPage > 0) {
-            startGetCues(backPage, this.state.status, this.props.dispatch);
+            startGetCues(backPage, this.state.status, this.state.release, this.props.dispatch);
             this.setState({
                 selectPage: backPage
             })
@@ -60,7 +69,7 @@ class ResultTable extends React.Component {
         e.preventDefault();
         const newPage = this.state.selectPage;
         if (newPage <= this.props.cues.totalPages && newPage > 0) {
-            startGetCues(newPage, this.state.status, this.props.dispatch);
+            startGetCues(newPage, this.state.status, this.state.release, this.props.dispatch);
 
         }
     }
@@ -68,13 +77,27 @@ class ResultTable extends React.Component {
     handleStatus(e) {
         e.preventDefault();
         if (this.state.selectStatus != "Status") {
-            startGetCues(1, this.state.selectStatus, this.props.dispatch);
+            startGetCues(1, this.state.selectStatus, this.state.release, this.props.dispatch);
             this.setState({
                 status: this.state.selectStatus,
                 selectStatus: this.state.selectStatus
             })
         }
 
+    }
+
+    handleRelease(e){
+        e.preventDefault();
+        if(this.state.selectStatus != "All"){
+            startGetCues(1, this.state.status, this.state.selectRelease, this.props.dispatch);
+        }
+        else{
+            startGetCues(1, this.state.status, this.state.selectRelease, this.props.dispatch);
+        }
+        this.setState({
+            release: this.state.selectRelease,
+            selectRelease: this.state.selectRelease
+        })
     }
 
     setAudioFile(file, songTitle) {
@@ -109,7 +132,7 @@ class ResultTable extends React.Component {
             <div>
 
                 <div className="filter__container">
-                    <div className="filter__flexcontainer">
+                    <div className="filter__flexcontainer ">
                         <div>
                             <h1>Background Instrumentals</h1>
                             <div className="filter__display">
@@ -119,20 +142,41 @@ class ResultTable extends React.Component {
                                         this.state.status && this.state.status == "Pulled" ? <span style={{ color: "red" }}>{this.state.status}</span> :
                                             this.state.status && this.state.status == "Pending" ? <span style={{ color: "#ffa400" }}>{this.state.status}</span> : ""}
                                 </h2>
+                                <h2>Release: {this.state.release}</h2>
                             </div>
 
+                            <div className="filter__flexcontainer filter_flex_noborder">
+                                <form onSubmit={this.handleStatus}>
+                                                <label>
+                                                    <select name="selectStatus" value={this.state.selectStatus} onChange={this.handleChange}>
+                                                        {/* <option value="Status"> Status</option> */}
+                                                        <option value="Pending">Pending</option>
+                                                        <option value="Active">Active</option>
+                                                        <option value="Pulled">Pulled</option>
+                                                    </select>
+                                                    <input type="submit" value="Select Status" />
+                                                </label>
+                                            </form>
 
-                            <form onSubmit={this.handleStatus}>
-                                <label>
-                                    <select name="selectStatus" value={this.state.selectStatus} onChange={this.handleChange}>
-                                        {/* <option value="Status"> Status</option> */}
-                                        <option value="Pending">Pending</option>
-                                        <option value="Active">Active</option>
-                                        <option value="Pulled">Pulled</option>
-                                    </select>
-                                    <input type="submit" value="Update Status" />
-                                </label>
-                            </form>
+                                            <form onSubmit={this.handleRelease}>
+                                                <label>
+                                                    <select name="selectRelease" value={this.state.selectRelease} onChange={this.handleChange}>
+                                                        {/* <option value="Status"> Status</option> */}
+                                                        <option key="-1" value="All">All</option>
+                                                        {this.props.cues.releases && this.props.cues.releases.map((r,i) => {
+                                                            return <option key={i} value={r}>{r}</option>
+                                                        })}
+                                                    </select>
+                                                    <input type="submit" value="Select Release" />
+                                                </label>
+                                            </form>
+
+                            </div>
+
+                           
+
+                          
+
                         </div>
 
                         <div className="filter__pages">
@@ -188,11 +232,12 @@ class ResultTable extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    cues: state.cues
+    cues: state.cues,
+  
 })
 
-const mapDispatchToProps = dispatch => ({
-    getCues: (page, filters) => { startGetCues(page, filters); }
-})
+// const mapDispatchToProps = dispatch => ({
+//     getCues: (page, filters) => { startGetCues(page, filters); }
+// })
 
 export default connect(mapStateToProps)(ResultTable);

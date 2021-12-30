@@ -11,7 +11,8 @@
 
     h1, h2 {
         text-shadow: 2px 2px #d6d4d431;
-        margin: 10px 0;
+        margin: 10px 10px;
+        padding-right: 5px;
     }
     input[type=submit]{
         font-size: 18px;
@@ -34,13 +35,14 @@
     form > label > select, input[type = number] {
         width: 50px;
         font-size: 18px;
-        margin: 3px;
-        padding: 5px;
+        margin: 2px;
+        padding: 3px;
         text-align: center;
     }
 
     form > label > select {
         width: 100px;
+        margin:0px 5px;
     }
 
     audio {
@@ -58,6 +60,11 @@
     justify-content: space-between;
     text-align: left;
     padding: 5px 25px;
+}
+
+.filter_flex_noborder{
+    justify-content: left;
+    padding: 2px 10px;
 }
 
 .filter__pages {
