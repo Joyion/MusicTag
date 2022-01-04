@@ -129,7 +129,7 @@ if(req.query.release != "All" || req.query.status != "All"){
                 count += 42;
            
 
-                for (let ploop = 0; ploop < 10; ploop++) {
+                for (let ploop = 0; ploop < 5; ploop++) {
 
                     if (ploop < cue.composers.length) {
                         cp = cue.composers[ploop];
@@ -140,75 +140,76 @@ if(req.query.release != "All" || req.query.status != "All"){
                         count++;
                         ws.cell(row,count).string(cp.composer.fName).style(style);
                         count++;
-                        ws.cell(row, count).string("CA - Composer/Author").style(style);
+                        ws.cell(row, count).string(cp.composer.pro).style(style);
+                        count++;
+                        ws.cell(row, count).string(cp.composer.cae).style(style);
+                        count++;
+                        ws.cell(row, count).string(cp.split).style(style);
                         count++;
 
-                        let publisherIpi = cue.publishers[0].publisher.cae;
+                     //   let publisherIpi = cue.publishers[0].publisher.cae;
 
-                        if(cp.pro == "ASCAP"){
-                            ws.cell(row,count).string("10 - ASCAP");
-                            publisherIpi = "337689810";
-                            count++;
-                        }
-                        else if(cp.pro == "BMI"){
-                            ws.cell(row, count).string("21 - BMI");
-                            publisherIpi = "355468339";
-                            count++
-                        }
-                        else if(cp.pro == "SESAC"){
-                            ws.cell(row,count).string("71 - SESAC");
-                            publisherIpi = "568242236"
-                            count++;
-                        }
-                        else if (cp.pro == "SOCAN"){
-                            ws.cell(row,count).string("101 - SOCAN");
+                        // if(cp.pro == "ASCAP"){
+                        //     ws.cell(row,count).string("10 - ASCAP");
+                        //     publisherIpi = "337689810";
+                        //     count++;
+                        // }
+                        // else if(cp.pro == "BMI"){
+                        //     ws.cell(row, count).string("21 - BMI");
+                        //     publisherIpi = "355468339";
+                        //     count++
+                        // }
+                        // else if(cp.pro == "SESAC"){
+                        //     ws.cell(row,count).string("71 - SESAC");
+                        //     publisherIpi = "568242236"
+                        //     count++;
+                        // }
+                        // else if (cp.pro == "SOCAN"){
+                        //     ws.cell(row,count).string("101 - SOCAN");
                             
-                            count++;
-                        }
+                        //     count++;
+                        // }
                   
-                        else if(cp.pro == "APRA"){
-                            ws.cell(row,count).string("8 - APRA");
-                            count++;
-                        }
-                        else if(cp.pro = "SIAE"){
-                            ws.cell(row,count).string("74 - SIAE");
-                            count++;
-                        }
-                        else if(cp.pro = "SICAM"){
-                            ws.cell(row,count).string("86 - SICAM");
-                            count++;
-                        }
-                        else{
-                            ws.cell(row,count).string(cp.composer.pro);
-                            count++;
-                        }
+                        // else if(cp.pro == "APRA"){
+                        //     ws.cell(row,count).string("8 - APRA");
+                        //     count++;
+                        // }
+                        // else if(cp.pro = "SIAE"){
+                        //     ws.cell(row,count).string("74 - SIAE");
+                        //     count++;
+                        // }
+                        // else if(cp.pro = "SICAM"){
+                        //     ws.cell(row,count).string("86 - SICAM");
+                        //     count++;
+                        // }
+                        // else{
+                        //     ws.cell(row,count).string(cp.composer.pro);
+                        //     count++;
+                        // }
 
 
 
 
 
-                       // console.log(cp.split + "This is composer split");
-                        let cpSplitString = String(cp.split);
-                        ws.cell(row,count).string(cpSplitString);
-                        count++;
-                        ws.cell(row,count).string(cp.composer.cae);
-                        count++;
-                        ws.cell(row,count).string(cp.composer.cae);
-                        count++;
-                        ws.cell(row,count).string(publisherIpi);
-                        count += 5;
+                    //    // console.log(cp.split + "This is composer split");
+                    //     let cpSplitString = String(cp.split);
+                    //     ws.cell(row,count).string(cpSplitString);
+                    //     count++;
+                    //     ws.cell(row,count).string(cp.composer.cae);
+                    //     count++;
+                    //     ws.cell(row,count).string(cp.composer.cae);
+                    //     count++;
+                    //     ws.cell(row,count).string(publisherIpi);
+                    //     count += 5;
                         
                     }
                     else {
-                        for(let ecount = 0; ecount < 12; ecount++){
-                            ws.cell(row,count).string("");
-                            count++;
-                        }
+                      count += 5;
 
                     }
                 }
 
-                for (let cloop = 0; cloop < 10; cloop++) {
+                for (let cloop = 0; cloop < 5; cloop++) {
 
                     if (cloop < cue.publishers.length) {
                       //  console.log("In Publisher Export");

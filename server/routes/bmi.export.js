@@ -233,15 +233,63 @@ if(req.query.release != "All" || req.query.status != "All"){
                 count = 1;
                 //console.log("track " + count);
                 // main version
+               // trackfilepath 
+               let tfp = cue.release + "/" + cue.fileName;
+                ws.cell(row, count).string(tfp).style(style);
+                count++;
                 ws.cell(row, count).string(cue.songTitle).style(style);
                 count++;
-                ws.cell(row, count).string(IDcode).style(style);
+                ws.cell(row, count).string("DL Music").style(style);
                 count++;
-                ws.cell(row, count).string("");
+                ws.cell(row, count).string("Background Instrumentals").style(style);
+                count++
+                ws.cell(row, count).string(cue.trackID).style(style);
                 count++;
-                ws.cell(row, count).string(cue.isrc);
+                ws.cell(row,count).string(genreId).style(style);
+                count++
+                // cd title 
+                let fullRelease = cue.release.split("_");
+                ws.cell(row,count).string(cue.genreStyle + "Vol. " + fullRelease[0]).style(style);
+                count++
+                // trackNo: leave empty
                 count++;
-                count += 42;
+                // tracksubNo: leave empty
+                count++;
+                ws.cell(row,count).string(cue.songTitle).style(style);
+                count++;
+                // track alternatie title: empty
+                count++;
+                // mixout empty
+                count++;
+                // version empty
+                count++;
+                // length empty
+                count++;
+                ws.cell(row,count).string(cue.genre).style(style);
+                count++;
+                ws.cell(row,count).string(cue.style).style(style);
+                count++;
+                // empty fields gen 2 & gen 3
+                count = count + 5;
+                ws.cell(row,count).string(cue.tempo).style(style);
+                count++;
+                // mood empty
+                count++;
+                ws.cell(row,count).string(cue.descriptions.join(";")).style(style);
+                count++;
+                ws.cell(row,count).string(cue.instruments.join(";")).style(style);
+                count++;
+                ws.cell(row,count).string(cue.descriptions.join(";")).style(style);
+                count++;
+                ws.cell(row,count).string(cue.genreStyle + "Vol. " + fullRelease[0]).style(style);
+                count++;
+                let formatDate = cue.releaseDate.replace("-","/");
+                ws.cell(row,count).string(formatDate).style(style);
+                count++;
+                // lyrics emtpy
+                count++;
+
+
            
 
                 for (let ploop = 0; ploop < 10; ploop++) {
@@ -251,12 +299,17 @@ if(req.query.release != "All" || req.query.status != "All"){
                     
                     ws.cell(row, count).string()
                         
+                        ws.cell(row,count).string(cp.composer.fName + " " + cp.composer.mName).style(style);
+                        count++;
                         ws.cell(row,count).string(cp.composer.lName).style(style);
                         count++;
-                        ws.cell(row,count).string(cp.composer.fName).style(style);
+                        ws.cell(row, count).string(cp.composer.pro).style(style);
                         count++;
-                        ws.cell(row, count).string("CA - Composer/Author").style(style);
+                        ws.cell(row, count).string(cp.composer.cae).style(style);
                         count++;
+                        ws.cell(row, count).string(cp.split).style(style);
+                        count++;
+                        
 
                         let publisherIpi = cue.publishers[0].publisher.cae;
 
