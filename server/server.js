@@ -7,7 +7,7 @@ const cors = require("cors");
 // REQUIRED TO READ FILENAMES
 const fs = require('fs');
 // for port and serving front end react
-const port = 5000;
+const port = 9000;
 const publicPath = path.join(__dirname, "..", "public", "dist")
 
 // mongoose for database
@@ -79,6 +79,9 @@ app.use("/api/export", exportRoutes);
 
 const exportMusicMark = require('./routes/api.export.musicMark');
 app.use('/api/musicMark', exportMusicMark);
+
+const exportBmat = require('./routes/bmat.export')
+app.use('/api/bmat', exportBmat);
 
 const composerList = require("./composers");
 
@@ -288,7 +291,7 @@ app.get("*", (req, res) => {
     res.sendFile(path.join(publicPath, "index.html"));
 })
 
-app.listen(port, process.env.IP, function () {
+app.listen(port, "localhost", function () {
     console.log("Server Started");
 })
 

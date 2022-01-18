@@ -10,7 +10,7 @@
     "start": "node server/server.js",
     "devserver": "webpack-dev-server --config webpack.dev.js",
     "concur": "concurrently \"npm run devserver\" \"nodemon server/server.js\"",
-    "stopServer": "lsof -i tcp:5000 -t | xargs kill -9 ",
+    "stopServer": "lsof -i tcp:9000 -t | xargs kill -9 ",
     "stopDev": "lsof -i tcp:8080 -t | xargs kill -9"
   },
   "author": "Joyion Timmons",
