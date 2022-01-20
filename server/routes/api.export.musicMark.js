@@ -328,11 +328,12 @@ const sourceAudioHeaders =
     ]
 
 
-let globalRelease = ""
-
+let globalRelease = "";
+let excelFileName = "";
 router.get('/bi', (req, res) => {
 
-globalRelease = req.query.release;
+    globalRelease = "MusikMark-" + req.query.status + "-" + req.query.release;
+    excelFileName = globalRelease + ".xlsx";
 
 // console.log("Inside Excel");
 // console.log("params " + req.query.release);
@@ -583,13 +584,13 @@ if(req.query.release != "All" || req.query.status != "All"){
 
 
 
-            wb.write("public/BISourceAudio.xlsx", () => {
+            wb.write("public/" + excelFileName, () => {
                 if(err){
                     console.log(err)
                 }
                 else{
                 // res.redirect("/api/export/download");
-                   res.download("public/BISourceAudio.xlsx", "BISourceAudio.xlsx", function (err) {
+                   res.download("public/" + excelFileName, excelFileName, function (err) {
                     if (err) {
                         console.log("error");
                     }
@@ -616,10 +617,9 @@ if(req.query.release != "All" || req.query.status != "All"){
 
 router.get("/download", function (req, res) {
     console.log("in download for export")
-    
-    let excelFileName = "public/MusicMark_" + globalRelease + ".xlsx";
 
-    res.download(excelFileName,function (err) {
+
+    res.download("public/" + excelFileName,function (err) {
         if (err) {
             console.log("error");
         }

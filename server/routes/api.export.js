@@ -14,7 +14,9 @@ const arrayGenres = require("../../src/components/genreStyle");
 
 
 const sourceAudioHeaders =
-    ["xx Main Version xx",
+    [   
+        "Status",
+        "xx Main Version xx",
         "Sourceaudio Id",
         "Catalog",
         "Label",
@@ -45,11 +47,13 @@ const sourceAudioHeaders =
         "Iswc",
     ]
 
-
+let globalRelease = "";
+let excelFileName = "";
 
 
 router.get('/bi', (req, res) => {
-
+    globalRelease = "BI-" + req.query.status + "-" + req.query.release;
+    excelFileName = globalRelease + ".xlsx";
 
 
 // console.log("Inside Excel");
@@ -184,6 +188,9 @@ if(req.query.release != "All" || req.query.status != "All"){
                 count = 1;
                 //console.log("track " + count);
                 // main version
+
+                ws.cell(row, count).string(cue.status).style(style);
+                count++;
                 ws.cell(row, count).string(cue.mainVersion).style(style);
                 count++;
                 // sourceaudio id
@@ -401,13 +408,13 @@ if(req.query.release != "All" || req.query.status != "All"){
 
 
 
-            wb.write("public/BISourceAudio.xlsx", () => {
+            wb.write("public/"+ excelFileName, () => {
                 if(err){
                     console.log(err)
                 }
                 else{
                 // res.redirect("/api/export/download");
-                   res.download("public/BISourceAudio.xlsx", "BISourceAudio.xlsx", function (err) {
+                   res.download("public/" + excelFileName, excelFileName, function (err) {
                     if (err) {
                         console.log("error");
                     }
@@ -434,7 +441,7 @@ if(req.query.release != "All" || req.query.status != "All"){
 
 router.get("/download", function (req, res) {
     console.log("in download")
-    res.download("public/BISourceAudio.xlsx",function (err) {
+    res.download("public/"+ excelFileName,function (err) {
         if (err) {
             console.log("error");
         }

@@ -127,12 +127,12 @@ const sourceAudioHeaders =
     ]
 
 
-let globalRelease = ""
-
+let globalRelease = "";
+let excelFileName = "";
 router.get('/bi', (req, res) => {
 
-globalRelease = req.query.release;
-
+globalRelease = "BMAT-" + req.query.status + "-" + req.query.release;
+excelFileName = globalRelease + ".xlsx";
 // console.log("Inside Excel");
 // console.log("params " + req.query.release);
 let releasefilter = {}
@@ -296,10 +296,13 @@ if(req.query.release != "All" || req.query.status != "All"){
 
                     if (ploop < cue.composers.length) {
                         cp = cue.composers[ploop];
-                    
-                    ws.cell(row, count).string()
+                        let firstAndMiddleName = cp.composer.fName;
+                        if(cp.composer.mName.length > 0){
+                            firstAndMiddleName = cp.composer.fName + " " + cp.composer.mName;
+                          
+                        }
                         
-                        ws.cell(row,count).string(cp.composer.fName + " " + cp.composer.mName).style(style);
+                        ws.cell(row,count).string(firstAndMiddleName).style(style);
                         count++;
                         ws.cell(row,count).string(cp.composer.lName).style(style);
                         count++;
@@ -307,7 +310,7 @@ if(req.query.release != "All" || req.query.status != "All"){
                         count++;
                         ws.cell(row, count).string(cp.composer.cae).style(style);
                         count++;
-                        ws.cell(row, count).string(cp.split).style(style);
+                        ws.cell(row, count).string(String(cp.split)).style(style);
                         count++;
 
                         
@@ -354,13 +357,13 @@ if(req.query.release != "All" || req.query.status != "All"){
 
 
 
-            wb.write("public/BISourceAudio.xlsx", () => {
+            wb.write("public/" + excelFileName, () => {
                 if(err){
                     console.log(err)
                 }
                 else{
                 // res.redirect("/api/export/download");
-                   res.download("public/BISourceAudio.xlsx", "BISourceAudio.xlsx", function (err) {
+                   res.download("public/" + excelFileName, excelFileName, function (err) {
                     if (err) {
                         console.log("error");
                     }
@@ -388,9 +391,9 @@ if(req.query.release != "All" || req.query.status != "All"){
 router.get("/download", function (req, res) {
     console.log("in download for export")
     
-    let excelFileName = "public/MusicMark_" + globalRelease + ".xlsx";
+   
 
-    res.download(excelFileName,function (err) {
+    res.download("public/" + excelFileName,function (err) {
         if (err) {
             console.log("error");
         }

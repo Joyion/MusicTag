@@ -20,7 +20,7 @@ const dotenv = require("dotenv").config();
 var moment = require('moment'); // require
 
 
-
+console.log("IPaddress " + process.env.IP);
 
 
 app.use(express.json());
@@ -291,7 +291,7 @@ app.get("*", (req, res) => {
     res.sendFile(path.join(publicPath, "index.html"));
 })
 
-app.listen(port, "localhost", function () {
+app.listen(port, process.env.IP, function () {
     console.log("Server Started");
 })
 
