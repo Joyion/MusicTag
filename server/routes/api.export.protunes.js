@@ -12,6 +12,7 @@ const arrayGenres = require("../../src/components/genreStyle");
 
 
 // Add Column Headers for corresponding export
+// Protunes 6- 10 exportgi
 const exportHeaders =
     [ 
         "provider filename",
