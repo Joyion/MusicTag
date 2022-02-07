@@ -83,6 +83,9 @@ app.use('/api/musicMark', exportMusicMark);
 const exportBmat = require('./routes/bmat.export')
 app.use('/api/bmat', exportBmat);
 
+const exportProtunes = require("./routes/api.export.protunes");
+app.use('/api/protunes', exportProtunes);
+
 const composerList = require("./composers");
 
 //populate database with old composer info 
