@@ -218,7 +218,7 @@ if(req.query.release != "All" || req.query.status != "All"){
                 count++;
                 // primary track
                 if(cue.mainVersion != "N/A"){
-                    ws.cell(row,count).string(mainVersion).style(style);
+                    ws.cell(row,count).string(cue.mainVersion).style(style);
                     count++;
                 }
                 else{
