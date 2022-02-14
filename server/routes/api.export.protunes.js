@@ -203,13 +203,13 @@ if(req.query.release != "All" || req.query.status != "All"){
                 //console.log("track " + count);
                 // main version
                // trackfilepath 
-                let newFilePath = cue.fileName.replace(" - ", "_");
-                newFilePath = newFilePath.replace(" ", "_");
+                // let newFilePath = cue.fileName.replace(" - ", "_");
+                // newFilePath = newFilePath.replace(" ", "_");
                 // provider filename
-                ws.cell(row,count).string(newFilePath).style(style);
+                ws.cell(row,count).string(cue.fileName).style(style);
                 count++;
                 // provider track id
-                ws.cell(row,count).string(cue.trackId).style(style);
+                ws.cell(row,count).string(cue.fileName).style(style);
                 count++;
                 // title
                 ws.cell(row,count).string(cue.songTitle).style(style);
@@ -217,9 +217,7 @@ if(req.query.release != "All" || req.query.status != "All"){
                 // version
                 count++;
                 // primary track
-                if(cue.mainVersion){
-                    let mainVersion = cue.mainVersion.replace("DLM - ", "");
-                    mainVersion = mainVersion.replace(".wav", "");
+                if(cue.mainVersion != "N/A"){
                     ws.cell(row,count).string(mainVersion).style(style);
                     count++;
                 }
@@ -280,7 +278,7 @@ if(req.query.release != "All" || req.query.status != "All"){
                 ws.cell(row,count).string(cue.isrc).style(style);
                 count++;
                 // tier
-                ws.cell(row,count).string("1").style(style);
+             //   ws.cell(row,count).string("1").style(style);
                 count++;
                 // artist
                 count++;
