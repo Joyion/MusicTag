@@ -1,0 +1,31 @@
+Top 40
+Bumpers 
+Dance/Pop 
+Drama
+Drama Orchestral
+Hip-Hop/R&B 
+Holiday
+Jazz
+Reggae
+Retro TV Land
+Rock/Blues
+Score Tools
+Specialty 
+Vocal Trax,
+World Music,
+World Pop
+
+
+// publisher name 
+    ipi (code number)
+    publisher PRO (BMI, ASCAP)
+    name only (Dewmarc Music)
+    publisher split 
+
+// composer 
+    first
+    middle 
+    last name
+    CAE 
+    
+    

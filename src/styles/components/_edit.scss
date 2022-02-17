@@ -1,0 +1,119 @@
+.edit__title__container{
+    position: fixed;
+    width: 100%;
+    height: 250px;
+    top: 70px;
+    z-index: 2;
+    background-color: white;
+}
+
+.edit__container {
+    display:flex;
+    width: 100%;
+    padding: 15x;
+  background-color: rgb(255, 255, 255);
+  color: black;
+  justify-content: center;
+  position: relative;
+  top: 370px;
+}
+
+.edit__container > div {
+    width: 40%;
+    padding: 0 20px;
+    margin: 0 20px;
+    
+    
+
+    input[type=submit]{
+        background-color: rgb(252, 22, 22);
+        font-size: 24px;
+        color: white;
+        border: none;
+    }
+
+    button{
+        background-color: transparent;
+        border: 2px rgb(4, 23, 77) solid;
+        color: rgb(0, 0, 0);
+        padding: 5px;
+        font-size: 14px;
+        margin: 5px;
+    }
+
+    
+}
+
+.edit__title {
+   padding: 2rem 6rem; 
+   width: 100%;
+   display: flex;
+   justify-content: space-between;
+   audio {
+       width: 100%;
+   }
+    h1{
+        margin: 0 10px;
+    }
+}
+
+.edit__composer-form {
+    label {
+        display: flex;
+        justify-content: space-between;
+    
+    } 
+
+    label > input[type=text], input[type=number] {
+            margin:5px 5px;
+            width: 50%;
+       
+    }
+}
+
+.edit__basic-form {
+    display: flex;
+    justify-content: space-between;
+    div {
+        margin-right: 0 4px;
+        display: inline;
+    }
+}
+
+.edit__small-form {
+    label > input {
+        margin-right: 10px;
+    }
+    select {
+        margin-right: 10px;
+
+    }
+
+    margin-bottom: 20px;
+   
+}
+
+.edit__pub-form {
+
+    select {
+        margin-bottom: 10px;
+        width: 22rem;
+    }
+   input {
+       margin-bottom: 10px;
+   }
+
+
+}
+
+.edit__container--scroll{
+    height: 200px;
+    overflow: scroll;
+}
+
+// @media only screen and (max-width: 600px) {
+//     .edit__title__container{
+//         font-size: 10px;
+//         color: green;
+//     }
+//   }
