@@ -558,6 +558,8 @@ if(req.query.release != "All" || req.query.status != "All"){
                                 break;
 
                         }
+                        ws.cell(row,count).string(splitPub);
+                        count++;
                         ws.cell(row,count).string(pp.publisherIpi);
                         count++;
                         ws.cell(row,count).string(pp.publisherIpi);
