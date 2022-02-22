@@ -537,8 +537,6 @@ if(req.query.release != "All" || req.query.status != "All"){
                         
                         ws.cell(row,count).string(pp.publisherName);
                         count++;
-                        ws.cell(row,count).string(splitPub);
-                        count++;
                         switch(pp.publisherPro){
                             case "ASCAP":
                                 ws.cell(row,count).string("10 - ASCAP");
