@@ -86,6 +86,9 @@ app.use('/api/bmat', exportBmat);
 const exportProtunes = require("./routes/api.export.protunes");
 app.use('/api/protunes', exportProtunes);
 
+const exportRussiaWarner = require("./routes/api.export.russiaWarner");
+app.use("/api/russiawarner", exportRussiaWarner);
+
 const composerList = require("./composers");
 
 //populate database with old composer info 
