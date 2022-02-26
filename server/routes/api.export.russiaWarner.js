@@ -147,7 +147,7 @@ if(req.query.release != "All" || req.query.status != "All"){
             bicues.forEach((cue, cueIndex) => {
                 let genreId ;
 
-                if(cue.rating >= 6){
+               
 
                 // formula to generata a genre id
                 
@@ -297,7 +297,7 @@ if(req.query.release != "All" || req.query.status != "All"){
                 // move to next cue and row
                 row++;
 
-                }
+                
             })
 
            
