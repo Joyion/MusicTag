@@ -1,0 +1,96 @@
+FIX TRACK NUMBER, ALBUM CODE, RELEASE DATE
+FIX UPLOAD STOP IT FROM CREATING EMPTY RELEASE
+
+
+
+User Privileges -
+    Username
+    email
+    password
+    reset password
+    playlists 
+    Composer -
+        Upload Music and Data for Submission (submit random tracks, album or ep)
+        View tracks 
+    Admin -
+         View All Submitted Music and Edit
+         Edit All Tracks
+    SuperAdmin 
+        View, Remove, Edit, Users
+        Delete Tracks
+
+Profile Page
+    Name:
+    email
+    username:
+    request password
+
+    submit music
+    submit bio 
+
+    Management 
+    upload new submissions 
+    approve artist profiles and bio
+    view submitted tracks - submissions by folder date (search by date submitted, artist name, composer)
+    edit submitted tracks 
+    select to publish - create list from submissions to publish TRACKS CAN NOT BE UNPUBLISHED
+
+
+
+Home Page
+Intro 
+Latest Releases - view All Music 
+Latest News
+Artist Spotlight
+
+
+
+Music Search Page
+        Search For Instrumental or Vocal Tracks
+        Song Title, Composer, 
+        Genre, Descriptions, Style, Instruments, Tempo,  Similiar Bands, Films, 
+        Exact Match, Include
+        Duration,  byDatRange
+        AlbumArt, AlbumArt-info
+
+        Sort: Release Date, byComposer, ByGenre, Most Relevant
+
+        Display Data
+        Song Title, First Ten Descriptions, Style, Genre
+
+        Play Button
+        (WaveFiles)
+        Edit Button
+        Delete Button
+
+        Modal:
+        Add to Playlist
+        Create PlayList
+
+News:
+    Search News
+    Latest Articles
+    Latest Releases 
+    View All Articles 
+
+Our Artists - on label
+    Artist Spotlight
+    Icons 
+    All Arists
+
+Our Story
+    History fake page
+    Team Members
+
+            
+        
+
+        
+
+
+
+
+
+
+
+

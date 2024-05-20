@@ -3,12 +3,12 @@ const express = require("express");
 const router = express.Router();
 // REQUIRE TO MAKE EXCEL FILE 
 const xl = require("excel4node");
-const biCue = require("../models/bi_cue_model");
-const composers = require('../models/composer.model');
-const releaseIsrc = require("../models/releaseIsrc.model");
+const biCue = require("../old_models/bi_cue_model");
+const composers = require('../old_models/composer.model');
+const releaseIsrc = require("../old_models/releaseIsrc.model");
 const sourceAudioGenre = require("../sourceAudioGenre");
 const getSourceAudioGenre = require("../sourceAudioGenre");
-const releaseIsrcModel = require("../models/releaseIsrc.model");
+const releaseIsrcModel = require("../old_models/releaseIsrc.model");
 const arrayGenres = require("../../src/components/genreStyle");
 
 

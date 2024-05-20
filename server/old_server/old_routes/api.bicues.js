@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const biCue = require("../models/bi_cue_model");
-const composers = require('../models/composer.model');
-const Publisher = require("../models/publisher.model");
-const releaseIsrc = require("../models/releaseIsrc.model");
+const biCue = require("../old_models/bi_cue_model");
+const composers = require('../old_models/composer.model');
+const Publisher = require("../old_models/publisher.model");
+const releaseIsrc = require("../old_models/releaseIsrc.model");
 const path = require("path");
 const mp3path = path.join(__dirname, "..", "..", "public", "dist", "mp3");
 const wavPath = path.join(__dirname, "..", "..", "public", "dist", "wav")

@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 // REQUIRE TO MAKE EXCEL FILE 
 const xl = require("excel4node");
-const biCue = require("../models/bi_cue_model");
-const composers = require('../models/composer.model');
-const releaseIsrc = require("../models/releaseIsrc.model");
+const biCue = require("../old_models/bi_cue_model");
+const composers = require('../old_models/composer.model');
+const releaseIsrc = require("../old_models/releaseIsrc.model");
 const sourceAudioGenre = require("../sourceAudioGenre");
 const getSourceAudioGenre = require("../sourceAudioGenre");
-const releaseIsrcModel = require("../models/releaseIsrc.model");
+const releaseIsrcModel = require("../old_models/releaseIsrc.model");
 const arrayGenres = require("../../src/components/genreStyle");
 
 
@@ -15,73 +15,81 @@ const arrayGenres = require("../../src/components/genreStyle");
 // Protunes 6- 10 exportgi
 const exportHeaders =
     [ 
-        "Audio Filename",
-"Library Code",
-"Album Title",
-"Album Code",
-"Track Title",
-"Record Version",
-"Record Duration",
-"Track Number",
-"Genre",
-"Instruments",
-"Tempo",
-"Keywords",
-"Description",
-"ARTIST 1 FIRST NAME",
-"ARTIST 1 MIDDLE NAME",
-"ARTIST 1 LAST NAME",
-"ARTIST 1 SUFFIX",
-"ARTIST 1 PRO",
-"ARTIST 1 CAE",
-"ARTIST 1 % SHARE",
-"ARTIST 2 FIRST NAME",
-"ARTIST 2 MIDDLE NAME",
-"ARTIST 2 LAST NAME",
-"ARTIST 2 SUFFIX",
-"ARTIST 2 PRO",
-"ARTIST 2 CAE",
-"ARTIST 2 % SHARE",
-"ARTIST 3 FIRST NAME",
-"ARTIST 3 MIDDLE NAME",
-"ARTIST 3 LAST NAME",
-"ARTIST 3 SUFFIX",
-"ARTIST 3 PRO",
-"ARTIST 3 CAE",
-"ARTIST 3 % SHARE",
-"ARTIST 4 FIRST NAME",
-"ARTIST 4 MIDDLE NAME",
-"ARTIST 4 LAST NAME",
-"ARTIST 4 SUFFIX",
-"ARTIST 4 PRO",
-"ARTIST 4 CAE",
-"ARTIST 4 % SHARE",
-"ARTIST 5 FIRST NAME",
-"ARTIST 5 MIDDLE NAME",
-"ARTIST 5 LAST NAME",
-"ARTIST 5 SUFFIX",
-"ARTIST 5 PRO",
-"ARTIST 5 CAE",
-"ARTIST 5 % SHARE",
-"ARTIST 6 FIRST NAME",
-"ARTIST 6 MIDDLE NAME",
-"ARTIST 6 LAST NAME",
-"ARTIST 6 SUFFIX",
-"ARTIST 6 PRO",
-"ARTIST 6 CAE",
-"ARTIST 6 % SHARE",
-"PUBLISHER 1 NAME",
-"PUBLISHER 1 PRO",
-"PUBLISHER 1 IPI",
-"PUBLISHER 1 % SHARE",
-"PUBLISHER 2 NAME",
-"PUBLISHER 2 PRO",
-"PUBLISHER 2 IPI",
-"PUBLISHER 2 % SHARE",
-"PUBLISHER 3 NAME",
-"PUBLISHER 3 PRO",
-"PUBLISHER 3 IPI",
-"PUBLISHER 3 % SHARE"
+        "provider filename",
+        "provider track id",
+        "title",
+        "version",
+        "primary track",
+        "catalog",
+        "instrumental",
+        "vocals",
+        "genre",
+        "keywords",
+        "mood",
+        "description",
+        "era",
+        "sounds-like/influences",
+        "instruments",
+        "bpm",
+        "lyrics",
+        "restrictions",
+        "original/cover",
+        "one-stop licensing",
+        "cd title / ref #",
+        "release date",
+        "track no",
+        "iswc",
+        "isrc",
+        "tier",
+        "ARTIST",
+        "COMPOSER 1 NAME",
+        "COMPOSER 1 PRO",
+        "COMPOSER 1 PRO NUMBER",
+        "COMPOSER 1 SPLIT",
+        "COMPOSER 2 NAME",
+        "COMPOSER 2 PRO",
+        "COMPOSER 2 PRO NUMBER",
+        "COMPOSER 2 SPLIT",
+        "COMPOSER 3 NAME",
+        "COMPOSER 3 PRO",
+        "COMPOSER 3 PRO NUMBER",
+        "COMPOSER 3 SPLIT",
+        "COMPOSER 4 NAME",
+        "COMPOSER 4 PRO",
+        "COMPOSER 4 PRO NUMBER",
+        "COMPOSER 4 SPLIT",
+        "COMPOSER 5 NAME",
+        "COMPOSER 5 PRO",
+        "COMPOSER 5 PRO NUMBER",
+        "COMPOSER 5 SPLIT",
+        "COMPOSER 6 NAME",
+        "COMPOSER 6 PRO",
+        "COMPOSER 6 PRO NUMBER",
+        "COMPOSER 6 SPLIT",
+        "PUBLISHER 1 NAME",
+        "PUBLISHER 1 PRO",
+        "PUBLISHER 1 PRO NUMBER",
+        "PUBLISHER 1 SPLIT",
+        "PUBLISHER 2 NAME",
+        "PUBLISHER 2 PRO",
+        "PUBLISHER 2 PRO NUMBER",
+        "PUBLISHER 2 SPLIT",
+        "PUBLISHER 3 NAME",
+        "PUBLISHER 3 PRO",
+        "PUBLISHER 3 PRO NUMBER",
+        "PUBLISHER 3 SPLIT",
+        "PUBLISHER 4 NAME",
+        "PUBLISHER 4 PRO",
+        "PUBLISHER 4 PRO NUMBER",
+        "PUBLISHER 4 SPLIT",
+        "PUBLISHER 5 NAME",
+        "PUBLISHER 5 PRO",
+        "PUBLISHER 5 PRO NUMBER",
+        "PUBLISHER 5 SPLIT",
+        "PUBLISHER 6 NAME",
+        "PUBLISHER 6 PRO",
+        "PUBLISHER 6 PRO NUMBER",
+        "PUBLISHER 6 SPLIT",
 
     ]
 
@@ -90,7 +98,7 @@ let globalRelease = "";
 let excelFileName = "";
 router.get('/bi', (req, res) => {
 
-globalRelease = "DLM_Warner_Russia-" + req.query.status + "-" + req.query.release;
+globalRelease = "Protunes-" + req.query.status + "-" + req.query.release;
 excelFileName = globalRelease + ".xlsx";
 // console.log("Inside Excel");
 // console.log("params " + req.query.release);
@@ -147,7 +155,7 @@ if(req.query.release != "All" || req.query.status != "All"){
             bicues.forEach((cue, cueIndex) => {
                 let genreId ;
 
-               
+                if(cue.rating >= 6){
 
                 // formula to generata a genre id
                 
@@ -192,50 +200,88 @@ if(req.query.release != "All" || req.query.status != "All"){
                 numId = numId.padStart(4, "0");
                IDcode = "DLMBI" + IDcode + numId;
                 count = 1;
-                // vol for genre album
-                let vol = cue.release.replace("R", "");
-                vol = vol.replace("_", ".");
-                let genreStyleAlbum = cue.genreStyle.replace(" / ", ", ") + " Vol. " + vol;
-           
+                //console.log("track " + count);
+                // main version
+               // trackfilepath 
+                // let newFilePath = cue.fileName.replace(" - ", "_");
+                // newFilePath = newFilePath.replace(" ", "_");
+                // provider filename
                 ws.cell(row,count).string(cue.fileName).style(style);
                 count++;
-                // 
-                ws.cell(row,count).string("DLM").style(style);
+                // provider track id
+                ws.cell(row,count).string(cue.fileName).style(style);
                 count++;
-                ws.cell(row,count).string(genreStyleAlbum).style(style);
-                count++;
-           //     ws.cell(row,count).string(IDcode).style(style);
-               let albumNum = 0;
-                for(let x = 0; x < arrayGenres.length; x++){
-                    if(arrayGenres[x].genre == cue.genreStyle){
-                        albumNum = arrayGenres[x].genreId;
-                        break;
-                    }
-                }
-                let codeNum = albumNum.toString();
-                codeNum = codeNum.padStart(3, "0");
-                let albumCode = "DLM" + codeNum + cue.release.replace("_", "");
-                ws.cell(row,count).string(albumCode).style(style);
-                count++;
+                // title
                 ws.cell(row,count).string(cue.songTitle).style(style);
                 count++;
-                // record version 
+                // version
                 count++;
-                // duration
+                // primary track
+                if(cue.mainVersion != "N/A"){
+                    ws.cell(row,count).string(cue.mainVersion).style(style);
+                    count++;
+                }
+                else{
+                    count++;
+                }
+              // catalog 
+                ws.cell(row,count).string("DL Music").style(style);
                 count++;
-                ws.cell(row,count).string(cue.trackNum.replace("_", "")).style(style);
+                // instrumental
+                ws.cell(row,count).string("Yes").style(style);
                 count++;
-                ws.cell(row,count).string(cue.genre).style(style);
+                // vocals
                 count++;
-                ws.cell(row, count).string(cue.instruments.join(", ")).style(style);
+                // genre
+                ws.cell(row,count).string(cue.genre + ", " + cue.style).style(style);
                 count++;
-                ws.cell(row, count).string(cue.tempo).style(style);
+                // keywords
+                ws.cell(row,count).string(cue.descriptions.join(", ")).style(style);
                 count++;
-                ws.cell(row, count).string(cue.descriptions.join(", ")).style(style);
+                // mood
+                ws.cell(row,count).string(cue.descriptions.join(", ")).style(style);
                 count++;
-                ws.cell(row, count).string(cue.descriptions.join(", ")).style(style);
+                // description
+                ws.cell(row,count).string(cue.descriptions.join(", ")).style(style);
                 count++;
-                
+                // era
+                count++;
+                // sound like 
+                count++;
+                //instrunents
+                ws.cell(row,count).string(cue.instruments.join(", ")).style(style);
+                count++;
+                // bpm 
+                count++;
+                // lyrics
+                count++;
+                // restrictions
+                count++;
+                // original 
+                ws.cell(row,count).string("Original").style(style);
+                count++;
+                // one stop licensing
+                ws.cell(row,count).string("Yes").style(style);
+                count++;
+                // cd title 
+                ws.cell(row,count).string(cue.genre + ", " + cue.style + " Vol. " + cue.release).style(style);
+                count++;
+                // release date
+                ws.cell(row,count).string(cue.releaseDate).style(style);
+                count++;
+                // track no
+                ws.cell(row,count).string(String(cueIndex)).style(style);
+                count++;
+                // iswc
+                count++
+                // isrc
+                ws.cell(row,count).string(cue.isrc).style(style);
+                count++;
+                // tier
+             //   ws.cell(row,count).string("1").style(style);
+                count++;
+                // artist
+                count++;
 
                 for (let ploop = 0; ploop < 6; ploop++) {
 
@@ -247,13 +293,7 @@ if(req.query.release != "All" || req.query.status != "All"){
                           
                         }
                         
-                        ws.cell(row,count).string(cp.composer.fName).style(style);
-                        count++;
-                        ws.cell(row,count).string(cp.composer.mName).style(style);
-                        count++;
-                        ws.cell(row,count).string(cp.composer.lName).style(style);
-                        count++;
-                        ws.cell(row,count).string(cp.composer.suffix).style(style);
+                        ws.cell(row,count).string(cp.composer.fullName).style(style);
                         count++;
                         ws.cell(row, count).string(cp.composer.pro).style(style);
                         count++;
@@ -266,12 +306,12 @@ if(req.query.release != "All" || req.query.status != "All"){
                     }
                     else {
                     
-                        count = count + 7;
+                        count = count + 4;
 
                     }
                 }
 
-                for (let cloop = 0; cloop < 3; cloop++) {
+                for (let cloop = 0; cloop < 6; cloop++) {
 
                     if (cloop < cue.publishers.length) {
                       //  console.log("In Publisher Export");
@@ -282,9 +322,9 @@ if(req.query.release != "All" || req.query.status != "All"){
                         
                         ws.cell(row,count).string(pp.publisherName);
                         count++;
-                        ws.cell(row,count).string(pp.publisherIpi);
+                        ws.cell(row,count).string(pp.publisherPro);
                         count++
-                         ws.cell(row,count).string(pp.publisherPro);
+                        ws.cell(row,count).string(pp.publisherIpi);
                         count++
                         ws.cell(row,count).string(splitPub);
                         count++;                   
@@ -297,7 +337,7 @@ if(req.query.release != "All" || req.query.status != "All"){
                 // move to next cue and row
                 row++;
 
-                
+                }
             })
 
            

@@ -1,304 +1,223 @@
-// This is my set up for the node server on a music application 
+import { ApolloServer } from '@apollo/server';
 
-const express = require("express");
-const app = express();
-const path = require("path")
-const cors = require("cors");
-// REQUIRED TO READ FILENAMES
-const fs = require('fs');
-// for port and serving front end react
-const port = 9000;
-const publicPath = path.join(__dirname, "..", "public", "dist")
+// Documentation - https://graphql.org/graphql-js/running-an-express-graphql-server/ 
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import { startStandaloneServer } from '@apollo/server/standalone';
 
-// mongoose for database
-const mongoose = require("mongoose");
-// dotenv for keys
-const dotenv = require("dotenv").config();
+import { GraphQLError } from 'graphql';
+import { expressMiddleware } from '@apollo/server/express4';
+import http from 'http';
+import express from 'express';
+import cors from 'cors';
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import cookieParser from 'cookie-parser';
 
+// database functions
+import database from "./database/database.js";
+import { MongoClient, ObjectId } from "mongodb";
+import songDB from "./database/song_ops.js";
+import composerDB from "./database/composer_ops.js"
 
-// format time date
-var moment = require('moment'); // require
+import 'dotenv/config'
 
-
-console.log("IPaddress " + process.env.IP);
-
-
-app.use(express.json());
-app.use(cors({ origin: "http://localhost:8080" }));
-app.use(express.static(publicPath));
- 
-const database = process.env.DATABASE;
-// connect to database
-mongoose.connect("mongodb://localhost/dl_music",
-    {
-        dbName: "dl_music", useNewUrlParser: true,
-        useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true
-    });
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, "connection error"));
-db.once('open', function () {
-    console.log("Connected to Database");
-});
+// graphql
+import { typeDefs } from './graphql/types/typeDefs.js';
+import { resolvers } from "./graphql/resolvers/resolvers.js";
 
 
-const composers = require('./models/composer.model');
-const Publisher = require("./models/publisher.model");
-const releaseIsrc = require("./models/releaseIsrc.model");
-const biCue = require("./models/bi_cue_model");
 
-//populate publishers
-// const publisherArray = [
-//     {
-//         publisherName: "Derek Luff Music, Inc.",
-//         publisherIpi: "337689810",
-//         publisherPro: "ASCAP",
-//     },
-//     {
-//         publisherName: "Dewmarc Music",
-//         publisherIpi: "355468339",
-//         publisherPro: "BMI",
-//     },
-//     {
-//         publisherName: "Ridek Music",
-//         publisherIpi: "568242236",
-//         publisherPro: "SESAC",
-//     }
-// ]
+let findResults = await songDB.findSongs();
+console.log(findResults)
+// let result = await composerDB.createComposer(
+//     { firstName: "Maverick", lastName: "Gatos", cae: "4" })
+//     .catch((error) => {
+//         console.log(error);
+//     })
+// let idUpdate = ObjectId.toString(result.insertedId);
+// console.log(idUpdate);
+
+let findAllComposers = await composerDB.findAllComposers({});
+console.log(findAllComposers);
+
+// let updateComposer = await composerDB.updateComposer(result.insertedId.toString(), { firstName: "Lemon" })
+// console.log(updateComposer.modifiedCount);
+
+// let findComposer = await composerDB.findComposer(findAllComposers[0]._id.toString());
+// console.log(findComposer);
 
 
-// Publisher.create(publisherArray, (err, pubs) => {
-//     console.log(pubs);
-// })
 
-//routes 
-const biCuesRoutes = require("./routes/api.bicues");
-// const { resolveAny } = require("dns");
-app.use("/api/bicues", biCuesRoutes);
-const exportRoutes = require("./routes/api.export")
-app.use("/api/export", exportRoutes);
-
-const exportMusicMark = require('./routes/api.export.musicMark');
-app.use('/api/musicMark', exportMusicMark);
-
-const exportBmat = require('./routes/bmat.export')
-app.use('/api/bmat', exportBmat);
-
-const exportProtunes = require("./routes/api.export.protunes");
-app.use('/api/protunes', exportProtunes);
-
-const exportRussiaWarner = require("./routes/api.export.russiaWarner");
-app.use("/api/russiawarner", exportRussiaWarner);
-
-const composerList = require("./composers");
-
-//populate database with old composer info 
-
-// composers.deleteMany({}, (err) => {
-//     if(err){
-//         console.log(err)
-//     }
-//     else{
-//         composers.create(composerList, (err, docs) => {
-//             if(err){
-//                 console.log("error")
-//             }
-//             else {
-//                 console.log("composers added")
-//             }
-//         })
-
-//     }
-// })
-
-// releaseIsrc.findOne(function(err, docs){
-//     if(!docs){
-//         console.log("Initializing release irsc");
-//         let d = new Date();
-//         let year = d.getFullYear();
-//         let newDoc = new releaseIsrc({
-//             releaes: [],
-//             currentYear: year,
-//             totalTracksThisYear: 0
-//         })
-//     }
-//     else{
-//         console.log("Irsc already initialized");
-//     }
-// })
+// let deleteComposerID = await composerDB.deleteComposer();
+// console.log(deleteComposerID)
 
 
 
 
-app.get('/test', (req, res) => {
-    console.log(publicPath);
-    res.send("This is a test for the server");
-});
 
 
+const test_resolvers = {
+    Query: {
+        users: () => { return users },
+        user: (parent, args, contextValue) => {
+            console.log("get user");
+            if (!contextValue.user) {
+                res.clearCookie("token");
+                console.log("throwing an error");
+                throw new GraphQLError('You are not authorized to perform this action: GET USER', {
+                    extensions: {
+                        code: 'FORBIDDEN',
+                    },
+                });
 
 
-// to sync mp3 information to database 
-app.get('/api/upload', (req, res) => {
-    const release = req.query.release.toUpperCase();
-    let d = new Date();
-    let year = d.getFullYear();
-    console.log(release);
-    const file = "./public/dist/wav/" + release;
-    fs.readdir(file, (err, files) => {
-        if (err) {
-            console.log("error reading files");
+            };
+            console.log(contextValue.user.userID);
+            const u = users.find((u) => { return contextValue.user.userID === u.username });
+            console.log("This is the user: " + u);
+            return u;
+        },
+        songs: () => songs,
+        composers: () => composers,
+        artists: () => artists
+    },
+    Song: {
+        composersSongInfo: (parent) => {
+            let c = parent.composersSplit.map((composer) => {
+                let found = composers.find((c) => { return composer.composerID === c.ID });
+                return { composer: found, split: composer.split }
+            })
+            console.log(c);
+            return c;
+        },
+        artistsSongInfo: (parent) => {
+            let a = parent.artistsInfo.map((artist) => {
+                let found = artists.find((a) => { return artist.artistsID === a.ID });
+                return { artist: found, isFeature: artist.isFeature };
+            })
+            console.log(a);
+            return a;
         }
-        else {
-            console.log(files.length);
-            if (files.length > 0) {
+    },
+    Mutation: {
+        register: async (parent, { email, password, username }, { req, res }) => {
+            res.clearCookie("token");
+            // check if user exists
+            const foundUser = users.find(u => u.username === username);
+            if (foundUser) {
+                return null;
+            }
+            // encrypt passsword
+            console.log(password);
+            const hash = await bcrypt.hash(password, 10);
 
-                releaseIsrc.findOne(function (err, docs) {
-                    console.log("Are there any releases in releaseIsrc? " + docs);
-                    if (!docs) {
-                        console.log("Initializing ReleaseIsrc Model")
-                        let newDoc = new releaseIsrc({
-                            releases: [release],
-                            currentYear: year,
-                            totalTracksThisYear: files.length
-                        })
+            // create user in database with password
+            users.push({ email: email, password: hash, username: username })
 
-                        newDoc.save(function (err, doc) {
-                            startUpdate(release, year, doc.totalTracksThisYear - files.length);
-                        })
+            const token = jwt.sign({ userID: username }, "LetMeBeYourAngel", { expiresIn: "2h" })
 
+            res.cookie("token", token, {
+                httpOnly: true,
+                maxAge: 900000
+            })
 
+            console.log(users.slice(-1));
 
-                    }
-                    else {
-                        console.log("Adding new release..." + release)
-                        if (docs.releases.includes(release)) {
-                            let message = "ERROR!! " + release + " already successfully uploaded. Please change rename Release Folder name";
-                            console.log("Successfully written to database")
-                            let myjson = {
-                                error: "true",
-                                message: message
-                            }
-
-                            const data = JSON.stringify(myjson);
-                            res.json(data);
-                        }
-                        else {
-                            docs.releases.push(release);
-                            if (docs.currentYear != year) {
-                                console.log("I'm not new" + docs.currentYear);
-                                docs.currentYear = year;
-                                docs.totalTracksThisYear = files.length;
-                            }
-                            else {
-                                docs.totalTracksThisYear += files.length;
-                            }
-                            docs.save(function (error, docs) {
-                                console.log(docs);
-                                startUpdate(release, docs.currentYear, (docs.totalTracksThisYear - files.length))
-                            });
-                        }
+            return { user: users[users.length - 1], message: "Authenticated" }
 
 
-                    }
+        },
+        login: async (parent, { username, password }, { req, res }) => {
+            res.clearCookie("token");
+            // if user exists 
+            const foundUser = users.find(u => u.username === username);
+            // decrypt password in bcyrpt
+            let isEqual = await bcrypt.compare(password, foundUser.hash);
+            if (b) {
+                const token = jwt.sign({ userID: username }, "LetMeBeYourAngel", { expiresIn: "2h" })
+                res.cookie("token", token, {
+                    httpOnly: true,
+                    maxAge: 900000
                 })
-
-                // release cannont be over 99,000 tracks.
-                // startupdate is the function that is called in the  callback above.
-                const startUpdate = (r, y, t) => {
-                    let mainVersions = [];
-                    files.forEach((f, i) => {
-                        if (f.includes(" v1 ")) {
-                            let songSplit = f.split(" v1 ");
-                            mainVersions.push({ songSplit: songSplit[0], fullFile: f });
-                            console.log(songSplit[0]);
-                            console.log(f);
-                        }
-                    })
-                    let biSongs = [];
-                    console.log(files);
-                    files.forEach((file, index) => {
-                        let songName = file.replace("DLM - ", "");
-                        songName = songName.replace(".mp3", "");
-                        songName = songName.replace(".wav", "");
-                        songName = songName.replace("._", "");
-                        file = file.replace("._","");
-                        let mv = "N/A";
-                        mainVersions.forEach((m, index) => {
-                            if (file.includes(m.songSplit) && file != m.fullFile) {
-                                mv = m.fullFile;
-                                console.log(mv);
-                            }
-
-                        })
-                        // nt stand for new track. following if else statement turns total track this year into a string with zeros
-                        let nt = t + (index + 1);
-                        let trackId = nt;
-                        if (nt < 10) {
-                            trackId = "0000" + nt.toString();
-                        }
-                        else if (nt >= 10 && nt < 100) {
-                            trackId = "000" + nt.toString();
-
-                        }
-                        else if (nt >= 100 && nt < 1000) {
-                            trackId = "00" + nt.toString();
-                        }
-                        else if (nt >= 1000 && nt < 10000) {
-                            trackId = "0" + nt.toString();
-                        }
-                        // year abreviated... last 2 digits of the year. example year = 1970, yearAbr = 70;
-                        let makeStringofYear = year.toString();
-                        let yearAbr = makeStringofYear.slice(-2);
-                        let isrc = "US-RRD-" + yearAbr + "-" + trackId;
-                        trackId = release + "-" + nt.toString();
-                        let trackNum = release.replace("R", "") + nt.toString();
-                        let d = moment().format("MM-DD-YYYY")
-                        let track = makeStringofYear + trackNum;
-                        let song = {
-                            songTitle: songName, fileName: file, release: r, isrc: isrc,
-                            trackId: trackId, mainVersion: mv, trackNum: trackNum, releaseDate: d, track: track,
-                            trackNumInRelease: nt
-                        }
-                        biSongs.push(song);
-                    });
-
-                    biCue.create(biSongs, function (err) {
-                        if (err) {
-                            console.log("Unable to Save to Database: \n" + error);
-                        }
-                        else {
-                            let message = release + " was successfully uploaded";
-                            console.log("Successfully written to database")
-                            let myjson = {
-                                biCues: biSongs,
-                                error: "false",
-                                message: message
-                            }
-
-                            const data = JSON.stringify(myjson);
-                            res.json(data);
-                        }
-                    });
-                }
-
+                return null;
             }
-            else{
-                console.log("No files in folder");
-            }
-
-            // end of if(files)
+            return { user: foundUser, message: "Authenticated" }
+        },
+        logout: (parent, args, { req, res }) => {
+            res.clearCookie("token");
+            return { user: null, message: "Not_Authenticated" }
         }
-        // end of if(err)
-    })
-})
+    }
 
-app.get("*", (req, res) => {
+}
 
-    res.sendFile(path.join(publicPath, "index.html"));
-})
+// Graphql standlone server for testing
+const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+});
 
-app.listen(port, process.env.IP, function () {
-    console.log("Server Started");
-})
+const { url } = await startStandaloneServer(server, {
+    listen: { port: 9000 },
+});
 
-//
+
+
+// Actual Graphql server
+
+// const app = express();
+// const httpServer = http.createServer(app);
+
+
+// const server = new ApolloServer({
+//     typeDefs,
+//     resolvers,
+//     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+// });
+
+// await server.start();
+
+// enable cors
+let corsOptions = {
+    // origin: "http://localhost:8080",
+    // credentials: true // <-- REQUIRED backend setting for sending header
+};
+
+
+// app.use(
+//     '/graphql',
+//     cors(corsOptions),
+//     express.json(),
+//     cookieParser(),
+//     expressMiddleware(server, {
+//         context: async ({ req, res }) => {
+//             // console.log("in context");
+//             const token = req.cookies.token;
+//             if (token) {
+//                 console.log("got token")
+//                 const user = jwt.verify(token, "LetMeBeYourAngel");
+//                 console.log(user);
+//                 return { req, res, user };
+//             }
+
+//             return { req, res }
+
+//         }
+//     }),
+// );
+
+// await new Promise((resolve) => httpServer.listen({ port: 9000 }, resolve));
+
+// app.get("*", (req, res) => {
+//     res.send("Hello, Music Lover")
+// })
+
+// app.listen({ port: 9000 }, () =>
+//   console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)
+// );
+
+
+// const { url } = await startStandaloneServer(server, {
+//     listen: { port: 9000 },
+// });
+
