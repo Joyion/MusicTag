@@ -5,20 +5,22 @@ const songs = [
     {
         songName: "Heartbreak",
         genre: "R&B",
-        trackNum: 1,
-        album: "Hearbraeak Vol 1",
+        trackNumber: 1,
+        albumName: "Hearbraeak Vol 1",
         moods: ["sad", "heartbreak"],
         instruments: ["synths", "saxophone"],
         similarArtists: ["Toni Braxton"],
-        composers: [1, 2],
-        artists: [1],
-        publishers: [1],
-        fileName: "Heartbreak.mp3",
-        splitComposer: [
+        likes: 0,
+        composerIDs: [1, 2],
+        artistIDs: [1],
+        publisherIDs: [1],
+        filename: "Heartbreak.mp3",
+        filepath: "Heartbreak.mp3",
+        composersSplit: [
             { composerID: 1, split: 50 },
             { composerID: 2, split: 50 },
         ],
-        splitPublisher: [
+        publishersSplit: [
             { publisherID: 1, split: 50 }
         ],
         status: "active",
@@ -31,7 +33,7 @@ const composers = [
         cae_ipi: "1",
         firstName: "Josh",
         lastName: "Hamilton",
-        artistIds: [1, 2],
+        artistIDs: [1, 2],
         status: "active"
     },
     {
@@ -47,11 +49,11 @@ const composers = [
 
 const artists = [
     {
-        artistName: "NumberOne",
+        name: "NumberOne",
         status: "active"
     },
     {
-        artistName: "Millenium",
+        name: "Millenium",
         status: "active"
     }
 
@@ -60,7 +62,7 @@ const artists = [
 const publishers = [
     {
         cae_ipi: "1",
-        publisherName: "Universal",
+        name: "Universal",
     }
 ]
 

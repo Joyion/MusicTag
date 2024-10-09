@@ -1,52 +1,109 @@
 export const typeDefs = `#graphql 
 
 type Song {
-        id: String,
-        songName: String,
+        _id: ID!,
+        title: String!,
         genre: String,
-        trackNum: Int,
-        album: String,
+        trackNumber: Int,
+        albumName: String,
         moods: [String],
         instruments: [String],
         similarArtists: [String],
-        composers: [Int],
-        artists: [Int],
-        publihsers: [Int],
-        composersSplit: [composerSplit],
-        publisherSplit: [publisherSplit],
-        fileName: String,
-        status: String,
-        batchFolder: String
+        likes: Int,
+        internalRating: Int,
+        composers: [Composer],
+        artists: [Artist],
+        featuredArtists: [Artist]
+        publihsers: [Publisher],
+        composersSplit: [RoyaltyPercentage],
+        publishersSplit: [RoyaltyPercentage],
+        filename: String!,
+        filepath: String!,
+        active: Boolean,
+        batchFolder: String!,
+        releaseDate: String!,
     }
 
-type composerSplit {
-    composerCAE_IPI: String,
-    split: Int
+
+input SongInput {
+    title: String,
+    genre: String,
+    trackNumber: Int,
+    albumName: String,
+    moods: [String],
+    instruments: [String],
+    similarArtists: [String],
+    likes: Int,
+    internalRating: Int,
+    composerIDs: [String],
+    artistIDs: [String],
+    featuredArtistIDs: [String]
+    publisherIDs: [String]
+    composersSplit: [RoyaltyPercentageInput],
+    publishersSplit: [RoyaltyPercentageInput],
+    active: Boolean,
+    filename: String,
+    filepath: String,
+    batchFolder: String,
+    releaseDate: String,
 }
 
-type publisherSplit {
-    publisherCAE_IPI: String,
-    split: Int
+input RoyaltyPercentageInput {
+    id: String!,
+    split: Int!
 }
+
+type RoyaltyPercentage {
+    id: String!,
+    split: Int!
+}
+
 
 type Publisher {
-    id: String,
-    cae_ipi: String,
-    publisherName: String
+    _id: ID!,
+    cae_ipi: String!,
+    name: String!,
+    bio: String,
+    active: Boolean
     }
 
+input PublisherInput {
+    cae_ipi: String,
+    name: String,
+    bio: String,
+    active: Boolean
+}
+
 type Composer {
+    _id: ID!,
+    cae_ipi: String!,
+    firstName: String!,
+    lastName: String,
+    associatedArtists: [Artist],
+    status: Boolean
+    bio: String
+}
+
+input ComposerInput {
     cae_ipi: String,
     firstName: String,
     lastName: String,
-    artistIds: [Int],
-    status: String
+    associatedArtistsIDs: [String],
+    status: Boolean,
+    bio: String,
 }
 
 type Artist {
-    id: String,
-    artistName: String,
-    status: String
+    _id: ID!,
+    name: String!,
+    status: Boolean,
+    bio: String,
+}
+
+input ArtistInput {
+    name: String!,
+    status: String,
+    bio: String,
 }
 
 type User {
@@ -54,25 +111,41 @@ type User {
     password: String,
     firstName: String,
     lastName: String
+    adminAccount: Boolean!
+}
+
+type Authentication {
+    user: User,
+    message: String,
 }
 
 
 type Query {
     # users: [User],
     # user(id: String!): User,
-    # song(id: String!): Song,
+    song(id: String!): Song,
     songs: [Song],
     # composer(id: String!): Composer,
-    # composers: [Composer],
+    composers: [Composer],
     # artist(id: String!): Artist,
-    # artists: [Artists],
-
+    artists: [Artist],
+    publishers: [Publisher]
 }
 
-# type Mutation {
-#         register(email: String, password: String, username: String): AuthPayload
-#         login(username: String, password: String): AuthPayload
-#         logout(username: String): AuthPayload
-#     }
+type Mutation {
+    insertSong(song: SongInput!): String
+    insertPublisher(publisher: PublisherInput!): String,
+    insertComposer(composer: ComposerInput!): String,
+    insertArtist(artist: ArtistInput!): String,
+    updateSong(id: String!, updatedFields: SongInput!): String,
+    updateBatchOfSongs(IDs: [String], updatedFields: SongInput!): String,
+    updatePublisher(id: String!, updatedFields: PublisherInput!): String,
+    updateArtist(id: String!, updatedFields: ArtistInput!): String,
+    updateComposer(id: String!, updatedFields: ComposerINput!): String,
+    loadSongs(folderName: String!): [Song]
+#         register(email: String, password: String, username: String): Authentication
+#         login(username: String, password: String): Authentication
+#         logout(username: String): Authentication
+    }
 
 `

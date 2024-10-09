@@ -36,15 +36,15 @@ export default {
     path: path.resolve(__dirname, 'dist'),
     clean: true
   },
-  // plugins: [
-  //   new HtmlWebpackPlugin({
-  //       title: "Music Tag",
-  //       template: "./src/index.html"
-  //   })
-  // ],
- module: {
-   rules: [
-     {
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: "Music Tag",
+      template: "./src/index.html"
+    })
+  ],
+  module: {
+    rules: [
+      {
         test: /\.(?:js|mjs|cjs)$/,
         include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/,
@@ -53,7 +53,7 @@ export default {
           options: {
             presets: [
               ['@babel/preset-env', { targets: "defaults" }],
-              ['@babel/preset-react', {'runtime': 'automatic'}]
+              ['@babel/preset-react', { 'runtime': 'automatic' }]
             ]
           }
         }
@@ -62,6 +62,6 @@ export default {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       }
-   ],
- },
+    ],
+  },
 };

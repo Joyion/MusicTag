@@ -1,5 +1,5 @@
 
-import Navigation from "./Navigation.js"
+import Navigation from "../components/Navigation.js"
 import { Outlet } from "react-router-dom"
 import { createContext, useState } from "react";
 import { useQuery } from "@apollo/client";
@@ -16,11 +16,11 @@ export default function PageContainer() {
 
 
     return (
-        <UserContext.Provider value = {{currentUser, setCurrentUser}}  >
-        <div>
-            <Navigation />
-            <Outlet />
-        </div>
+        <UserContext.Provider value={{ currentUser, setCurrentUser }}  >
+            <div>
+                <Navigation />
+                <Outlet />
+            </div>
         </UserContext.Provider>
     )
 }
