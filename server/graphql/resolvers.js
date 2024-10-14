@@ -1,4 +1,11 @@
-import { collections, composerPipeline, createObject, database, findObjectByAggregation, findOneObject, songPipeline, updateManyObjects, updateOne, } from "../../database/database.js";
+import * as fs from 'fs';
+import 'dotenv/config'
+
+// parse metadata from files
+import { parseFile } from 'music-metadata';
+
+import { collections, composerPipeline, createManyObjects, createObject, database, findObjectByAggregation, findOneObject, songPipeline, updateManyObjects, updateOne, } from "../database.js";
+
 export const resolvers = {
     Query: {
         song: async (parent, args) => {
@@ -61,9 +68,89 @@ export const resolvers = {
             let id = await updateOne(collections.artists, new Object(args.id), args.updatedFields);
             return id;
         },
+        loadSongs: async (parent, args) => {
+            console.log(args.folderPath);
+            let musicFiles = await readFilesFromFolder(args.folderPath);
+            console.log(musicFiles);
+            let ids = await createManyObjects(collections.songs, musicFiles)
+            return [];
+        }
 
 
     }
+}
+
+
+
+// Parses files into structure for database
+// Nested file structure for automatic nesting of multipe versions of a track requires a subfolder with the main track 
+// and a subfolder named alternates including the alternative song files to be nested
+// For album file structure, Batch folder contains subfolders  
+// and the name of the subfolder is used as the album title
+
+const readFilesFromFolder = async (batchFolder, recommendedFileStructure = true) => {
+    try {
+
+        // Console log current directory
+        // const __filename = fileURLToPath(import.meta.url);
+        // const __dirname = dirname(__filename);
+        // console.log(__dirname);
+        // console.log(__filename);
+
+        let musicFiles = [];
+        let batchFolderPath = process.env.MUSIC_FILE_HOST_PATH + batchFolder;
+        // Use Subdirectories as albums
+        const subdirectories = fs.readdirSync(batchFolderPath);
+        console.log(subdirectories)
+        for (const fileOrFolder of subdirectories) {
+            console.log(fileOrFolder)
+            console.log(fs.statSync(`${batchFolderPath}/${fileOrFolder}`).isDirectory())
+            await getTracksFromSubFolders(fileOrFolder, `${batchFolderPath}/${fileOrFolder}`, musicFiles, batchFolder)
+        }
+
+        return musicFiles;
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const getTracksFromSubFolders = async (fileOrFolderName, fileOrFolderPath, musicFiles, batchFolder) => {
+    try {
+        // If it's a directory, it should contain a song with alternate versions 
+        console.log("This is the path" + fileOrFolderPath);
+        if (fs.statSync(fileOrFolderPath).isDirectory()) {
+            let groupedTrackedVersions = fs.readdirSync(fileOrFolderPath).filter(f => f.endsWith(".mp3") || f.endsWith(".wav"));
+            // Use the first song when sorted as the main version
+            groupedTrackedVersions.sort();
+            groupedTrackedVersions.forEach(async (trackVersion, index) => {
+                let versionPath = `${fileOrFolderPath}/${trackVersion}`;
+                let mainVersion = index != 0 ? groupedTrackedVersions[0] : "";
+                await createMusicFileData(trackVersion, versionPath, musicFiles, batchFolder, mainVersion, groupedTrackedVersions.length - 1);
+            })
+        } else {
+            console.log("file is not a directory or nested file structure is not required");
+            await createMusicFileData(fileOrFolderName, fileOrFolderPath, musicFiles, batchFolder);
+        }
+
+    } catch (error) {
+        console.log(error);
+        console.log("File is not a directory");
+    }
+
+}
+
+const createMusicFileData = async (file, filepath, musicFileArray, batchFolder, mainVersion = "", countofAltVersions = 0,) => {
+    if (!file.endsWith(".mp3") && !file.endsWith(".wav")) {
+        return;
+    }
+    // Retrieve metadata attached to file
+    const metadata = await parseFile(filepath);
+    let title = file.replace(".mp3", "").replace(".wav", "");
+    console.log(file);
+    musicFileArray.push({ createdAtDate: new Date(), filepath: filepath, filename: file, batchFolder: batchFolder, title: title, active: false, mainVersion: mainVersion, countOfAltVersions: countofAltVersions });
+    // console.log(musicFileArray);
+    console.log("Added file");
 }
 
 

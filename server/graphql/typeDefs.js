@@ -1,8 +1,8 @@
 export const typeDefs = `#graphql 
 
 type Song {
-        _id: ID!,
-        title: String!,
+        _id: ID,
+        title: String,
         genre: String,
         trackNumber: Int,
         albumName: String,
@@ -17,11 +17,12 @@ type Song {
         publihsers: [Publisher],
         composersSplit: [RoyaltyPercentage],
         publishersSplit: [RoyaltyPercentage],
-        filename: String!,
-        filepath: String!,
+        mainVersion: String,
+        filename: String,
+        filepath: String,
         active: Boolean,
-        batchFolder: String!,
-        releaseDate: String!,
+        releaseDate: String,
+        createdAtDate: String,
     }
 
 
@@ -44,7 +45,6 @@ input SongInput {
     active: Boolean,
     filename: String,
     filepath: String,
-    batchFolder: String,
     releaseDate: String,
 }
 
@@ -60,7 +60,7 @@ type RoyaltyPercentage {
 
 
 type Publisher {
-    _id: ID!,
+    _id: ID,
     cae_ipi: String!,
     name: String!,
     bio: String,
@@ -75,12 +75,12 @@ input PublisherInput {
 }
 
 type Composer {
-    _id: ID!,
-    cae_ipi: String!,
+    _id: ID,
+    cae_ipi: String,
     firstName: String!,
     lastName: String,
     associatedArtists: [Artist],
-    status: Boolean
+    active: Boolean
     bio: String
 }
 
@@ -89,20 +89,20 @@ input ComposerInput {
     firstName: String,
     lastName: String,
     associatedArtistsIDs: [String],
-    status: Boolean,
+    active: Boolean,
     bio: String,
 }
 
 type Artist {
     _id: ID!,
     name: String!,
-    status: Boolean,
+    active: Boolean,
     bio: String,
 }
 
 input ArtistInput {
     name: String!,
-    status: String,
+    active: String,
     bio: String,
 }
 
@@ -141,8 +141,8 @@ type Mutation {
     updateBatchOfSongs(IDs: [String], updatedFields: SongInput!): String,
     updatePublisher(id: String!, updatedFields: PublisherInput!): String,
     updateArtist(id: String!, updatedFields: ArtistInput!): String,
-    updateComposer(id: String!, updatedFields: ComposerINput!): String,
-    loadSongs(folderName: String!): [Song]
+    updateComposer(id: String!, updatedFields: ComposerInput!): String,
+    loadSongs(folderPath: String!): [Song]
 #         register(email: String, password: String, username: String): Authentication
 #         login(username: String, password: String): Authentication
 #         logout(username: String): Authentication

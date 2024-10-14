@@ -22,8 +22,8 @@ import cookieParser from 'cookie-parser';
 import 'dotenv/config'
 
 // graphql
-import { typeDefs } from './graphql/types/typeDefs.js';
-import { resolvers } from "./graphql/resolvers/resolvers.js";
+import { resolvers } from './graphql/resolvers.js';
+import { typeDefs } from './graphql/typeDefs.js';
 
 
 
