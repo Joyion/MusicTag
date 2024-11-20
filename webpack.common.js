@@ -25,6 +25,7 @@
 import path from "path";
 import { fileURLToPath } from "url";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import sass from "sass";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -59,9 +60,21 @@ export default {
         }
       },
       {
-        test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
-      }
+        test: /\.s[ac]ss$/i,
+        use: ['style-loader',
+          'css-loader',
+          {
+            loader: "sass-loader",
+            options: {
+              implementation: sass
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
 };

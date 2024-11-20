@@ -1,0 +1,70 @@
+@use "./components.scss";
+
+
+
+
+// colors
+$mainColor: #000000;
+$secondaryColor: #9f1515;
+$gray: #a9a9a9;
+$offWhite: #ebe9e9;
+
+* {
+    margin: 0;
+    padding: 0;
+    color: $mainColor;
+}
+
+.main-title {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 1px maroon;
+
+    h1 {
+        font-size: 8rem;
+    }
+
+    h2 {
+        font-size: 3rem;
+        padding: 20px 0px;
+    }
+
+    span {
+        font-size: 5rem;
+    }
+}
+
+.sub-title {
+    font-size: 4rem;
+    text-align: center;
+    margin-bottom: 50px;
+
+}
+
+.img-collage-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    // background-color: black;
+
+    img {
+        width: 25%;
+        max-height: 90vh;
+        filter: drop-shadow(-2px 2px 2px #000000);
+        border-radius: 1%;
+    }
+}
+
+
+.dark-container {
+    background-color: #000000;
+    height: 70vh;
+
+    h1 {
+        color: white;
+        text-align: center;
+    }
+}
