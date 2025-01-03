@@ -1,70 +1,172 @@
-@use "./components.scss";
+@use "./components.scss" as components;
+@use "./base.scss" as base;
 
-
-
-
-// colors
-$mainColor: #000000;
-$secondaryColor: #9f1515;
-$gray: #a9a9a9;
-$offWhite: #ebe9e9;
 
 * {
     margin: 0;
     padding: 0;
-    color: $mainColor;
+    color: base.$mainColor;
+    font-size: base.$font_size_base;
 }
+
+.title-container {
+    height: 90vh;
+}
+
+
 
 .main-title {
     text-align: center;
     font-weight: bold;
     margin-top: 40px;
+    margin-bottom: 40px;
     text-transform: uppercase;
     letter-spacing: 2px;
-    text-shadow: 1px 1px 1px maroon;
+    text-shadow: 2px 2px 1px base.$mainColor;
 
     h1 {
-        font-size: 8rem;
+        font-size: base.$font_size_title;
+        color: base.$mainColor;
+        text-align: center;
+        font-family: "Abril Fatface", serif;
+        font-weight: 400;
+        font-style: normal;
     }
 
-    h2 {
-        font-size: 3rem;
-        padding: 20px 0px;
+    img {
+        width: 100px;
     }
 
-    span {
-        font-size: 5rem;
-    }
 }
 
-.sub-title {
-    font-size: 4rem;
-    text-align: center;
-    margin-bottom: 50px;
-
-}
 
 .img-collage-container {
     display: flex;
     width: 100%;
+    height: 85vh;
     justify-content: center;
+    overflow-x: hidden;
     // background-color: black;
 
     img {
         width: 25%;
+        object-fit: cover;
         max-height: 90vh;
-        filter: drop-shadow(-2px 2px 2px #000000);
+        filter: drop-shadow(-1px 1px 5px #000000);
+        // border: 1px solid base.$mainColor;
         border-radius: 1%;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        background-origin: content-box;
+    }
+}
+
+.featured-container {
+    background-color: #000000;
+    height: 70vh;
+}
+
+.featured-artists {
+    position: relative;
+    top: 300px;
+
+    h2 {
+        color: base.$offWhite;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: base.$font_size_h2;
+        font-family: "Abril Fatface", serif;
+        font-weight: 400;
+        font-style: normal;
+        letter-spacing: 8px;
+        text-shadow: 2px 2px 1px base.$mainColor;
     }
 }
 
 
-.dark-container {
-    background-color: #000000;
-    height: 70vh;
+.card-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 40px 20px;
 
-    h1 {
-        color: white;
+    .title-sect {
+        display: flex;
+        width: 25%;
+        height: 50vh;
+        align-items: center;
+        font-family: "Abril Fatface", serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    .cards {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 75%;
+        height: 50vh;
+    }
+
+    ul {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        list-style-type: none;
+        width: 100%;
+        height: 50vh;
+        flex-wrap: wrap;
+    }
+
+    ul li {
+        width: 33%;
         text-align: center;
     }
+}
+
+
+.search-container {
+    width: 100%;
+    padding-top: 15%;
+    background-color: base.$mainColor;
+
+    .title-container h2 {
+        color: base.$offWhite;
+        font-size: base.$font_size_h2;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        text-shadow: 2px 2px 1px base.$mainColor;
+        font-family: "Abril Fatface", serif;
+        font-weight: 400;
+        font-style: normal;
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    .title-container div {
+        display: flex;
+        justify-content: center;
+        padding: 75px 80px;
+    }
+
+    .title-container div p {
+        color: base.$offWhite;
+        font-size: 2.5rem;
+        letter-spacing: 5px;
+        text-align: center;
+        width: 75%;
+        font-family: "Coustard", serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+}
+
+footer {
+    width: 100%;
+    background-color: base.$offWhite;
+    height: 20vh;
+    text-align: center;
+    font-size: 2.0rem;
 }

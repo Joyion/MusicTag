@@ -1,22 +1,102 @@
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
-    padding: 15px 60px;
-    color: black;
-    font-weight: 600;
+@use "./base.scss" as base;
 
-    p {
-        font-size: 32px;
+h2 {
+    font-size: 2.5rem;
+}
+
+.navbar {
+    width: 100vw;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    a {
+        font-size: base.$font-size_smallBig;
+        text-decoration: none;
+        font-family: "Coustard", serif;
+        font-weight: 900;
+        font-style: normal;
     }
 
-    ul li {
-        font-size: 28px;
-        list-style: none;
-        float: left;
-        margin: 7px;
-        font-weight: 500px;
+    img {
+        width: 65px;
+    }
+
+    button {
+        padding: 2px;
+        background-color: base.$mainColor;
+        color: white;
+        margin: 0px 3px;
+        font-size: base.$font-size_smallBig;
+        border-radius: 5%;
+
+    }
+
+    input {
+        padding: 2px;
+        border: 2px solid base.$mainColor;
+        font-size: base.$font-size_smallBig;
+        border-radius: 5%;
+
+    }
+
+    .nav-links,
+    .search-bar {
+        padding: 30px;
+
+    }
+
+    .nav-links ul,
+    .search-bar ul {
+        display: flex;
+        flex-direction: row;
+        list-style-type: none;
+        align-items: center;
+    }
+
+    .nav-links li,
+    .search-bar li {
+        margin: 0px 6px;
+    }
+
+    .search-bar {
+        padding: 30px;
+    }
+
+
+}
+
+.subtitle-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: base.$mainColor;
+    height: 150px;
+    width: 450px;
+    border-radius: 3%;
+    box-shadow: 2px 2px rgb(22, 22, 22);
+
+    div {
+        width: 90%;
+        height: 85%;
+        border: 3px solid base.$offWhite;
+        background-color: base.$mainColor;
+        color: base.$offWhite;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 3%;
+    }
+
+    h2 {
+        color: base.$offWhite;
+        text-align: center;
+        font-family: "Abril Fatface", serif;
+        font-weight: 400;
+        font-style: normal;
+        letter-spacing: 5px;
     }
 
 }
