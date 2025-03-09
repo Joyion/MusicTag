@@ -1,0 +1,318 @@
+@use "./components.scss" as components;
+@use "./base.scss" as base;
+
+
+* {
+    margin: 0;
+    padding: 0;
+    color: base.$mainColor;
+    font-size: base.$font_size_base;
+}
+
+.title-container {
+    height: 90vh;
+}
+
+
+
+.main-title {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 1px base.$mainColor;
+
+    h1 {
+        font-size: base.$font_size_title;
+        color: base.$mainColor;
+        text-align: center;
+        font-family: "Abril Fatface", serif;
+        font-weight: 400;
+        font-style: normal;
+        text-shadow: -1px 1px 2px black;
+    }
+
+    img {
+        width: 100px;
+    }
+
+}
+
+
+.img-collage-container {
+    display: flex;
+    width: 100%;
+    height: 85vh;
+    justify-content: center;
+    overflow-x: hidden;
+    // background-color: black;
+
+    img {
+        width: 25%;
+        object-fit: cover;
+        max-height: 100vh;
+        filter: drop-shadow(-5px 5px 10px #000000);
+        // border: 1px solid base.$mainColor;
+        border-radius: 1%;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        background-origin: content-box;
+    }
+}
+
+.featured-container {
+    background-color: base.$mainColor;
+}
+
+.featured-artists {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    padding: 10% 0;
+    // position: relative;
+    // top: 250px;
+    // height: 120vh;
+
+    .features {
+        width: 100%;
+        padding-top: 50px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+
+    h2 {
+        color: base.$offWhite;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: base.$font_size_h2;
+        font-family: "Abril Fatface", serif;
+        font-weight: 400;
+        font-style: normal;
+        letter-spacing: 8px;
+        text-shadow: 2px 2px 1px base.$mainColor;
+    }
+
+    p {
+        padding-top: 30px;
+        color: base.$offWhite;
+        font-size: base.$font-size_smallBig;
+        text-align: center;
+        margin: 0px 20%;
+        letter-spacing: 5px;
+        font-size: 2.0rem;
+    }
+
+
+}
+
+
+.card-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 40px 20px;
+
+    .card-title-section {
+        display: flex;
+        width: 25%;
+        height: 50vh;
+        align-items: baseline;
+        font-family: "Abril Fatface", serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    .card-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 75%;
+        height: 50vh;
+    }
+
+    ul {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        list-style-type: none;
+        width: 100%;
+        height: 50vh;
+        flex-wrap: wrap;
+    }
+
+    ul li {
+        width: 33%;
+        text-align: center;
+    }
+
+    .section-link {
+        align-self: last baseline;
+        width: 400px;
+        font-family: "Abril Fatface", serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    .section-link a {
+        font-size: 1.7em;
+        letter-spacing: 5px;
+        text-shadow: 1px solid black;
+    }
+
+    .section-link a:hover {
+        color: base.$secondaryColor;
+
+    }
+
+
+}
+
+
+.search-container {
+    width: 100%;
+    height: 90vh;
+    background-color: base.$mainColor;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+
+    .search-content {
+        display: flex;
+        height: 40%;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-content h2 {
+
+        color: base.$offWhite;
+        font-size: base.$font_size_h2;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        text-shadow: 2px 2px 1px base.$mainColor;
+        font-family: "Abril Fatface", serif;
+        font-weight: 400;
+        font-style: normal;
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    .search-content div {
+        display: flex;
+        justify-content: center;
+        padding: 40px 60px;
+    }
+
+    .search-content div p {
+        color: base.$offWhite;
+        font-size: 2.0rem;
+        letter-spacing: 5px;
+        text-align: center;
+        width: 75%;
+        font-family: "Coustard", serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    form input {
+        width: 600px;
+        margin-right: 20px;
+    }
+
+    form button {
+        color: base.$offWhite;
+        background-color: base.$mainColor;
+        border: 1px solid white;
+        padding: 10px;
+    }
+
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+    background-color: base.$offWhite;
+    height: 10vh;
+    text-align: center;
+
+    p,
+    a {
+        font-size: base.$font-size_smallBig;
+    }
+}
+
+
+@media only screen and (min-width: 1300px) {
+    #mobile-bars i {
+        display: none;
+    }
+
+}
+
+
+@media only screen and (max-width: 1300px) {
+
+    /**Navigagion **/
+
+    .logo img {
+        width: 50px;
+    }
+
+    #title-name {
+        font-size: 1.5rem;
+    }
+
+    .search-bar form input {
+        width: 100px;
+    }
+
+
+    .nav-links ul li {
+        display: none;
+    }
+
+    .search-bar ul li:nth-child(1),
+    .search-bar ul li:nth-child(2) {
+        display: none;
+    }
+
+    #mobile-bars i {
+        display: inline;
+        font-size: 3.0rem;
+
+    }
+
+
+    /** Homepage **/
+    .main-title h1 {
+        font-size: base.$font_size_h2;
+    }
+
+    .featured-artists h2 {
+        font-size: 2.5rem;
+    }
+
+    .featured-artists p {
+        font-size: 1.6rem;
+    }
+
+    .title-block div h2 {
+        font-size: 1.6rem;
+    }
+
+    .card-section ul li {
+        width: 100%;
+    }
+
+
+}

@@ -1,172 +1,295 @@
-@use "./components.scss" as components;
-@use "./base.scss" as base;
-
-
-* {
-    margin: 0;
-    padding: 0;
-    color: base.$mainColor;
-    font-size: base.$font_size_base;
-}
-
-.title-container {
-    height: 90vh;
-}
+@use "./base.scss" as *;
+@use "./navigation" as *;
+@use "./homepage" as *;
 
 
 
-.main-title {
-    text-align: center;
-    font-weight: bold;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 1px base.$mainColor;
 
-    h1 {
-        font-size: base.$font_size_title;
-        color: base.$mainColor;
-        text-align: center;
-        font-family: "Abril Fatface", serif;
-        font-weight: 400;
-        font-style: normal;
+// Wide Screen
+@media screen and (max-width: 1300px) {
+
+    ul li a {
+        font-size: $smaller;
     }
 
-    img {
-        width: 100px;
+    // HomePage
+    .main-title h1 {
+        font-size: $xlarge;
     }
 
-}
-
-
-.img-collage-container {
-    display: flex;
-    width: 100%;
-    height: 85vh;
-    justify-content: center;
-    overflow-x: hidden;
-    // background-color: black;
-
-    img {
-        width: 25%;
-        object-fit: cover;
-        max-height: 90vh;
-        filter: drop-shadow(-1px 1px 5px #000000);
-        // border: 1px solid base.$mainColor;
-        border-radius: 1%;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-        background-size: cover;
-
-        background-origin: content-box;
+    section.title-container {
+        padding-top: 17vh;
+        height: 90vh;
+        max-width: 100%;
     }
-}
 
-.featured-container {
-    background-color: #000000;
-    height: 70vh;
-}
+    .image-collage-container {
+        flex-direction: column;
 
-.featured-artists {
-    position: relative;
-    top: 300px;
-
-    h2 {
-        color: base.$offWhite;
-        text-align: center;
-        text-transform: uppercase;
-        font-size: base.$font_size_h2;
-        font-family: "Abril Fatface", serif;
-        font-weight: 400;
-        font-style: normal;
-        letter-spacing: 8px;
-        text-shadow: 2px 2px 1px base.$mainColor;
+        img {
+            width: 100%;
+            height: 33vh;
+        }
     }
-}
 
+    section.featured-artists {
+        padding-top: 35vh;
 
-.card-section {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    padding: 40px 20px;
+        h2 {
+            font-size: $medium-large;
+        }
 
-    .title-sect {
+        p {
+            font-size: $small;
+        }
+
+    }
+
+    .artist-card {
         display: flex;
-        width: 25%;
-        height: 50vh;
+        flex-direction: column;
         align-items: center;
-        font-family: "Abril Fatface", serif;
-        font-weight: 400;
-        font-style: normal;
+
+        a {
+            font-size: $small-medium;
+        }
+
+        img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    
     }
 
-    .cards {
-        display: flex;
-        flex-direction: row;
+    section.featured-news,
+    section.featured-releases {
+        flex-direction: column;
+        height: 100%;
         align-items: center;
-        width: 75%;
-        height: 50vh;
-    }
-
-    ul {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        list-style-type: none;
-        width: 100%;
-        height: 50vh;
-        flex-wrap: wrap;
-    }
-
-    ul li {
-        width: 33%;
-        text-align: center;
-    }
-}
-
-
-.search-container {
-    width: 100%;
-    padding-top: 15%;
-    background-color: base.$mainColor;
-
-    .title-container h2 {
-        color: base.$offWhite;
-        font-size: base.$font_size_h2;
-        text-transform: uppercase;
-        letter-spacing: 5px;
-        text-shadow: 2px 2px 1px base.$mainColor;
-        font-family: "Abril Fatface", serif;
-        font-weight: 400;
-        font-style: normal;
-        text-align: center;
-        margin-top: 40px;
-    }
-
-    .title-container div {
-        display: flex;
         justify-content: center;
-        padding: 75px 80px;
+        padding: 5px 5px;
+
+        div.featured-title {
+            padding-right: 0px;
+            padding-top: 30px;
+
+            div {
+
+                h2 {
+                    font-size: $medium-large;
+                    line-height: 50px;
+                    padding: 10px;
+                }
+            }
+        }
+
+        ul {
+            max-width: 100%;
+            margin-top: 50px;
+        }
+
+        .view-all {
+            min-width: 100%;
+            width: 100%;
+            align-self: center;
+            margin-top: 40px;
+
+
+            a {
+                font-size: $medium-large;
+                width: 100%;
+                padding-left: 0px;
+                text-align: center;
+            }
+
+        }
     }
 
-    .title-container div p {
-        color: base.$offWhite;
-        font-size: 2.5rem;
-        letter-spacing: 5px;
-        text-align: center;
-        width: 75%;
-        font-family: "Coustard", serif;
-        font-weight: 400;
-        font-style: normal;
+
+
+    section.home-search-container {
+
+        div.search-content {
+            h2 {
+                font-size: $large;
+            }
+
+            p {
+                font-size: $small-medium;
+            }
+        }
+
+        .search-form {
+            
+            input {
+                width: 80%;
+                padding: 5px;
+                font-size: $smaller;
+            }
+
+            i {
+                font-size: $small;
+            }
+        }
+
     }
+
+
+
+
+    footer {
+        width: 100%;
+        gap: 13px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 5vh;
+
+        p,
+        a {
+            font-size: $very-small;
+        }
+
+    }
+
 }
 
-footer {
-    width: 100%;
-    background-color: base.$offWhite;
-    height: 20vh;
-    text-align: center;
-    font-size: 2.0rem;
+
+
+// Mobile
+@media screen and (max-width: 800px) {
+
+    // Homepage
+
+    .main-title h1 {
+
+        font-size: 2.2rem;
+    }
+
+         section.title-container {
+             padding-top: 29vh;
+         }
+
+    section.featured-artists {
+        padding-top: 30vh;
+
+        h2 {
+            font-size: $small-medium;
+        }
+
+        p {
+            font-size: $smaller;
+        }
+
+    }
+
+    .artist-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        a {
+            font-size: $small;
+        }
+
+        img {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    }
+
+    section.featured-news,
+    section.featured-releases {
+        flex-direction: column;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 5px;
+
+        div.featured-title {
+            padding-right: 0px;
+
+
+            div {
+
+                h2 {
+                    font-size: $small-medium;
+                    line-height: 50px;
+                    padding: 10px;
+                }
+            }
+        }
+
+        ul {
+            max-width: 100%;
+            margin-top: 50px;
+        }
+
+        .view-all {
+            min-width: 100%;
+            width: 100%;
+            align-self: center;
+            margin-top: 40px;
+
+
+            a {
+                font-size: $small-medium;
+                width: 100%;
+                padding-left: 0px;
+                text-align: center;
+            }
+
+        }
+    }
+
+    .article-card {
+        a {
+            font-size: $small;
+        }
+
+        img {
+            width: 150px;
+            height: 150px;
+        }
+    }
+
+    section.home-search-container {
+
+        div.search-content {
+            p {
+                padding: 0px 5px;
+            }
+        }
+
+        div.search-content {
+            h2 {
+                font-size: $small-medium;
+            }
+
+            p {
+                font-size: $smaller;
+            }
+        }
+
+        .search-form {
+            input {
+                width: 80%;
+                padding: 5px;
+                font-size: $very-small;
+                margin-right: 5px;
+            }
+
+            i {
+                font-size: $small;
+            }
+        }
+
+      
+    }
+
+    // end of mobile 
 }
