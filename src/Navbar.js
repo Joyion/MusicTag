@@ -52,8 +52,8 @@ export const Navbar = () => {
        <div className="nav-media"> 
         <div>
             <div>
-                <p className="coustard-regular">Now Playing - <span>Song Name</span> by <span><a href="#">Artist Name</a></span></p>
-                        <p className="coustard-regular">from <span><a href="#">Latest Releases</a></span></p>
+                <p className="coustard-regular">Now Playing - <span>Song Name</span> by <span><a href="#">Artist Name </a></span></p>
+                <p className="coustard-regular">from <span><a href="#">Latest Releases</a></span></p>
             </div>
                     <audio controls>
                         <source src="" type="audio/mp3"/>

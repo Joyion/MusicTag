@@ -136,16 +136,15 @@
     
     div {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
         justify-content: space-around;
         text-align: center;
 
-
+    
         
         p, span, a {
-            font-size: $smaller;
-            text-wrap: wrap;
+            font-size: $very-small;
         }
         span {
             font-style: italic;

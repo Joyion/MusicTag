@@ -1,0 +1,290 @@
+@use "./base.scss" as *;
+
+// Wide Screen 
+@media screen and (max-width: 1300px) {
+
+    ul li a {
+        font-size: $smaller;
+    }
+
+    // HomePage
+    .main-title h1 {
+        font-size: $xlarge;
+    }
+
+    section.title-container {
+        padding-top: 17vh;
+        height: 90vh;
+        max-width: 100%;
+    }
+
+    .image-collage-container {
+        flex-direction: column;
+
+        img {
+            width: 100%;
+            height: 33vh;
+        }
+    }
+
+    section.featured-artists {
+        padding-top: 35vh;
+
+        h2 {
+            font-size: $medium-large;
+        }
+
+        p {
+            font-size: $small;
+        }
+
+    }
+
+    .artist-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        a {
+            font-size: $small-medium;
+        }
+
+        img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+    }
+
+    section.featured-news,
+    section.featured-releases {
+        flex-direction: column;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 5px;
+
+        div.featured-title {
+            padding-right: 0px;
+            padding-top: 30px;
+
+            div {
+
+                h2 {
+                    font-size: $medium-large;
+                    line-height: 50px;
+                    padding: 10px;
+                }
+            }
+        }
+
+        ul {
+            max-width: 100%;
+            margin-top: 50px;
+        }
+
+        .view-all {
+            min-width: 100%;
+            width: 100%;
+            align-self: center;
+            margin-top: 40px;
+
+
+            a {
+                font-size: $medium-large;
+                width: 100%;
+                padding-left: 0px;
+                text-align: center;
+            }
+
+        }
+    }
+
+
+
+    section.home-search-container {
+
+        div.search-content {
+            h2 {
+                font-size: $large;
+            }
+
+            p {
+                font-size: $small-medium;
+            }
+        }
+
+        .search-form {
+
+            input {
+                width: 80%;
+                padding: 5px;
+                font-size: $smaller;
+            }
+
+            i {
+                font-size: $small;
+            }
+        }
+
+    }
+
+
+
+
+    footer {
+        width: 100%;
+        gap: 13px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 5vh;
+
+        p,
+        a {
+            font-size: $very-small;
+        }
+
+    }
+
+}
+
+
+
+// Mobile
+@media screen and (max-width: 800px) {
+
+    // Homepage
+
+    .main-title h1 {
+
+        font-size: 2.2rem;
+    }
+
+    section.title-container {
+        padding-top: 29vh;
+    }
+
+    section.featured-artists {
+        padding-top: 30vh;
+
+        h2 {
+            font-size: $small-medium;
+        }
+
+        p {
+            font-size: $smaller;
+        }
+
+    }
+
+    .artist-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        a {
+            font-size: $small;
+        }
+
+        img {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    }
+
+    section.featured-news,
+    section.featured-releases {
+        flex-direction: column;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 5px;
+
+        div.featured-title {
+            padding-right: 0px;
+
+
+            div {
+
+                h2 {
+                    font-size: $small-medium;
+                    line-height: 50px;
+                    padding: 10px;
+                }
+            }
+        }
+
+        ul {
+            max-width: 100%;
+            margin-top: 50px;
+        }
+
+        .view-all {
+            min-width: 100%;
+            width: 100%;
+            align-self: center;
+            margin-top: 40px;
+
+
+            a {
+                font-size: $small-medium;
+                width: 100%;
+                padding-left: 0px;
+                text-align: center;
+            }
+
+        }
+    }
+
+    .article-card {
+        a {
+            font-size: $small;
+        }
+
+        img {
+            width: 150px;
+            height: 150px;
+        }
+    }
+
+    section.home-search-container {
+
+        div.search-content {
+            p {
+                padding: 0px 5px;
+            }
+        }
+
+        div.search-content {
+            h2 {
+                font-size: $small-medium;
+            }
+
+            p {
+                font-size: $smaller;
+            }
+        }
+
+        .search-form {
+            input {
+                width: 80%;
+                padding: 5px;
+                font-size: $very-small;
+                margin-right: 5px;
+            }
+
+            i {
+                font-size: $small;
+            }
+        }
+
+
+    }
+
+    // end of mobile 
+}
