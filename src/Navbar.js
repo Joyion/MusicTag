@@ -32,7 +32,28 @@ export const Navbar = () => {
                             <button type="submit"><i className="fa-solid fa-magnifying-glass"></i></button>
                         </form>
                     </div>
-                    <a className="coustard-regular"  href="#">Login</a>
+                    <div className="login-dropdown">
+                        <button className="coustard-regular login-button"><i class="fa-solid fa-user"></i> <span>username</span></button>
+                        <div className="login-content">
+                            <ul>
+
+                         
+                            <li>
+                                <a className="coustard-regular" href="#">Account Settings</a>
+                            </li>
+                            <li>
+                                <a className="coustard-regular" href="#">My Playlists</a>
+                            </li>
+                            <li>
+                                <a className="coustard-regular" href="#">My Licenses</a>
+                            </li>
+                            <li>
+                                <a className="coustard-regular" href="#">Sign Out</a>
+                            </li>
+                            </ul>
+                        </div>
+                    </div>
+              
            </div>
          
 
@@ -63,12 +84,29 @@ export const Navbar = () => {
 
 
             <div id="mobile-dropdown" className="mobile-nav-dropdown mobile-nav-open">
+        
                 <ul className="coustard-regular">
                     <li><a href="#">News</a></li>
                     <li><a href="#">Artists</a></li>
                     <li><a href="#">Catalog</a></li>
-                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Our Story</a></li>  
+                    <hr/>
+                    <li>
+                        <a className="coustard-regular" href="#">Account Settings</a>
+                    </li>
+                    <li>
+                        <a className="coustard-regular" href="#">My Playlists</a>
+                    </li>
+                    <li>
+                        <a className="coustard-regular" href="#">My Licenses</a>
+                    </li>
+                    <li>
+                        <a className="coustard-regular" href="#">Sign Out</a>
+                    </li>
+                    <li><a href="#">Login</a></li>
+                    <hr />
                 </ul>
+          
                 <div className="nav-search-form">
                     <form>
                         <input

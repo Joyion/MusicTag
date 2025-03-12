@@ -27,17 +27,23 @@
            gap: 8px;
            list-style-type: none;
         }
+        li a {
+            font-size: $small;
+        }
     }
 
     .nav-content {
         display: flex;
         justify-content: center;
         align-items: center;
+        justify-items: center;
 
         a {
             margin-left: 10px;
             font-size: $small;
         }
+
+     
     }
 
 }
@@ -57,6 +63,49 @@
      }
  }
 
+ .login-button {
+            margin-left: 17px;
+            border: none;
+            span {
+                    font-size: $small;
+            }
+       
+
+            i {
+                font-size: $small-medium;
+            }    
+}
+
+.login-dropdown {
+    position: relative;
+    top: 20px;
+    height: 60px;
+}
+
+div.login-dropdown:hover .login-content {
+    display: block;
+}      
+
+ .login-content {
+    display: none;
+    // border: 1px solid black;
+    position: absolute;
+    top: 40px;
+    right: 5px;
+    width: 250px;
+    list-style-type: none;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 2);
+    z-index: 3;
+
+
+    ul li {
+        padding: 5px 0px;
+        border-bottom: 1px solid black;
+        width: 100%;
+        list-style-type: none;
+    }
+ }
+
 .mobile-nav {
     display: none;
     margin: 5px 15px;
@@ -71,6 +120,7 @@
 
 
 .mobile-nav-dropdown.show {
+    display: none;
     opacity: 1;
     visibility: visible;
     height: auto;
@@ -78,24 +128,28 @@
 
 .mobile-nav-dropdown {
     flex-direction: column;
-    justify-content: left;
+    justify-content: center;
+    justify-items: center;
     margin: 10px;
     transition: .3s;
     height: 0;
     opacity: 0;
     visibility: hidden;
-
+    text-align: center;
+    
     ul {
+        width: 100%;
         display: flex;
         flex-direction: column;
         list-style-type: none;
-        gap: 3px;
+        gap: 8px;
+        text-align: center;
     }
 
     .nav-search-form {
-        margin-top: 5px;
+        margin-top: 18px;
         form {
-            width: 75%;
+            width: 300px;
         }
         input {
             width: 90%;
@@ -153,7 +207,55 @@
 
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1350px) {
+    .desktop-nav {
+        .nav-links {
+
+            li a {
+                font-size: $smaller;
+            }
+        }
+    }
+
+
+    .nav-media {
+        div {
+            flex-direction: column;
+            gap: 10px;
+
+            p,
+            span,
+            a {
+                font-size: 1.0rem;
+
+            }
+        }
+
+    }
+
+    .nav-search-form {
+        input {
+            font-size: $smaller;
+        }
+        button i {
+            font-size: $smaller;
+        }
+    }
+
+    .login-button {
+        i {
+            font-size: $smaller;
+        }
+        span {
+           font-size: $smaller;
+        }
+    }
+
+}
+
+
+
+@media screen and (max-width: 1300px) {
 
     .desktop-nav {
         display: none;
@@ -161,7 +263,7 @@
 
     .logo {
         span a {
-            font-size: $medium;
+            font-size: $smaller;
         }
     }
 
@@ -181,6 +283,10 @@
         display: flex;
 
     }
+
+        .mobile-nav-dropdown.show {
+         display: block;
+        }
 
 }
 
