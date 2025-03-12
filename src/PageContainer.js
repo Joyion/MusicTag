@@ -1,17 +1,14 @@
-
-
-// import "./styles/components.scss";
-
 import { Outlet } from "react-router-dom"
-import { Navbar } from "./Navbar.js";
-import RoseLogo from "../assets/rose-shape.png";
+import Navbar from "./Navbar.js"
 
 
-export const PageContainer = () => {
+export default function PageContainer() {
     return (
         <div>
             <Navbar />
-            <Outlet />
+            <div className="content-container">
+                <Outlet />
+            </div>
         </div>
 
 

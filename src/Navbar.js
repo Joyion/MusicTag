@@ -1,10 +1,11 @@
+import { Link } from "react-router-dom";
 import RoseLogo from "../assets/rose-shape.png";
 
 const onMobileButtonClick = () => {
     document.getElementById("mobile-dropdown").classList.toggle("show")
 }
 
-export const Navbar = () => {
+export default function Navbar(){
 
     return (
     <div className="navbar-container">  
@@ -16,10 +17,10 @@ export const Navbar = () => {
                         <span><a href="#">Black Rose Records</a></span>
                     </div>
                     <ul className="coustard-regular">
-                        <li><a href="#">News</a></li>
-                        <li><a href="#">Artists</a></li>
-                        <li><a href="#">Catalog</a></li>
-                        <li><a href="#">Our Story</a></li>
+                        <li><Link to={"/news"}>News</Link></li>
+                        <li><Link to={"/artists"}>Artists</Link></li>
+                        <li><Link to={"/catalog"}>Catalog</Link></li>
+                        <li><Link to={"/ourstory"}>Our Story</Link></li>
                     </ul>
             </div>
            

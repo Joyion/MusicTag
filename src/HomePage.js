@@ -8,7 +8,7 @@ import featuredArtist1 from "../assets/artistProfile/aaron-blanco-tejedor--GsPtE
 import featuredArtist2 from "../assets/artistProfile/alfonso-scarpa-2LGx4cQAMks-unsplash.jpg";
 import featuredArtist3 from "../assets/artistProfile/nereid-ndreu-2NU-oCGRNzw-unsplash.jpg";
 
-export const HomePage = () => {
+export default function HomePage() {
     return (
         <div>
             <section className="title-container">
@@ -29,7 +29,6 @@ export const HomePage = () => {
                     classical, and every unexplored territory in between. Our label is a sanctuary for the unapologetically innovative,
                     where musical boundaries are not just crossed, but completely dismantled.
                 </p>
-
                 <ul>
                     <li className="artist-card">
                         <img src={featuredArtist1} />
