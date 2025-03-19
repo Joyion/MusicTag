@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import RoseLogo from "../assets/rose-shape.png";
 
-const onMobileButtonClick = () => {
+const onMobileButtonClick = (e) => {
+    e.preventDefault();
     document.getElementById("mobile-dropdown").classList.toggle("show")
 }
 

@@ -1,3 +1,86 @@
 @use "./base.scss" as *;
 
 
+.search-filter-container {
+    border: 2px solid gray;
+    border-radius: $border-radius-search;
+    padding: 10px;
+    width: 400px;
+
+    input[type="text"] {
+        font-size: $small-medium;
+        border: none;
+        width: 275px;
+    }
+
+    input[type="text"]:focus {
+        outline: none
+    }
+
+
+
+    button {
+        border: none;
+        padding: 5px;
+    }
+
+    button i {
+        font-size: $small-medium;
+        margin: 0px 5px;
+    }
+
+    button:hover {
+        cursor: pointer;
+    }
+}
+
+.search-filter-dropdown.open {
+    display: block;
+}
+
+.search-filter-dropdown {
+    width: 100%;
+    display: none;
+    position: absolute;
+    border: 1px solid black;
+    width: 475px;
+    padding: 10px;
+    z-index: 2;
+    border-radius: $border-radius-search;
+
+    h4 {
+        font-size: $small;
+    }
+
+    h5 {
+        font-size: $very-small;
+        margin-bottom: 5px;
+    }
+
+    form div {
+        margin: 40px 0px;
+    }
+
+    label {
+        font-size: $very-small;
+        margin: 0px 10px;
+    }
+        
+    input[type="date"] {
+        font-size: $very-small;
+        margin-right: 10px;
+    }
+
+    a {
+        justify-self: right;
+        border: none;
+        text-align: right;
+        color: $secondaryColor;
+        font-weight: bold;
+        font-size: $very-small;
+    }
+    a i {
+        font-size: $small;
+    }
+
+}
