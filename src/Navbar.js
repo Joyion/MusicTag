@@ -15,7 +15,7 @@ export default function Navbar(){
             <div className="nav-links">
                     <div className="logo abril-fatface-regular">
                         <img src={RoseLogo} />
-                        <span><a href="#">Black Rose Records</a></span>
+                        <span><a href="/">Black Rose Records</a></span>
                     </div>
                     <ul className="coustard-regular">
                         <li><Link to={"/news"}>News</Link></li>
@@ -88,10 +88,10 @@ export default function Navbar(){
             <div id="mobile-dropdown" className="mobile-nav-dropdown mobile-nav-open">
         
                 <ul className="coustard-regular">
-                    <li><a href="#">News</a></li>
-                    <li><a href="#">Artists</a></li>
-                    <li><a href="#">Catalog</a></li>
-                    <li><a href="#">Our Story</a></li>  
+                    <li><a href="/news">News</a></li>
+                    <li><a href="/artists">Artists</a></li>
+                    <li><a href="/catalog">Catalog</a></li>
+                    <li><a href="/ourstory">Our Story</a></li>  
                     <hr/>
                     <li>
                         <a className="coustard-regular" href="#">Account Settings</a>
