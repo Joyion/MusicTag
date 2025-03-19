@@ -34,22 +34,22 @@ export default function Navbar(){
                         </form>
                     </div>
                     <div className="login-dropdown">
-                        <button className="coustard-regular login-button"><i class="fa-solid fa-user"></i> <span>username</span></button>
+                        <button className="coustard-regular login-button"><i className="fa-solid fa-user"></i> <span>username</span></button>
                         <div className="login-content">
                             <ul>
 
                          
                             <li>
-                                <a className="coustard-regular" href="#">Account Settings</a>
+                                <a className="coustard-regular" href="/account">Account Settings</a>
                             </li>
                             <li>
-                                <a className="coustard-regular" href="#">My Playlists</a>
+                                <a className="coustard-regular" href="/playlists">My Playlists</a>
                             </li>
                             <li>
-                                <a className="coustard-regular" href="#">My Licenses</a>
+                                <a className="coustard-regular" href="/licenses">My Licenses</a>
                             </li>
                             <li>
-                                <a className="coustard-regular" href="#">Sign Out</a>
+                                <a className="coustard-regular" href="/signout">Sign Out</a>
                             </li>
                             </ul>
                         </div>

@@ -160,15 +160,6 @@ export default function HomePage() {
                 </div>
             </section>
 
-            <footer>
-                <div>
-                    <p className="coustard-regular"><a href="#">Contact Us</a> | <a href="#">Demo Submission</a> </p>
-                </div>
-
-
-                <p className="coustard-regular">Black Rose Records@2025</p>
-            </footer>
-
         </div >
 
     )

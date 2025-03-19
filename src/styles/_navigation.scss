@@ -154,6 +154,10 @@ div.login-dropdown:hover .login-content {
         input {
             width: 90%;
         }
+        
+        button i {
+            color: $primaryColor; 
+        }
     }
 }
 
@@ -175,6 +179,9 @@ div.login-dropdown:hover .login-content {
     
     button {
         border: none;
+    }
+    button:hover {
+        cursor: pointer;
     }
     button i {
         font-size: $small;

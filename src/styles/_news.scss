@@ -1,0 +1,57 @@
+@use "./base.scss" as *;
+
+
+.news-title-container {
+
+
+    margin: 30px 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    h1 {
+        font-size: $xxlarge;
+    }
+
+}
+
+.news-search-container {
+    border: 2px solid gray;
+    border-radius: $border-radius-search;
+    padding: 10px;
+    input {
+        font-size: $small-medium;
+        border: none;
+        width: 275px;
+    }
+
+    input:focus {
+        outline: none
+    }
+
+    button {
+        border: none;
+        padding: 5px;
+    }
+    button i {
+        font-size: $small-medium;
+        margin: 0px 5px;
+    }
+
+    button:hover{
+        cursor: pointer;
+    }
+}
+
+.article-container {
+    display: flex;
+    margin: 5% 0;
+    gap: 5px;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.article-card {
+    width: 25%;
+}

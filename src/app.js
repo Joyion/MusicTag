@@ -3,10 +3,9 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 
-
+import "./styles/index.scss";
 import PageContainer from "./PageContainer.js";
 import HomePage from "./HomePage.js";
-import "./styles/index.scss";
 import NewsPage from "./NewsPage.js";
 import ArtistsPage from "./ArtistsPage.js";
 import CatalogPage from "./CatalogPage.js";
