@@ -225,46 +225,46 @@ section.home-search-container {
         width: 100%;
         background-color: $primaryColor;
 
+            form {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    background-color: $primaryColor;
+                    // border-radius: 10px;
+            
+            
+                    input {
+                        background-color: red;
+                        padding: 10px;
+                        width: 60%;
+                        font-size: $small-medium;
+                        border: none;
+                        background-color: $white;
+            
+                    }
+            
+                    input:focus {
+                        outline-width: 0;
+                    }
+            
+                    button {
+                        border: none;
+                        font-size: $medium;
+                        padding: 10px;
+                        cursor: pointer;
+                        background-color: $white;
+            
+                    }
+            
+                    i {
+                        color: $primaryColor;
+                        font-size: $medium;
+                    }
+                }
+
     }
 
-    .search-form-container {
-        width: 100%;
-    }
 
-    form {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        background-color: $primaryColor;
-        border-radius: 10px;
-        
-
-        input {
-            padding: 10px;
-            width: 60%;
-            font-size: $small-medium;
-            border: none;
-            background-color: $white;
-
-        }
-
-        input:focus {
-            outline-width: 0;
-        }
-
-        button {
-            border: none;
-            font-size: $medium;
-            padding: 10px;
-            cursor: pointer;
-            background-color: $white;
-
-        }
-
-        i {
-            font-size: $medium;
-        }
-    }
     
 }
 

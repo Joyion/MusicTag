@@ -13,33 +13,33 @@ export default function NewsPage () {
                     </form>
                 </div>
             </div>
-            <div className="article-container">
-                <div className="article-card">
+            <div className="news-container">
+                <div className="news-card">
                     <h1>Title</h1>
                     <img src={ArticleImg} />
                     <p>lorem ipsum</p>
                 </div>
-                <div className="article-card">
+                <div className="news-card">
                     <h1>Title</h1>
                     <img src={ArticleImg} />
                     <p>lorem ipsum</p>
                 </div>
-                <div className="article-card">
+                <div className="news-card">
                     <h1>Title</h1>
                     <img src={ArticleImg} />
                     <p>lorem ipsum</p>
                 </div>
-                <div className="article-card">
+                <div className="news-card">
                     <h1>Title</h1>
                     <img src={ArticleImg} />
                     <p>lorem ipsum</p>
                 </div>
-                <div className="article-card">
+                <div className="news-card">
                     <h1>Title</h1>
                     <img src={ArticleImg} />
                     <p>lorem ipsum</p>
                 </div>
-                <div className="article-card">
+                <div className="news-card">
                     <h1>Title</h1>
                     <img src={ArticleImg} />
                     <p>lorem ipsum</p>
