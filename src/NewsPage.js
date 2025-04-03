@@ -72,7 +72,7 @@ export default function NewsPage () {
                                 </div>
                             </form>
                            <div className="clear-filter-btn">
-                                <button href="#"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                                <button onClick={onClearFilters} href="#"><i class="fa-solid fa-rotate-left"></i> Reset</button>
                            </div>
                         </div>
           

@@ -11,6 +11,11 @@
     // box-shadow: -1px 1px 2px rgb(201, 201, 201);
 }
 
+.active-link {
+    color: $secondaryColor;
+}
+
+
 .desktop-nav {
     display: flex;
     flex-direction: row;
@@ -30,7 +35,12 @@
         li a {
             font-size: $small;
         }
+
     }
+
+
+
+
 
     .nav-content {
         display: flex;
