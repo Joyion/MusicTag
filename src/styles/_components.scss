@@ -5,7 +5,7 @@
     border: 2px solid gray;
     border-radius: $border-radius-search;
     padding: 10px;
-    width: 400px;
+    width: 360px;
 
     input[type="text"] {
         font-size: $small-medium;
@@ -43,7 +43,7 @@
     display: none;
     position: absolute;
     border: 1px solid black;
-    width: 475px;
+    width: 300px;
     padding: 10px;
     z-index: 2;
     border-radius: $border-radius-search;
@@ -58,12 +58,24 @@
     }
 
     form div {
-        margin: 40px 0px;
+        margin: 20px 0px;
     }
+
+    .filter-title {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
 
     label {
         font-size: $very-small;
         margin: 0px 10px;
+        display: flex;
+        gap: 7px;
+        padding: 5px;
+        align-items: center;
     }
         
     input[type="date"] {
@@ -71,7 +83,8 @@
         margin-right: 10px;
     }
 
-    a {
+    button {
+        border: none;
         justify-self: right;
         border: none;
         text-align: right;
@@ -79,8 +92,83 @@
         font-weight: bold;
         font-size: $very-small;
     }
-    a i {
-        font-size: $small;
+    button i {
+        font-size: $small-medium;
+    }
+
+    .clear-filter-btn {
+            display: flex;
+            justify-content: right;
+            gap: 4px;
+            align-items: center;
+            font-size: $smaller;
+            color: $primaryColor;
+
+            button:hover {
+                cursor: pointer;
+            }
+
+    
+            i {
+                font-size: $smaller;
+                color: $secondaryColor;
+            }
+   
+        }
+}
+
+
+
+
+@media screen and (max-width: 1300px) {
+
+    .search-filter-container {
+        width: 375px;
+
+        input[type="text"] {
+            width: 285px;
+        }
+    
+        button i {
+            font-size: $small;
+        }
+    }
+
+    .search-filter-dropdown {
+        width: 375px;
+        form div {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            justify-content: center;
+        }
+    }
+
+}
+
+@media screen and (max-width: 800px) {
+
+    .search-filter-container {
+        width: 275px;
+
+        input[type="text"] {
+            width: 185px;
+        }
+
+        button i {
+            font-size: $small;
+        }
+    }
+
+    .search-filter-dropdown {
+        width: 275px;
+
+        form div {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            justify-content: center;
+        }
     }
 
 }

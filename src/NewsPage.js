@@ -1,16 +1,26 @@
 import ArticleImg from "../assets/article/pexels-bigbagfilms-8512650.jpg"
 
+import {useState} from "react";
+
 export default function NewsPage () {
 
-    const onFilterClick = (e) => {
+    const [filterOpen, setFiltersOpen] = useState(false);
+
+    const onToggleFilters = (e) => {
         e.preventDefault();
         console.log("Click filter")
-        document.getElementById("search-filter-box").classList.toggle("open")
+        setFiltersOpen(!filterOpen);
     }
 
     const onClearFilters = (e) => {
         e.preventDefault();
         console.log("Clearing search filters");
+    }
+
+    const onCloseFilters = (e) => {
+        e.preventDefault();
+        setFiltersOpen(false);
+
     }
 
     return (
@@ -20,35 +30,49 @@ export default function NewsPage () {
                 <div>
                     <div className="search-filter-container">
                         <form>
-                            <button onClick={onFilterClick} ><i className="fa-solid fa-bars"></i></button>
+                            <button onClick={onToggleFilters} ><i className="fa-solid fa-bars"></i></button>
                             <input aria-label="search" placeholder="Search News" type="text" />
                             <button type="submit"> <i className="fa-solid fa-magnifying-glass"></i></button>
                         </form>
                     </div>
-                    <div id="search-filter-box" className="search-filter-dropdown">
+                    <div id="search-filter-box" className={ filterOpen ? "search-filter-dropdown open" : "search-filter-dropdown"}>
                         <div>
                             <form>
-                                <h4  className="coustard-bold">Filters</h4>
+                                <div className="filter-title">
+                                    <h4 className="coustard-bold">Filters</h4>
+                                    <button onClick={onCloseFilters}><i class="fa-solid fa-xmark"></i> </button>
+                                </div>
+                               
                                 <div>
                                     <h5 className="coustard-bold">Dates:</h5>
-                                    <label className="coustard-regular">From</label>
-                                    <input type="date" />
-                                    <label className="coustard-regular">To</label>
-                                    <input type="date" />
+                                    <label className="coustard-regular">From: 
+                                        <input type="date" />
+                                    </label>
+                                    
+                                    <label className="coustard-regular">To: 
+                                         <input type="date" />
+                                    </label>
+                                   
                                 </div>
                                 <div>
                                     <h5 className="coustard-bold">Content Type:</h5>
-                                    <input type="checkbox" />
-                                    <label className="coustard-regular">Interview </label>
-                                    <input type="checkbox" />
-                                    <label className="coustard-regular">Tour Dates</label>
-                                    <input type="checkbox" />
-                                    <label className="coustard-regular">BTS Content</label>
+                                    
+                                    <label className="coustard-regular">
+                                        <input type="checkbox" />
+                                    Interviews </label>
+                                  
+                                    <label className="coustard-regular">
+                                        <input type="checkbox" />
+                                        Tour Dates</label>
+                                    
+                                    <label className="coustard-regular">  
+                                        <input type="checkbox" />
+                                        BTS Content
+                                        </label>
                                 </div>
                             </form>
                            <div className="clear-filter-btn">
-                                <i class="fa-solid fa-xmark"></i>
-                                <a href="#">Clear</a>
+                                <button href="#"><i class="fa-solid fa-rotate-left"></i> Reset</button>
                            </div>
                         </div>
           
@@ -61,7 +85,7 @@ export default function NewsPage () {
                 <div className="news-card">
                     <h1 className="coustard-regular"><a href="#">A title of an article</a></h1>
                     <img src={ArticleImg} />
-                    <div className="news-info courstard-regular"><span>tags</span> <span>date</span></div>
+                    <div className="news-info courstard-regular"><p>tags</p> <p>date</p></div>
                 </div>
                 <div className="news-card">
                     <h1 className="coustard-regular"><a href="#">A title of an article</a></h1>

@@ -15,7 +15,7 @@ export default function Navbar(){
             <div className="nav-links">
                     <div className="logo abril-fatface-regular">
                         <img src={RoseLogo} />
-                        <span><a href="/">Black Rose Records</a></span>
+                        <span><Link to="/">Black Rose Records</Link></span>
                     </div>
                     <ul className="coustard-regular">
                         <li><Link to={"/news"}>News</Link></li>
@@ -38,19 +38,17 @@ export default function Navbar(){
                         <button className="coustard-regular login-button"><i className="fa-solid fa-user"></i> <span>username</span></button>
                         <div className="login-content">
                             <ul>
-
-                         
                             <li>
-                                <a className="coustard-regular" href="/account">Account Settings</a>
+                                <Link className="coustard-regular" to="/account">Account Settings</Link>
                             </li>
                             <li>
-                                <a className="coustard-regular" href="/playlists">My Playlists</a>
+                                <Link className="coustard-regular" to="/playlists">My Playlists</Link>
                             </li>
                             <li>
-                                <a className="coustard-regular" href="/licenses">My Licenses</a>
+                                <Link className="coustard-regular" to="/licenses">My Licenses</Link>
                             </li>
                             <li>
-                                <a className="coustard-regular" href="/signout">Sign Out</a>
+                                <Link className="coustard-regular" to="/signout">Sign Out</Link>
                             </li>
                             </ul>
                         </div>
@@ -64,7 +62,7 @@ export default function Navbar(){
         <div className="mobile-nav">
             <div className="logo abril-fatface-regular">
                 <img src={RoseLogo} />
-                <span><a href="#">Black Rose Records</a></span>
+                <span><Link to="/">Black Rose Records</Link></span>
             </div>
             <div onClick={onMobileButtonClick} className="mobile-nav-button">
                 <i className="fa-solid fa-bars"></i>
@@ -75,8 +73,8 @@ export default function Navbar(){
        <div className="nav-media"> 
         <div>
             <div>
-                <p className="coustard-regular">Now Playing - <span>Song Name</span> by <span><a href="#">Artist Name </a></span></p>
-                <p className="coustard-regular">from <span><a href="#">Latest Releases</a></span></p>
+                <p className="coustard-regular">Now Playing - <span>Song Name</span> by <span><Link to="#">Artist Name </Link></span></p>
+                <p className="coustard-regular">from <span><Link to="#">Latest Releases</Link></span></p>
             </div>
                     <audio controls>
                         <source src="" type="audio/mp3"/>
@@ -86,26 +84,26 @@ export default function Navbar(){
 
 
             <div id="mobile-dropdown" className="mobile-nav-dropdown mobile-nav-open">
-        
+    
                 <ul className="coustard-regular">
-                    <li><a href="/news">News</a></li>
-                    <li><a href="/artists">Artists</a></li>
-                    <li><a href="/catalog">Catalog</a></li>
-                    <li><a href="/ourstory">Our Story</a></li>  
+                    <li><Link to="/news">News</Link></li>
+                    <li><Link to="/artists">Artists</Link></li>
+                    <li><Link to="/catalog">Catalog</Link></li>
+                    <li><Link to="/ourstory">Our Story</Link></li>  
                     <hr/>
                     <li>
-                        <a className="coustard-regular" href="#">Account Settings</a>
+                        <Link className="coustard-regular" to="#">Account Settings</Link>
                     </li>
                     <li>
-                        <a className="coustard-regular" href="#">My Playlists</a>
+                        <Link className="coustard-regular" to="#">My Playlists</Link>
                     </li>
                     <li>
-                        <a className="coustard-regular" href="#">My Licenses</a>
+                        <Link className="coustard-regular" to="#">My Licenses</Link>
                     </li>
                     <li>
-                        <a className="coustard-regular" href="#">Sign Out</a>
+                        <Link className="coustard-regular" to="#">Sign Out</Link>
                     </li>
-                    <li><a href="#">Login</a></li>
+                    <li><Link to="#">Login</Link></li>
                     <hr />
                 </ul>
           
