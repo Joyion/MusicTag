@@ -1,4 +1,9 @@
 import React from 'react';
+import {createBrowserRouter, RouterProvider} from "react-router"
+import { createRoot } from 'react-dom/client';
+import PageContainer from './PageContainer.jsx';
+import { Provider } from 'react-redux'
+
 // import ReactDOM from "react-dom";
 // import {Provider} from "react-redux";
 // import store from "./store/configStore";
@@ -9,17 +14,23 @@ import React from 'react';
 // // own sass style files
 // import "./styles/styles.scss";
 
-
-
-import { createRoot } from 'react-dom/client';
-
-
+const router = createBrowserRouter([
+    {
+        path: "/",
+        Component: PageContainer,
+        children: [
+            {index: true, element: <div>Hello</div>}
+        ]
+    }
+])
 
 const root = createRoot(document.getElementById("app"));
 root.render(
-    <div>
-        <h1>Hello</h1>
-    </div>
+    <React.StrictMode>
+        <Provider store={store}>
+            <RouterProvider router={router} />
+        </Provider>
+    </React.StrictMode>
 )
 
 

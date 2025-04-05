@@ -5,45 +5,45 @@ import { startGetCues, startGetReleases } from "../actions/cues.action";
 
 
 
-class ResultTable extends React.Component {
 
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            page: this.props.cues.page,
-            totalPages: this.props.cues.totalPages,
-            selectPage: 1,
-            status: this.props.cues.status,
-            release: this.props.cues.release,
-            releases: this.props.cues.releases,
-            selectStatus: this.props.cues.status,
-            selectRelease: this.props.cues.release,
-            totalCues: this.props.cues.totalCues,
-            audioFile: "",
-            songPlaying: "",
-        }
-        this.nextPage = this.nextPage.bind(this);
-        this.backPage = this.backPage.bind(this);
-        this.handlePgInput = this.handlePgInput.bind(this);
-        this.handleStatus = this.handleStatus.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.setAudioFile = this.setAudioFile.bind(this);
-        this.handlePageChange = this.handlePageChange.bind(this);
-        this.handleRelease = this.handleRelease.bind(this);
+function ResultTable (){
 
-    }
+    // constructor(props) {
+    //     super(props);
 
-    componentDidMount() {
-        console.log("START");
-        console.log(this.props.cues);
-        startGetReleases(this.props.dispatch);
-        startGetCues(this.props.cues.page, this.props.cues.status, this.props.cues.release, this.props.dispatch);
-        
-        
-    }
+    //     this.state = {
+    //         page: this.props.cues.page,
+    //         totalPages: this.props.cues.totalPages,
+    //         selectPage: 1,
+    //         status: this.props.cues.status,
+    //         release: this.props.cues.release,
+    //         releases: this.props.cues.releases,
+    //         selectStatus: this.props.cues.status,
+    //         selectRelease: this.props.cues.release,
+    //         totalCues: this.props.cues.totalCues,
+    //         audioFile: "",
+    //         songPlaying: "",
+    //     }
+    //     this.nextPage = this.nextPage.bind(this);
+    //     this.backPage = this.backPage.bind(this);
+    //     this.handlePgInput = this.handlePgInput.bind(this);
+    //     this.handleStatus = this.handleStatus.bind(this);
+    //     this.handleChange = this.handleChange.bind(this);
+    //     this.setAudioFile = this.setAudioFile.bind(this);
+    //     this.handlePageChange = this.handlePageChange.bind(this);
+    //     this.handleRelease = this.handleRelease.bind(this);
 
-    nextPage() {
+    // }
+
+    // componentDidMount() {
+    //     console.log("START");
+    //     console.log(this.props.cues);
+    //     startGetReleases(this.props.dispatch);
+    //     startGetCues(this.props.cues.page, this.props.cues.status, this.props.cues.release, this.props.dispatch);
+    // }
+
+    const nextPage = () => {
         console.log("Turning the page");
         console.log(this.props.cues.page + 1);
         const nextPage = this.props.cues.page + 1;
@@ -55,7 +55,7 @@ class ResultTable extends React.Component {
         }
     }
 
-    backPage() {
+    const backPag = () => {
         const backPage = this.props.cues.page - 1;
         if (backPage <= this.props.cues.totalPages && backPage > 0) {
             startGetCues(backPage, this.state.status, this.state.release, this.props.dispatch);
@@ -65,7 +65,7 @@ class ResultTable extends React.Component {
         }
     }
 
-    handlePgInput(e) {
+    const handlePgInput = (e) => {
         e.preventDefault();
         const newPage = this.state.selectPage;
         if (newPage <= this.props.cues.totalPages && newPage > 0) {
@@ -74,7 +74,7 @@ class ResultTable extends React.Component {
         }
     }
 
-    handleStatus(e) {
+    const handleStatus = (e) => {
         e.preventDefault();
         if (this.state.selectStatus != "Status") {
             startGetCues(1, this.state.selectStatus, this.state.release, this.props.dispatch);
@@ -86,7 +86,7 @@ class ResultTable extends React.Component {
 
     }
 
-    handleRelease(e){
+    const handleRelease = (e) => {
         e.preventDefault();
         if(this.state.selectStatus != "All"){
             startGetCues(1, this.state.status, this.state.selectRelease, this.props.dispatch);
@@ -100,7 +100,7 @@ class ResultTable extends React.Component {
         })
     }
 
-    setAudioFile(file, songTitle) {
+    const setAudioFile = (file, songTitle) => {
         this.setState({
             audioFile: "/wav/" + file,
             songPlaying: songTitle
@@ -108,7 +108,7 @@ class ResultTable extends React.Component {
 
     }
 
-    handlePageChange(e){
+    const handlePageChange = (e) => {
         let change = e.target.name;
         if(e.target.value >= 1){
             this.setState({
@@ -117,7 +117,7 @@ class ResultTable extends React.Component {
         }
     }
 
-    handleChange(e) {
+    const handleChange = (e) => {
         let change = e.target.name;
         console.log(change + " " + e.target.value);
         this.setState({
@@ -126,11 +126,8 @@ class ResultTable extends React.Component {
     }
 
 
-    render() {
-
         return (
             <div>
-
                 <div className="filter__container">
                     <div className="filter__flexcontainer ">
                         <div>
