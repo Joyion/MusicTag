@@ -3,12 +3,16 @@
 
 // import cueReducer from "../reducers/cues.reduce"
 // import thunk from 'redux-thunk';
-
+import cueReducer from "../reducers/cues.reduce.js"
+// import { createSlice } from "@reduxjs/toolkit";
 
 import { configureStore } from '@reduxjs/toolkit'
 
 export default configureStore({
-  reducer: {}
+  reducer: {
+    // selectedSong: selectedSongReducer,
+    cues: cueReducer
+  }
 })
 
 

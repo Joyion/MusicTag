@@ -1,13 +1,19 @@
 import React from 'react';
 import Song from "./Song";
-import { connect } from "react-redux";
-import { startGetCues, startGetReleases } from "../actions/cues.action";
+// import { connect } from "react-redux";
+// import { startGetCues, startGetReleases } from "../actions/cues.action";
+import store from "../store/configStore";
+import { useSelector, useDispatch } from 'react-redux'
+import {getCues, getReleases} from "../reducers/cues.reduce";
 
 
 
 
 
-function ResultTable (){
+export default function ResultTable (){
+
+    const cuesState = useSelector(state => state.cues);
+    const dispatch = useDispatch();
 
     // constructor(props) {
     //     super(props);
@@ -44,85 +50,85 @@ function ResultTable (){
     // }
 
     const nextPage = () => {
-        console.log("Turning the page");
-        console.log(this.props.cues.page + 1);
-        const nextPage = this.props.cues.page + 1;
-        if (nextPage <= this.props.cues.totalPages && nextPage > 0) {
-            startGetCues(nextPage, this.state.status, this.state.release, this.props.dispatch);
-            this.setState({
-                selectPage: nextPage
-            })
-        }
+        // console.log("Turning the page");
+        // console.log(this.props.cues.page + 1);
+        // const nextPage = this.props.cues.page + 1;
+        // if (nextPage <= this.props.cues.totalPages && nextPage > 0) {
+        //     startGetCues(nextPage, this.state.status, this.state.release, this.props.dispatch);
+        //     this.setState({
+        //         selectPage: nextPage
+        //     })
+        // }
     }
 
-    const backPag = () => {
-        const backPage = this.props.cues.page - 1;
-        if (backPage <= this.props.cues.totalPages && backPage > 0) {
-            startGetCues(backPage, this.state.status, this.state.release, this.props.dispatch);
-            this.setState({
-                selectPage: backPage
-            })
-        }
+    const backPage = () => {
+        // const backPage = this.props.cues.page - 1;
+        // if (backPage <= this.props.cues.totalPages && backPage > 0) {
+        //     startGetCues(backPage, this.state.status, this.state.release, this.props.dispatch);
+        //     this.setState({
+        //         selectPage: backPage
+        //     })
+        // }
     }
 
     const handlePgInput = (e) => {
-        e.preventDefault();
-        const newPage = this.state.selectPage;
-        if (newPage <= this.props.cues.totalPages && newPage > 0) {
-            startGetCues(newPage, this.state.status, this.state.release, this.props.dispatch);
+        // e.preventDefault();
+        // const newPage = this.state.selectPage;
+        // if (newPage <= this.props.cues.totalPages && newPage > 0) {
+        //     startGetCues(newPage, this.state.status, this.state.release, this.props.dispatch);
 
-        }
+        // }
     }
 
     const handleStatus = (e) => {
-        e.preventDefault();
-        if (this.state.selectStatus != "Status") {
-            startGetCues(1, this.state.selectStatus, this.state.release, this.props.dispatch);
-            this.setState({
-                status: this.state.selectStatus,
-                selectStatus: this.state.selectStatus
-            })
-        }
+        // e.preventDefault();
+        // if (this.state.selectStatus != "Status") {
+        //     startGetCues(1, this.state.selectStatus, this.state.release, this.props.dispatch);
+        //     this.setState({
+        //         status: this.state.selectStatus,
+        //         selectStatus: this.state.selectStatus
+        //     })
+        // }
 
     }
 
     const handleRelease = (e) => {
-        e.preventDefault();
-        if(this.state.selectStatus != "All"){
-            startGetCues(1, this.state.status, this.state.selectRelease, this.props.dispatch);
-        }
-        else{
-            startGetCues(1, this.state.status, this.state.selectRelease, this.props.dispatch);
-        }
-        this.setState({
-            release: this.state.selectRelease,
-            selectRelease: this.state.selectRelease
-        })
+        // e.preventDefault();
+        // if(this.state.selectStatus != "All"){
+        //     startGetCues(1, this.state.status, this.state.selectRelease, this.props.dispatch);
+        // }
+        // else{
+        //     startGetCues(1, this.state.status, this.state.selectRelease, this.props.dispatch);
+        // }
+        // this.setState({
+        //     release: this.state.selectRelease,
+        //     selectRelease: this.state.selectRelease
+        // })
     }
 
     const setAudioFile = (file, songTitle) => {
-        this.setState({
-            audioFile: "/wav/" + file,
-            songPlaying: songTitle
-        })
+        // this.setState({
+        //     audioFile: "/wav/" + file,
+        //     songPlaying: songTitle
+        // })
 
     }
 
     const handlePageChange = (e) => {
-        let change = e.target.name;
-        if(e.target.value >= 1){
-            this.setState({
-                [change]: e.target.value
-            })
-        }
+        // let change = e.target.name;
+        // if(e.target.value >= 1){
+        //     this.setState({
+        //         [change]: e.target.value
+        //     })
+        // }
     }
 
     const handleChange = (e) => {
-        let change = e.target.name;
-        console.log(change + " " + e.target.value);
-        this.setState({
-            [change]: e.target.value
-        })
+        // let change = e.target.name;
+        // console.log(change + " " + e.target.value);
+        // this.setState({
+        //     [change]: e.target.value
+        // })
     }
 
 
@@ -133,19 +139,20 @@ function ResultTable (){
                         <div>
                             <h1>Background Instrumentals</h1>
                             <div className="filter__display">
-                                <h2>Total Cues: {this.props.cues.totalCues}</h2>
+                                <h2>Total Cues: {cuesState.totalCues}</h2>
                                 <h2 className="filter__status">Status:
-                     {this.state.status && this.state.status == "Active" ? <span style={{ color: "green" }}> {this.state.status}</span> :
-                                        this.state.status && this.state.status == "Pulled" ? <span style={{ color: "red" }}>{this.state.status}</span> :
-                                            this.state.status && this.state.status == "Pending" ? <span style={{ color: "#ffa400" }}>{this.state.status}</span> : ""}
+                                {cuesState.status === "Active" ? <span style={{ color: "green" }}> {cuesState.status}</span> :
+                                        cuesState.status === "Pulled" ? <span style={{ color: "red" }}>{cuesState.status}</span> :
+                                            cuesState.status == "Pending" ? <span style={{ color: "#ffa400" }}>{cuesState.status}</span> : ""}
                                 </h2>
-                                <h2>Release: {this.state.release}</h2>
+                                <h2>Release: {cuesState.release}</h2>
                             </div>
 
                             <div className="filter__flexcontainer filter_flex_noborder">
-                                <form onSubmit={this.handleStatus}>
+                                <form onSubmit={handleStatus}>
                                                 <label>
-                                                    <select name="selectStatus" value={this.state.selectStatus} onChange={this.handleChange}>
+                                                    {/* <select name="selectStatus" value={this.state.selectStatus} onChange={this.handleChange}> */}
+                                                    <select name="selectStatus" >
                                                         {/* <option value="Status"> Status</option> */}
                                                         <option value="Pending">Pending</option>
                                                         <option value="Active">Active</option>
@@ -155,12 +162,13 @@ function ResultTable (){
                                                 </label>
                                             </form>
 
-                                            <form onSubmit={this.handleRelease}>
+                                            <form onSubmit={handleRelease}>
                                                 <label>
-                                                    <select name="selectRelease" value={this.state.selectRelease} onChange={this.handleChange}>
+                                                    {/* <select name="selectRelease" value={this.state.selectRelease} onChange={this.handleChange}> */}
+                                                    <select name="selectRelease">
                                                         {/* <option value="Status"> Status</option> */}
                                                         <option key="-1" value="All">All</option>
-                                                        {this.props.cues.releases && this.props.cues.releases.map((r,i) => {
+                                                        {cuesState.releases && cuesState.releases.map((r,i) => {
                                                             return <option key={i} value={r}>{r}</option>
                                                         })}
                                                     </select>
@@ -170,34 +178,30 @@ function ResultTable (){
 
                             </div>
 
-                           
-
-                          
-
                         </div>
 
                         <div className="filter__pages">
 
-                            <h3>Page {this.props.cues.page} of {this.props.cues.totalPages}</h3>
+                            <h3>Page {cuesState.page} of {cuesState.totalPages}</h3>
                             <div className="filter__page__buttons">
-                                <form onSubmit={this.handlePgInput}>
+                                <form onSubmit={handlePgInput}>
                                     <label>
 
-                                        <input onChange={this.handlePageChange} name="selectPage" type="number" value={this.state.selectPage} />
+                                        <input onChange={handlePageChange} name="selectPage" type="number" value={cuesState.selectPage} />
                                         <input type="submit" value="Go To Page" />
                                     </label>
                                 </form>
-                                <button name="back" onClick={this.backPage}>Back</button>
-                                <button name="next" onClick={this.nextPage}>Next</button>
+                                <button name="back" onClick={backPage}>Back</button>
+                                <button name="next" onClick={nextPage}>Next</button>
                             </div>
 
 
                         </div>
                     </div>
                     <div className="filter__audio">
-                        <h4>Playing: {this.state.songPlaying}</h4>
-                        <audio loop controls autoPlay src={this.state.audioFile} type="audio/wav" >
-                        </audio>
+                        {/* <h4>Playing: {this.state.songPlaying}</h4> */}
+                        {/* <audio loop controls autoPlay src={this.state.audioFile} type="audio/wav" >
+                        </audio> */}
 
                     </div>
                     <div className="filter__resultTitles">
@@ -218,23 +222,22 @@ function ResultTable (){
                     <div><p>Actions</p></div>   
                 </div> */}
                 <div className="resultTable__container">
-                    {this.props.cues.cues.length > 0 ? this.props.cues.cues.map((c, i) => {
+                    {cuesState.cues.length > 0 ? cuesState.cues.map((c, i) => {
                         return <Song key={i} cue={c} setAudioFile={this.setAudioFile} />
                     }) : <div style={{ textAlign: "center", position: "relative", top: "20px" }}> <h3 style={{ margin: 0 }}>No Results</h3></div>}
                 </div>
 
             </div>
         )
-    }
+    
 }
-
-const mapStateToProps = state => ({
-    cues: state.cues,
+// const mapStateToProps = state => ({
+//     cues: state.cues,
   
-})
+// })
 
 // const mapDispatchToProps = dispatch => ({
 //     getCues: (page, filters) => { startGetCues(page, filters); }
 // })
 
-export default connect(mapStateToProps)(ResultTable);
+// export default connect(mapStateToProps)(ResultTable);

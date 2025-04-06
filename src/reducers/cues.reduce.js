@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit";
+
 const defaultState = {
         cues: [],
         totalCues: 0,
@@ -14,56 +16,128 @@ const defaultState = {
         publishers: [],
 }
 
-export default (state = defaultState, action) => {
-    switch(action.type){
-        case "GET_CUES":
-            return {
+ const cuesSlice =  createSlice({
+    name: "cues",
+    initialState: defaultState,
+    reducers: [{
+            getCues(state, action) {
+                return {
                     ...state,
-                    cues: action.cues, 
+                    cues: action.cues,
                     page: action.page,
                     status: action.status,
                     totalCues: action.totalCues,
                     totalPages: action.totalPages,
                     selectSong: action.selectSong,
+                }
             }
-            break;
-        case "UPDATE_CUE":
-            return {
-                ...state,
-                selectSong: action.cue,
-                composers: action.comps,
-                publishers: action.pubs,
-            };
-            break;
-        case "GET_ALL_COMPOSERS":
-            return {
-                ...state,
-                composers: action.composers,
-                publishers: action.pubs,
+        },
+        {
+            updateCue(state, action) {
+                return {
+                    ...state,
+                    selectSong: action.cue,
+                    composers: action.comps,
+                    publishers: action.pubs,
+                }
             }
-        case "SET_SONG":
-            return {
-                ...state,
-                selectSong: action.cue
+        },{
+            getAllComposers(state, action) {
+                return {
+                    ...state,
+                    composers: action.payload.comps,
+                    publishers: action.payload.pubs,
+                }
             }
-            break;
-        case "GET_SET_SONG":
-            return{
-                ...state
+        }, {
+            setSong(state, action) {
+                return {
+                    ...state,
+                    selectSong: action.payload.cue
+                }
             }
-        case "GET_RELEASES":
-            return {
-                ...state,
-                releases: action.releases
+        }, {
+            getSetSong(state) {
+                return {
+                    ...state
+                }
             }
-            break;
-        case "PLAY_SONG":
-            return {
-                ...state,
-                selectSong: action.selectSong
+        }, {
+            getReleases(state, action){
+                return {
+                    ...state,
+                    release: action.payload.releases
+                }
             }
-            break;
-        default:
-            return state;
-    }
-}
+        }, {
+            playSong(state, action){
+                return {
+                    ...state,
+                    selectSong: action.payload.selectSong
+                }
+            }
+        }]
+        // case "GET_CUES":
+    //         return {
+    //                 ...state,
+    //                 cues: action.cues, 
+    //                 page: action.page,
+    //                 status: action.status,
+    //                 totalCues: action.totalCues,
+    //                 totalPages: action.totalPages,
+    //                 selectSong: action.selectSong,
+    //         }
+    //         break;
+    //     case "UPDATE_CUE":
+    //         return {
+    //             ...state,
+    //             selectSong: action.cue,
+    //             composers: action.comps,
+    //             publishers: action.pubs,
+    //         };
+    //         break;
+    //     case "GET_ALL_COMPOSERS":
+    //         return {
+    //             ...state,
+    //             composers: action.composers,
+    //             publishers: action.pubs,
+    //         }
+    //     case "SET_SONG":
+    //         return {
+    //             ...state,
+    //             selectSong: action.cue
+    //         }
+    //         break;
+    //     case "GET_SET_SONG":
+    //         return{
+    //             ...state
+    //         }
+    //     case "GET_RELEASES":
+    //         return {
+    //             ...state,
+    //             releases: action.releases
+    //         }
+    //         break;
+    //     case "PLAY_SONG":
+    //         return {
+    //             ...state,
+    //             selectSong: action.selectSong
+    //         }
+    //         break;
+    //     default:
+    //         return state;
+    // }
+})
+
+export const {
+    getCues, 
+    updateCue, 
+    getAllComposers, 
+    setSong,
+    getSetSong,
+    getRelease,
+    getReleases,
+    playSong
+} = cuesSlice.actions;
+
+export default cuesSlice.reducer;

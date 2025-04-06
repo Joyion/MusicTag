@@ -1,39 +1,35 @@
 import React from 'react';
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { setSong, startSetSong } from "../actions/cues.action";
-class Song extends React.Component {
-    constructor(props) {
-        super(props);
-        this.playingSong = this.playingSong.bind(this);
-        this.editSong = this.editSong.bind(this);
-    }
+// import { setSong, startSetSong } from "../actions/cues.action";
+export default function Song({cue, setAudioFile}) {
+    // constructor(props) {
+    //     super(props);
+    //     this.playingSong = this.playingSong.bind(this);
+    //     this.editSong = this.editSong.bind(this);
+    // }
 
-    playingSong(e) {
+    const playingSong = (e) => {
         e.preventDefault();
-        console.log(`${this.props.cue.release}/${this.props.cue.fileName}`)
-        let fileName = `${this.props.cue.release}/${this.props.cue.fileName}`;
-        this.props.setAudioFile(fileName, this.props.cue.songTitle);
+        console.log(`${cue.release}/${cue.fileName}`)
+        let fileName = `${cue.release}/${cue.fileName}`;
+        setAudioFile(fileName, cue.songTitle);
     }
 
-    editSong() {
+    const editSong = () => {
         //startSetSong(this.props.cue._id, this.props.dispatch, this.props.history.push);
-        this.props.history.push("/EditSong/" + this.props.cue._id);
+        // this.props.history.push("/EditSong/" + this.props.cue._id);
 
     }
-
-    render() {
         return (
             <div className="song">
                 <div className="song__large">
                     <div >
-                        <p className="song__title">{this.props.cue.songTitle}</p>
+                        <p className="song__title">{cue.songTitle}</p>
                     </div>
 
                     <div className="song__desc">
                         <p>
-                            {this.props.cue.descriptions && this.props.cue.descriptions.map((d, i) => {
-                                let last = this.props.cue.descriptions.length - 1;
+                            {cue.descriptions && cue.descriptions.map((d, i) => {
+                                let last = cue.descriptions.length - 1;
                                 if (i < 5) {
                                     if(i == last){
                                         return d;
@@ -47,8 +43,6 @@ class Song extends React.Component {
                                     }
                                     
                                 }
-
-
                             })}
                         </p>
                     </div>
@@ -56,18 +50,18 @@ class Song extends React.Component {
 
                 <div className="song__large" >
                     <div>
-                        {this.props.cue.composers ? this.props.cue.composers.map((c, i) => { return <p key={i}>{c.composer.fullName}</p> }) : " "}
+                        {cue.composers ? cue.composers.map((c, i) => { return <p key={i}>{c.composer.fullName}</p> }) : " "}
                     </div>
                 </div>
 
                 <div className="song__large">
                     <div>
-                        {this.props.cue.publishers ? this.props.cue.publishers.map((p, i) => { return <p key={i}>{`${p.publisher.publisherName}  (${p.publisher.publisherPro}) ${p.split}% `}</p> }) : " "}
+                        {cue.publishers ? cue.publishers.map((p, i) => { return <p key={i}>{`${p.publisher.publisherName}  (${p.publisher.publisherPro}) ${p.split}% `}</p> }) : " "}
                     </div>
                 </div>
 
                 <div className="song__tempo">
-                    <p>{this.props.cue.tempo && this.props.cue.tempo}</p>
+                    <p>{cue.tempo && cue.tempo}</p>
                 </div>
 
                 <div>
@@ -78,15 +72,15 @@ class Song extends React.Component {
 
             </div>
         )
-    }
+    
 }
 
 
-const mapStateToProps = (state, ownProps) => ({
-    cue: ownProps.cue
+// const mapStateToProps = (state, ownProps) => ({
+//     cue: ownProps.cue
 
-})
+// })
 
-const myComponent = connect(mapStateToProps)(Song);
+// const myComponent = connect(mapStateToProps)(Song);
 
-export default withRouter(myComponent);
+// export default withRouter(myComponent);

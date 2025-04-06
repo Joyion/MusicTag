@@ -3,6 +3,8 @@ import {createBrowserRouter, RouterProvider} from "react-router"
 import { createRoot } from 'react-dom/client';
 import PageContainer from './PageContainer.jsx';
 import { Provider } from 'react-redux'
+import store from './store/configStore.js';
+import BIPage from './components/BIPage.jsx';
 
 // import ReactDOM from "react-dom";
 // import {Provider} from "react-redux";
@@ -12,14 +14,14 @@ import { Provider } from 'react-redux'
 // // for styling CSS
 // import "normalize-css";
 // // own sass style files
-// import "./styles/styles.scss";
+import "./styles/index.scss";
 
 const router = createBrowserRouter([
     {
         path: "/",
         Component: PageContainer,
         children: [
-            {index: true, element: <div>Hello</div>}
+            {index: true, element: <BIPage />},
         ]
     }
 ])

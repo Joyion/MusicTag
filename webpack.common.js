@@ -2,6 +2,7 @@
 import path from "path";
 import { fileURLToPath } from 'url';
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import sass from  "sass";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,7 +30,13 @@ export default {
                 use: [
                     'style-loader',
                     'css-loader',
-                    'sass-loader',
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            // Prefer `dart-sass`, even if `sass-embedded` is available
+                            implementation: sass
+                        },
+                    }
                 ],
             },
             {
