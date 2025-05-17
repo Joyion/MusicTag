@@ -1,11 +1,6 @@
 import React from 'react';
 // import { setSong, startSetSong } from "../actions/cues.action";
 export default function Song({cue, setAudioFile}) {
-    // constructor(props) {
-    //     super(props);
-    //     this.playingSong = this.playingSong.bind(this);
-    //     this.editSong = this.editSong.bind(this);
-    // }
 
     const playingSong = (e) => {
         e.preventDefault();

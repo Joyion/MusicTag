@@ -1,5 +1,6 @@
 import { Outlet } from "react-router"
 import React from 'react';
+import Navbar from "./components/Navbar";
 
 
 
@@ -8,7 +9,7 @@ export default function PageContainer() {
     return (
         <>
         <nav>
-        <h1>Navigation here</h1>
+        <Navbar />
         </nav>
         <Outlet />
         <footer>

@@ -21,18 +21,18 @@ export default merge(common, {
     mode: "development",
     devtool: "inline-source-map",
     devServer: {
+        historyApiFallback: true,
         static: {
             directory: path.join(__dirname, 'dist'),
         },
-        port: 9000,
         open: true,
         hot: true,
-        proxy: [
-            {
-                context: "/api",
-                target: "http://localhost:5000"
-            }
-        ]
+        // proxy: [
+        //     {
+        //         context: "/api",
+        //         target: "http://localhost:5000"
+        //     }
+        // ]
     },
 });
 

@@ -1,25 +1,27 @@
+import { isPending } from "@reduxjs/toolkit";
 import React from "react";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router";
 
-const NavBar = () => {
-
-
+export default function NavBar() {
 
     return(
         <div className="navbar__container">
-            <div>
-                <h1>DL MUSIC</h1>
-            </div>
+            <h1>Music Tag</h1>
             <div className="navbar__links">
-                <NavLink className="nav-link" activeClassName="active-links" to="/backgroundInstrumentals">Background Instrumentals</NavLink>
+                <NavLink className={({ isActive, isPending, isTransitioning }) => [
+                    isActive ? "active-links" : "nav-link",
+                    isPending ? "active-links" : "nav-link",
+                    isTransitioning ? "active-links" : "nav-link"
+                ].join(" ")} to="/backgroundInstrumentals">Background Instrumentals</NavLink>
                 {/* <NavLink className="nav-link" activeClassName="active-links" to="/IndieArtist">Indie Artist</NavLink> */}
                 
-                <NavLink className="nav-link" activeClassName="active-links" to="/Export">Upload/Export</NavLink>
+                <NavLink className={({isActive, isPending, isTransitioning}) => [
+                    isActive ? "active-links" : "nav-link",
+                    isPending ? "active-links" : "nav-link",
+                    isTransitioning ? "active-links" : "nav-link"  
+                ]} to="/Export">Upload/Export</NavLink>
             </div>   
         </div>
     
     )
 } 
-
-
-export default NavBar;

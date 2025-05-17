@@ -1,11 +1,13 @@
 import React from 'react';
+import {useEffect} from 'react';
 import Song from "./Song";
 // import { connect } from "react-redux";
 // import { startGetCues, startGetReleases } from "../actions/cues.action";
-import store from "../store/configStore";
 import { useSelector, useDispatch } from 'react-redux'
 import {getCues, getReleases} from "../reducers/cues.reduce";
 
+
+import store from "./../store/configStore";
 
 
 
@@ -13,41 +15,7 @@ import {getCues, getReleases} from "../reducers/cues.reduce";
 export default function ResultTable (){
 
     const cuesState = useSelector(state => state.cues);
-    const dispatch = useDispatch();
 
-    // constructor(props) {
-    //     super(props);
-
-    //     this.state = {
-    //         page: this.props.cues.page,
-    //         totalPages: this.props.cues.totalPages,
-    //         selectPage: 1,
-    //         status: this.props.cues.status,
-    //         release: this.props.cues.release,
-    //         releases: this.props.cues.releases,
-    //         selectStatus: this.props.cues.status,
-    //         selectRelease: this.props.cues.release,
-    //         totalCues: this.props.cues.totalCues,
-    //         audioFile: "",
-    //         songPlaying: "",
-    //     }
-    //     this.nextPage = this.nextPage.bind(this);
-    //     this.backPage = this.backPage.bind(this);
-    //     this.handlePgInput = this.handlePgInput.bind(this);
-    //     this.handleStatus = this.handleStatus.bind(this);
-    //     this.handleChange = this.handleChange.bind(this);
-    //     this.setAudioFile = this.setAudioFile.bind(this);
-    //     this.handlePageChange = this.handlePageChange.bind(this);
-    //     this.handleRelease = this.handleRelease.bind(this);
-
-    // }
-
-    // componentDidMount() {
-    //     console.log("START");
-    //     console.log(this.props.cues);
-    //     startGetReleases(this.props.dispatch);
-    //     startGetCues(this.props.cues.page, this.props.cues.status, this.props.cues.release, this.props.dispatch);
-    // }
 
     const nextPage = () => {
         // console.log("Turning the page");
@@ -81,7 +49,8 @@ export default function ResultTable (){
     }
 
     const handleStatus = (e) => {
-        // e.preventDefault();
+        e.preventDefault();
+        store.dispatch()
         // if (this.state.selectStatus != "Status") {
         //     startGetCues(1, this.state.selectStatus, this.state.release, this.props.dispatch);
         //     this.setState({
@@ -133,11 +102,11 @@ export default function ResultTable (){
 
 
         return (
-            <div>
-                <div className="filter__container">
+            <>
+                <section className="filter__container">
                     <div className="filter__flexcontainer ">
                         <div>
-                            <h1>Background Instrumentals</h1>
+                            {/* <h1>Background Instrumentals</h1> */}
                             <div className="filter__display">
                                 <h2>Total Cues: {cuesState.totalCues}</h2>
                                 <h2 className="filter__status">Status:
@@ -211,23 +180,14 @@ export default function ResultTable (){
                        <div><p>Tempo</p></div>
                        <div><p></p></div>
                     </div>
-
-                </div>
-
-
-                {/* <div>
-                    <div><p>Song Title</p></div>
-                    <div><p>Composer</p></div>
-                    <div><p>Tempo</p></div>
-                    <div><p>Actions</p></div>   
-                </div> */}
-                <div className="resultTable__container">
+                </section>
+                {/* <section className="resultTable__container">
                     {cuesState.cues.length > 0 ? cuesState.cues.map((c, i) => {
                         return <Song key={i} cue={c} setAudioFile={this.setAudioFile} />
                     }) : <div style={{ textAlign: "center", position: "relative", top: "20px" }}> <h3 style={{ margin: 0 }}>No Results</h3></div>}
-                </div>
+                </section> */}
 
-            </div>
+            </>
         )
     
 }

@@ -1,5 +1,6 @@
 .navbar__container{
     display: flex;
+    align-items: center;
     background-color: black;
     color: white;
     padding: 0 20px;
@@ -16,10 +17,11 @@
 }
 
 .navbar__links {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-
+   display: flex;
+   margin-right: 75px;
+   align-items: center;
+   justify-content: right;
+   gap: 40px;
 }
 
 .nav-link {

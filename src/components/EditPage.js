@@ -7,7 +7,8 @@ import descriptionArray from "./descriptions";
 import pros from "./pros";
 import hidden from "./hidden";
 
-class CorrectEdit extends React.Component {
+
+export default function EditPage (){
 
     constructor(props) {
         super(props);
@@ -991,11 +992,3 @@ class CorrectEdit extends React.Component {
         )
     }
 }
-
-const mapStateToProps = (state, props) => ({
-    cue: state.cues.selectSong,
-    composers: state.cues.composers,
-    publishers: state.cues.publishers
-})
-
-export default connect(mapStateToProps)(CorrectEdit);

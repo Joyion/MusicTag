@@ -2,131 +2,90 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const defaultState = {
         cues: [],
-        totalCues: 0,
-        page: 1,
-        totalPages: 1,
+        totalCues: 25,
+        page: 25,
+        totalPages: 25,
         status: "Pending",
         release: "All",
-        selectSong: {
-            catalogName: ""
-        },
+        selectedSong: {},
         releases: [],
         composers: [],
         releases: [],
         publishers: [],
 }
 
- const cuesSlice =  createSlice({
+ const cuesSlice = createSlice({
     name: "cues",
     initialState: defaultState,
-    reducers: [{
-            getCues(state, action) {
-                return {
-                    ...state,
-                    cues: action.cues,
-                    page: action.page,
-                    status: action.status,
-                    totalCues: action.totalCues,
-                    totalPages: action.totalPages,
-                    selectSong: action.selectSong,
-                }
-            }
+    reducers: {
+        setFilters: (state, action) => {
+            return {
+                ...state,
+                release: action.payload.release,
+                status: action.payload.status,
+            };
         },
-        {
-            updateCue(state, action) {
-                return {
+        
+        getCues: (state, action) => {
+        
+              return {  
                     ...state,
-                    selectSong: action.cue,
-                    composers: action.comps,
-                    publishers: action.pubs,
-                }
-            }
-        },{
-            getAllComposers(state, action) {
-                return {
-                    ...state,
+                    cues: action.payload.cues,
+                    page: action.payload.page,
+                    status: action.payload.status,
+                    totalCues: action.payload.totalCues,
+                    totalPages: action.payload.totalPages,
+                    selectedSong: action.payload.selectedSong
+              };
+
+            },
+        
+        updateCues: (state, action) => {
+                   return { ...state,
+                    selectedSong: action.payload.cue,
                     composers: action.payload.comps,
                     publishers: action.payload.pubs,
-                }
-            }
-        }, {
-            setSong(state, action) {
-                return {
-                    ...state,
-                    selectSong: action.payload.cue
-                }
-            }
-        }, {
-            getSetSong(state) {
-                return {
-                    ...state
-                }
-            }
-        }, {
-            getReleases(state, action){
-                return {
-                    ...state,
+                   }
+            
+            },
+      
+        getAllComposers: (state, action) => {
+               
+           return { ...state,
+            composers: action.payload.comps,
+            publishers: action.payload.pubs,
+           }
+                
+        },
+
+        setSelectedSong: (state, action) => {
+    
+                   return { ...state,
+                    selectedSong: action.payload.cue
+                   }
+
+            },
+        getSetSong: (state, action) => {
+                
+                      return {  ...state,
+                        selectedSong: action.payload.selectedSong
+                      }
+                
+            },
+        getReleases: (state, action) => {
+               
+                   return { ...state,
                     release: action.payload.releases
+                   }
+                
+        },
+        playSong: (state, action) => {
+             
+                   return { ...state,
+                   selectedSong: action.payload.selectedSong
                 }
-            }
-        }, {
-            playSong(state, action){
-                return {
-                    ...state,
-                    selectSong: action.payload.selectSong
-                }
-            }
-        }]
-        // case "GET_CUES":
-    //         return {
-    //                 ...state,
-    //                 cues: action.cues, 
-    //                 page: action.page,
-    //                 status: action.status,
-    //                 totalCues: action.totalCues,
-    //                 totalPages: action.totalPages,
-    //                 selectSong: action.selectSong,
-    //         }
-    //         break;
-    //     case "UPDATE_CUE":
-    //         return {
-    //             ...state,
-    //             selectSong: action.cue,
-    //             composers: action.comps,
-    //             publishers: action.pubs,
-    //         };
-    //         break;
-    //     case "GET_ALL_COMPOSERS":
-    //         return {
-    //             ...state,
-    //             composers: action.composers,
-    //             publishers: action.pubs,
-    //         }
-    //     case "SET_SONG":
-    //         return {
-    //             ...state,
-    //             selectSong: action.cue
-    //         }
-    //         break;
-    //     case "GET_SET_SONG":
-    //         return{
-    //             ...state
-    //         }
-    //     case "GET_RELEASES":
-    //         return {
-    //             ...state,
-    //             releases: action.releases
-    //         }
-    //         break;
-    //     case "PLAY_SONG":
-    //         return {
-    //             ...state,
-    //             selectSong: action.selectSong
-    //         }
-    //         break;
-    //     default:
-    //         return state;
-    // }
+    },
+    }
 })
 
 export const {
