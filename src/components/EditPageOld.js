@@ -8,7 +8,7 @@ import pros from "./pros";
 import hidden from "./hidden";
 
 
-export default function EditPage (){
+export default function EditPageOld (){
 
     constructor(props) {
         super(props);
