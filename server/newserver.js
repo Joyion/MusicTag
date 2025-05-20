@@ -24,6 +24,7 @@ app.use(cors({
 
 // Needed to serve static files through express
 app.use(express.static(publicPath));
+app.use(express.json());
 
 mongoose.connect(process.env.DATABASE_URL, {
     dbName: "musicTag",
@@ -33,7 +34,11 @@ mongoose.connect(process.env.DATABASE_URL, {
     console.log("Error connecting to MongoDB", err);
 })
 
+
+
+
 // // import schemas 
+
 
 // Composer.create({
 //     fullName: "John Doe",
@@ -55,6 +60,11 @@ process.on('SIGINT', async () => {
     console.log('MongoDB connection closed due to app termination');
     process.exit(0);
 });
+
+// Set Up Routes
+import uploadRoutes from "./routes/api.upload.js";
+
+app.use("/api/upload", uploadRoutes);
 
 // Serve webpack bundle
 app.get("*", (req, res) => {

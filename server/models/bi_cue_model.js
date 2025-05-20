@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 const biCue = new mongoose.Schema(
     {
         release: { type: String },
@@ -47,4 +48,4 @@ const biCue = new mongoose.Schema(
 
     })
 
-export default mongoose.model('BIcue', biCue);
+export default mongoose.model("biCue", biCue);
