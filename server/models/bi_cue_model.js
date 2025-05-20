@@ -1,7 +1,4 @@
-const mongoose = require("mongoose");
-const composers = require("./composer.model");
-const Publisher = require("./publisher.model");
-const Schema = mongoose.Schema;
+import mongoose from "mongoose";
 
 const biCue = new mongoose.Schema(
     {
@@ -25,7 +22,7 @@ const biCue = new mongoose.Schema(
         ],
         genre: { type: String, default: "N/A" },
         style: { type: String, default: "N/A" },
-        genreStyle: { type: String, default: "N/A" },
+        genreAndStyle: { type: String, default: "N/A" },
         genreId: { type: String },
         instruments: { type: Array },
         descriptions: { type: Array },
@@ -37,9 +34,9 @@ const biCue = new mongoose.Schema(
         top: { type: String, default: "N/A" },
         status: { type: String, default: "Pending" },
         fileName: { type: String, default: "N/A" },
-        releaseDate: { type: String },
+        releasedDate: { type: String },
         createdDate: { type: Date, default: Date.now },
-        updateDate: { type: Date, default: null },
+        updatedDate: { type: Date, default: null },
         track: { type: String },
         trackId: { type: String },
         trackNum: { type: String },
@@ -50,4 +47,4 @@ const biCue = new mongoose.Schema(
 
     })
 
-module.exports = mongoose.model('BIcue', biCue);
+export default mongoose.model('BIcue', biCue);

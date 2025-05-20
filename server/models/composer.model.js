@@ -1,17 +1,15 @@
-const mongoose = require("mongoose");
-
+import mongoose from 'mongoose';
 
 const composers = new mongoose.Schema(  
     {
         fullName: {type: String}, 
-        fName: {type: String},       
-        mName: {type: String},       
-        lName: {type: String},       
+        firstName: {type: String},       
+        middleName: {type: String},       
+        lastName: {type: String},       
         suffix: {type: String},       
         split: {type: String},       
         cae: {type: String},       
         pro: {type: String}    
     
 })
-
-module.exports = mongoose.model('Composer', composers);
+export default mongoose.model('Composer', composers);

@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-
+import mongoose from 'mongoose';
 /* 
 *****WHY THIS MODEL WAS CREATED*****
 This model is used to keep track of the names of releases 
@@ -14,11 +13,12 @@ which used the US-RRD-20-{track id which was mysql table key}
 
 const releaseIsrc = new mongoose.Schema(
     {
-        initial: {type: String, default: "true"},
+        // initial: {type: String, default: "true"},
         releases: {type: Array},
         currentYear: {type: Number},
-        totalTracksThisYear: {type: Number}
+        totalTracksThisYear: {type: Number},
+        updatedDate: {type: Date, default: Date.now},
     }
 )
 
-module.exports = mongoose.model('Release', releaseIsrc );
+export default mongoose.model('Release', releaseIsrc );

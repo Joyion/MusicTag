@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-
+import mongoose from 'mongoose';
 
 const publisher = new mongoose.Schema(  
     {
@@ -8,4 +7,4 @@ const publisher = new mongoose.Schema(
         publisherPro: {type: String}
 })
 
-module.exports = mongoose.model('Publisher', publisher);
+export default mongoose.model('Publisher', publisher);
