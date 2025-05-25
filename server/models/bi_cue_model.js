@@ -6,6 +6,7 @@ const biCue = new mongoose.Schema(
         release: { type: String },
         catalogName: { type: String, default: "Background Instrumental" },
         songTitle: { type: String },
+        rawMetadata: { type: String, default: "" },
         metadataComposer: { type: String, default: "N/A" },
         metadataPublisher: { type: String, default: "N/A" },
         composers: [
@@ -35,9 +36,7 @@ const biCue = new mongoose.Schema(
         top: { type: String, default: "N/A" },
         status: { type: String, default: "Pending" },
         fileName: { type: String, default: "N/A" },
-        releasedDate: { type: String },
-        createdDate: { type: Date, default: Date.now },
-        updatedDate: { type: Date, default: null },
+        releasedDate: { type: String, default: Date.now() },
         track: { type: String },
         trackId: { type: String },
         trackNum: { type: String },
@@ -46,6 +45,6 @@ const biCue = new mongoose.Schema(
         mainVersion: { type: String, default: "N/A" },
         hidden: {type: Array}
 
-    })
+    }, {timestamps: true})
 
 export default mongoose.model("biCue", biCue);

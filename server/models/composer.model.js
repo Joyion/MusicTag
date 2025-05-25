@@ -11,5 +11,5 @@ const composers = new mongoose.Schema(
         cae: {type: String},       
         pro: {type: String}    
     
-})
+}, {timestamps: true});
 export default mongoose.model('Composer', composers);

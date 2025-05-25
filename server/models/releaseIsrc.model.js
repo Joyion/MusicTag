@@ -18,7 +18,7 @@ const releaseIsrc = new mongoose.Schema(
         currentYear: {type: Number},
         totalTracksThisYear: {type: Number},
         updatedDate: {type: Date, default: Date.now},
-    }
-)
+    }, 
+    {timestamps: true})
 
 export default mongoose.model('Release', releaseIsrc );

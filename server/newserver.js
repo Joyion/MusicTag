@@ -64,7 +64,7 @@ process.on('SIGINT', async () => {
 // Set Up Routes
 import uploadRoutes from "./routes/api.upload.js";
 
-app.use("/api/upload", uploadRoutes);
+app.use("/api/releases", uploadRoutes);
 
 // Serve webpack bundle
 app.get("*", (req, res) => {
