@@ -11,13 +11,13 @@ which used the US-RRD-20-{track id which was mysql table key}
 
 */
 
+// Each doc represents a year with all the releases for that year
 const releaseIsrc = new mongoose.Schema(
     {
         // initial: {type: String, default: "true"},
-        releases: {type: Array},
-        currentYear: {type: Number},
-        totalTracksThisYear: {type: Number},
-        updatedDate: {type: Date, default: Date.now},
+        releases: {type: Array, default: []},
+        year: {type: Number, default: new Date().getFullYear()},
+        totalTracksThisYear: {type: Number, default: 0}
     }, 
     {timestamps: true})
 

@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
-
-
+import { Schema } from "mongoose";
 const biCue = new mongoose.Schema(
     {
         release: { type: String },
         catalogName: { type: String, default: "Background Instrumental" },
         songTitle: { type: String },
-        rawMetadata: { type: String, default: "" },
         metadataComposer: { type: String, default: "N/A" },
         metadataPublisher: { type: String, default: "N/A" },
         composers: [
