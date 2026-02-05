@@ -1,0 +1,27 @@
+{
+  "name": "musictag-backend",
+  "version": "1.0.0",
+  "description": "A node/express server ",
+  "main": "server.js",
+  "type": "module",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "start": "node server.js",
+    "stopServer": "lsof -i tcp:9000 -t | xargs kill -9",
+    "docker:up": "docker compose --env-file .env up",
+    "docker:down": "docker compose down --volumes"    
+
+  },
+  "author": "Joyion Timmons",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "jest": "^30.2.0",
+    "mongoose": "^9.1.6"
+  }
+}
